@@ -1,0 +1,26 @@
+{
+	"name": "mrcore/modules/wiki",
+	"type": "library",
+	"description": "Mrcore Wiki Module",
+	"keywords": ["mrcore", "framework", "wiki", "laravel"],
+	"homepage": "http://github.com/mreschke/mrcore-modules-wiki",
+	"license": "MIT",
+	"support": {
+		"issues": "https://github.com/mreschke/mrcore/issues"
+	},
+	"authors": [
+		{
+			"name": "Matthew Reschke",
+			"email": "mail@mreschke.com",
+			"homepage": "http://mreschke.com"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Mrcore\\Modules\\Wiki\\": ""
+		}
+	}
+}
