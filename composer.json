@@ -1,5 +1,5 @@
 {
-	"name": "mrcore/modules/wiki",
+	"name": "mrcore/wiki",
 	"type": "library",
 	"description": "Mrcore Wiki Module",
 	"keywords": ["mrcore", "framework", "wiki", "laravel"],
