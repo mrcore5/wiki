@@ -1,6 +1,8 @@
 <?php namespace Mrcore\Modules\Wiki\Providers;
 
 use View;
+use Auth;
+use Config;
 use Illuminate\Routing\Router;
 use Mrcore\Modules\Foundation\Support\ServiceProvider;
 
@@ -40,16 +42,6 @@ class WikiServiceProvider extends ServiceProvider {
 			__DIR__.'/../Database/Seeds' => base_path('/database/seeds'),
 		], 'seeds');
 
-		// To migrate and see mrcore
-		// -------------------------
-		// Simply run the two publish commands above then run composer dump-autoload.
-		// Modify your database/seeds/DatabaseSeeder.php and add this to the end of the
-		// run() function: require __DIR__.'/WikiDatabaseSeeder.php';
-		// Then migrate with standard artisan commands:
-		// ./artisan migrate
-		// ./artisan db:seed
-		// or ./artisan migrate:refresh --seed
-
 	}
 
 	/**
@@ -59,7 +51,22 @@ class WikiServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
+		// Extend both Guard and EloquentUserProvider
+		// This makes my own 'wiki' auth provider in config/app.php which 
+		// enabled custom Auth::funtions() and caching on the user provider!
+		Auth::extend('wiki', function() {
+			// Guard extension found at https://laracasts.com/forum/?p=910-how-to-extend-auth/0
+			$hash = $this->app->make('hash');
+		    $model = Config::get('auth.model');
+		    $session = $this->app->make('session.store');
+
+			// Fire up standard EloquentUserProvider
+			#$provider = new \Illuminate\Auth\EloquentUserProvider($hash, $model);
+			$provider = new \Mrcore\Modules\Wiki\Auth\WikiUserProvider($hash, $model);
+			
+			// Fire up my custom Auth Provider as an extension to Laravels
+			return new \Mrcore\Modules\Wiki\Auth\Guard($provider, $session);
+		 });		
 	}
 
 }

@@ -7,6 +7,10 @@ Mrcore Wiki Module
 * add to providers array
 * publish, migrate, seed
 
+Add to your app/Console/Kernel.php $commands array
+	'Mrcore\Modules\Wiki\Console\Commands\IndexPosts'
+
+
 
 To Migrate and Seed
 

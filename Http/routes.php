@@ -15,6 +15,8 @@
 
 
 Route::get('/', function() {
+	#dd(Auth::check());
+
 	#abort(401);
 	return view('welcome-to-mrcore');
 	#dd(\Auth::user());
