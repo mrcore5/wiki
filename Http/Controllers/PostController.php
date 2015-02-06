@@ -19,9 +19,7 @@ class PostController extends Controller {
 	 */
 	public function showPost()
 	{
-
-		dd('post controller');
-
+		// Redirect router results here (not in the middleware)
 		$router = Mrcore::router();
 		if (isset($router)) {
 			if ($router->responseCode == 404) {
@@ -31,31 +29,13 @@ class PostController extends Controller {
 			} elseif ($router->responseCode == 301) {
 				// Redirect to proper url
 				$url = $router->responseRedirect;
-				#if (is_array($router->responseRedirect)) {
-					#$url = route(
-					#	$router->responseRedirect['route'],
-					#	$router->responseRedirect['params']
-					#);
-					#$url .= $router->responseRedirect['query'];
-				#} else {
-				#	$url = $router->responseRedirect;
-				#}
 				return Redirect::to($url);
 			}
 		}
-		
-
-		# Gets post, parse + globals
-		# If ajax, do NOT include globals
+	
+		// Gets post, parse + globals
+		// If ajax, do NOT include globals
 		$post = Mrcore::post()->prepare(!Request::ajax());
-
-
-		#echo "PostController HERE!<br />";
-		#echo "Auth Check: ".\Auth::check()."<br />";
-		#echo "Session: ".var_dump(\Session::all())."<br />";
-		#echo "Post: ".var_dump($post)."<br />";
-		#return;
-
 
 		// If post is a workbench and we get to this point then
 		// The custom workbench route was not found, meaning we
@@ -85,108 +65,7 @@ class PostController extends Controller {
 			return $content;
 		}
 
-
-		#echo \Lifecycle::dump();
 	}
-
-
-	/**
-	 * Post Router
-	 *
-	 * @return Response
-	 */
-	public function postRouter($slug)
-	{
-		/*echo "POSTROUTER";
-
-		$router = app('mrcore.router');
-		if ($router->response == 301) {
-			if (is_array($router->redirect)) {
-				$url = route($router->redirect['route'], $router->redirect['params']).$router->redirect['query'];
-			} else {
-				$url = $router->redirect;
-			}
-			return Redirect::to($url);
-		}*/
-
-
-		/*
-		#{{ $_SERVER['QUERY_STRING']; }}
-		if (strlen($slug) == 36) {
-			//URL is a guid, probably the post uuid
-			$post = Post::where('uuid', '=', $slug)->select('id')->first();
-			if (isset($post)) {
-				return self::postRedirect($post->id);
-			}
-		}
-		$route = Router::
-			  where('slug', '=', $slug)
-			->where('disabled', '=', false)
-			->first(); #don't use ->select() or $route->save wont work
-		if (isset($route)) {
-			if (isset($route->post_id)) {
-				//Load post content, stay on this url
-				$route->clicks += 1;
-				$route->save();
-				return $this->showPost($route->post_id);
-			} elseif (isset($route->url)) {
-				//Redirect to this full url (could be external)
-				$route->clicks += 1;
-				$route->save();
-				return Redirect::to($route->url);
-			} else {
-				throw new exception("Invalid router table entry for slug '$slug'");
-			}
-		} else {
-			return Response::notFound();
-		}*/
-	}
-
-
-	/**
-	 * Redirect legecy or small URL to full post slug URL
-	 *
-	 * @return Response
-	 */
-	public function postRedirect($id = null, $slug = null)
-	{
-
-
-		
-		/*$router = Mrcore::router();
-		if ($router->response == 200) {
-			return $this->showPost();
-		
-		} elseif ($router->response == 301) {
-			// Redirect to proper URL
-			if (is_array($router->redirect)) {
-				$url = route($router->redirect['route'], $router->redirect['params']).$router->redirect['query'];
-			} else {
-				$url = $router->redirect;
-			}
-			return Redirect::to($url);
-		
-		} elseif ($router->response == 404) {
-			return Response::notFound();
-		
-		} elseif ($router->response == 401) {
-			return Response::denied();
-		}*/
-		
-
-	}
-
-
-	/**
-	 * Shows the Home Post
-	 *
-	 * @return Response
-	 */
-	public function showHome()
-	{
-		#return $this->showPost(Config::get('mrcore.home'));
-	}
-
 
 	/**
 	 * Shows a post revision by revision ID
@@ -195,7 +74,6 @@ class PostController extends Controller {
 	{
 
 	}
-
 
 	/**
 	 * Delete an uncommitted revision by postID and userID

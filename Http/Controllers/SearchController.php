@@ -8,11 +8,11 @@ use Request;
 use Session;
 use Redirect;
 use Response;
-use Mrcore\Models\Tag;
-use Mrcore\Models\Type;
-use Mrcore\Models\Post;
-use Mrcore\Models\Badge;
-use Mrcore\Models\Format;
+use Mrcore\Modules\Wiki\Models\Tag;
+use Mrcore\Modules\Wiki\Models\Type;
+use Mrcore\Modules\Wiki\Models\Post;
+use Mrcore\Modules\Wiki\Models\Badge;
+use Mrcore\Modules\Wiki\Models\Format;
 
 class SearchController extends Controller {
 

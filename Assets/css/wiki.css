@@ -1,0 +1,594 @@
+/*
+-toc
+-info infol
+-code
+-box
+header (indentation?)
+-blcokquote
+-tt
+iframe
+table
+simpeltable
+images
+auth
+priv
+*/
+
+/* Post Display */
+.post-header {
+	margin-bottom: 25px;
+}
+.post-badge {
+	width: 24px;
+	margin-right: 5px;
+	margin-top: 7px;
+}
+.post-title {
+	margin-top: 0px;
+	padding: 0px;
+	font-size: 24px !important;
+}
+.post-deleted {
+	color: red;
+}
+.post-info {
+	font-size: 90%;
+}
+.post-info i {
+	margin-right: 5px;
+}
+.post-tags {
+	font-size: 90%;
+	margin-left: 0px;
+}
+.post-tags i {
+	margin-right: 3px;
+}
+.post-tag {
+	margin-right: 5px;
+}
+
+
+/* toc */
+.toc {
+	font-size: 12px !important;
+	min-width: 200px;
+	max-width: 300px; /* set same as .info width */
+	margin-bottom: 15px;
+	margin-left: 15px;
+	float: right;
+}
+.toc {
+	border-bottom: 0px;
+}
+.toc hr {
+	margin: 2px 0px 0px 0px;
+}
+.toc .panel-body {
+	padding: 0px;
+}
+.toc .panel-heading {
+	padding: 10px;
+
+}
+.toc .panel-title {
+	font-size: 12px !important;
+}
+.toc_items {
+	padding: 3px 5px 3px 15px;
+	padding-bottom: 1px;
+}
+.info .toc, .infol .toc {
+	margin: 0px;
+	min-width: 100%;
+}
+
+/* info */
+.info, .infol {
+	font-size: 12px !important;
+	margin-top: -20px;
+	margin-bottom: 15px;
+	min-width: 200px;
+	max-width: 300px; /* set same as .toc width */
+}
+.info .panel, .infol .panel {
+	margin-bottom: 0px;
+}
+.info {
+	float: right;
+	margin-left: 15px;
+}
+.infol {
+	float: left;
+	/* leave at 20 not 15 because of <ul><li> goes into info box */
+	margin-right: 20px;
+}
+
+/* code */
+.code_outer pre {
+	border: 0px;
+}
+.code_header {
+	margin-left: 15px;
+}
+
+/* box */
+.box {
+	padding: 10px;
+}
+.box_left {
+	margin-right: 15px;
+}
+.info .box table, .infol .box table {
+	width: 100%;
+}
+.info .box ul {
+	padding-left: 15px;	
+}
+
+
+
+/* headers */
+.header_toggle {
+	font-family: monospace;
+	font-size: 10px;
+	font-weight: normal;
+	margin-left: 10px;
+	margin-right: 5px;
+	cursor: pointer;
+}
+.header_expand, .header_collapse {
+	font-family: monospace;
+	font-size: 10px;
+	font-weight: normal;
+	margin-left: 5px;
+	float: right;
+}
+.heading1 .header_expand, .heading1 .header_collapse {
+	margin-top: 7px;
+}
+.heading2 .header_expand, .heading2 .header_collapse {
+	margin-top: 6px;
+}
+.heading3 .header_expand, .heading3 .header_collapse {
+	margin-top: 5px;
+}
+.heading4 .header_expand, .heading4 .header_collapse {
+	margin-top: 5px;
+}
+.heading5 .header_expand, .heading5 .header_collapse {
+	margin-top: 5px;
+}
+.heading6 .header_expand, .heading6 .header_collapse {
+	margin-top: 4px;
+}
+.header_collapse {
+	margin-right: 5px;
+}
+.header_expand a, .header_collapse a {
+}
+.header_toggle a:hover, .header_expand a:hover, .header_collapse a:hover {
+	text-decoration: none;
+}
+.header1_content, .header2_content, .header3_content, 
+.header4_content, .header5_content, .header6_content  {
+	padding: 5px 15px 5px 15px;
+	margin-bottom: 5px;
+}
+.header1_content .header2_content, .header2_content .header3_content,
+.header3_content .header4_content, .header4_content .header5_content,
+.header5_content .header6_content {
+	margin-right: -15px;	
+}
+
+.heading1, h1 {
+	/*font-size: 30px !important;*/
+	font-size: 22px !important;
+}
+.heading1 {
+	/*margin: 26px 0px 0px 0px !important;*/
+	margin: 26px 0px 5px 0px !important;
+
+}
+.toc0 {
+	margin-top: 0px !important;
+}
+.heading2, h2 {
+	/*font-size: 26px !important;*/
+	font-size: 20px !important;
+}
+.heading2 {
+	/*margin: 24px 0px 0px 0px !important;*/
+	margin: 24px 0px 5px 0px !important;
+	font-weight: bold;
+}
+.heading3, h3 {
+	/*font-size: 22px !important;*/
+	font-size: 18px !important
+}
+.heading3 {
+	/*margin: 22px 0px 0px 0px !important;*/
+	margin: 22px 0px 5px 0px !important;
+	font-weight: bold;
+}
+.heading4, h4 {
+	/*font-size: 18px !important;*/
+	font-size: 17px !important;
+}
+.heading4 {
+	/*margin: 20px 0px 0px 0px !important;*/
+	margin: 20px 0px 5px 0px !important;
+	font-weight: bold;
+}
+.heading5, h5 {
+	/*font-size: 17px !important;*/
+	font-size: 16px !important;
+}
+.heading5 {
+	/*margin: 18px 0px 0px 0px !important;*/
+	margin: 18px 0px 5px 0px !important;
+	font-weight: bold;
+}
+.heading6, h6 {
+	/*font-size: 16px !important;*/
+	font-size: 15px !important;
+}
+.heading6 {
+	/*margin: 16px 0px 0px 0px !important;*/
+	margin: 16px 0px 5px 0px !important;
+	font-weight: bold;
+}
+
+
+/* Table */
+.table {
+	width: auto !important;
+}
+.dataTables_wrapper .table {
+	width: 100% !important;
+}
+
+table.dataTable {
+	clear: none !important;
+}
+
+
+/* Links */
+.free_link_new {
+	text-decoration: none;
+	border-bottom: red 1px dashed;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Old original ACE them wiki.css */
+
+/*
+.url_link {}
+.wiki_link {}
+.wiki_link_new {
+	color: #666666;
+	text-decoration: none;
+	border-bottom: #5f97d7 1px dashed;
+}
+.free_link {}
+.free_link_new {
+	color: #666666;
+	text-decoration: none;
+	border-bottom: #5f97d7 1px dashed;
+}
+.toc {
+	background-color: #ffffff;
+	border: 1px solid #ddd;
+	border-bottom: 0px;
+	font-size: 11px;
+}
+.toc_list {
+	min-width: 200px;
+	max-width: 300px;
+	margin-bottom: 5px;
+}
+.info .toc, .infol .toc {
+	min-width: 100%;
+}
+.toc_items {
+	padding-right: 3px;
+	padding-top: 3px;
+	padding-bottom: 1px;
+	font-weight: normal;
+	border-bottom: 1px solid #ddd;
+}
+.toc_items:hover {
+	background-color: #eee;
+}
+.toc_items img {
+	border: 0px;
+}
+.toc_title {
+	text-align: center;
+	margin-left: 0px;
+	margin-top: 3px;
+	margin-right: 0px;
+	color: #666;
+	font-weight: bold;
+	height: 18px;
+	padding: 3px;
+}
+.header_toggle {
+	font-family: monospace;
+	font-size: 10px;
+	font-weight: normal;
+	color: #ccc;
+	margin-left: 8px;
+	padding-right: 30px;
+	cursor: pointer;
+}
+.header_expand, .header_collapse {
+	font-family: monospace;
+	font-size: 10px;
+	font-weight: normal;
+	margin-top: 2px;
+	margin-left: 2px;
+	float: right;
+}
+.header_collapse {
+	margin-right: 5px;
+}
+.header_expand a, .header_collapse a {
+	color: #ccc;
+}
+.header_expand a:hover, .header_collapse a:hover {
+	text-decoration: none;
+}
+.header1_content, .header2_content, .header3_content, 
+.header4_content, .header5_content, .header6_content  {
+	padding: 5px 0px 5px 15px;
+	border: 1px solid #eee;
+	border-top: 1px solid #ccc;
+	margin-bottom: 5px;
+}
+.heading1 a.free_link, .heading2 a.free_link, .heading3 a.free_link,
+.heading4 a.free_link, .heading5 a.free_link, .heading6 a.free_link {
+	text-decoration: underline;
+}
+.heading1, h1 {
+	padding: 0px;
+	margin: 0px;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 22px;
+}
+.heading1 {
+	padding-left: 1px;
+	margin-top: 26px;
+	color: black;
+	color: #478fca;
+}
+.toc0 {
+	margin-top: 0px;
+}
+.heading2, h2 {
+	padding: 0px;
+	margin: 0px;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 22px;
+}
+.heading2 {
+	padding-left: 1px;
+	margin-top: 24px;
+	color: #222;
+	color: #333;
+}
+.heading3, h3 {
+	padding: 0px;
+	margin: 0px;
+	font-size: 15px;
+	font-weight: bold;
+	line-height: 20px;
+}
+.heading3 {
+	padding-top: 3px;
+	margin-top: 22px;
+	color: #444;
+	color: #69aa46;
+}
+.heading4, h4 {
+	padding: 0px;
+	margin: 0px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.heading4 {
+	padding-top: 5px;
+	margin-top: 20px;
+	color: #666;
+	color: #ff892a;
+}
+.heading5, h5 {
+	padding: 0px;
+	margin: 0px;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: bold;
+}
+.heading5 {
+	padding-top: 5px;
+	margin-top: 18px;
+	color: #888;
+	color: #a069c3;
+}
+.heading6, h6 {
+	padding: 0px;
+	margin: 0px;
+	text-decoration: none;
+	font-size: 12px;
+	font-weight: bold;
+}
+.heading6 {
+	margin-top: 16px;
+	color: #999;
+	color: #dd5a43;
+}
+.blockQuote {
+	margin: 5px 0px 5px 0px;
+	padding: 5px;
+	padding-left: 26px;
+	white-space: wrap;
+	background: url('../images/smileys/icon_exclaim_h.png') 3px center no-repeat;
+	
+	color: #000000;
+	color: #c09853;
+	background-color: #fcf8e3;
+	border: 1px solid #fbeed5;
+}
+.code_outer, .textbox_outer {
+	margin-top: 5px;
+	margin-right: 5px;
+	border: 1px solid #bbb;
+	background-color: #eee;
+	background-color: #f8f8f8;
+}
+.code_header, .textbox_header {
+	padding-left: 5px;
+	font-weight: bold;
+	color: #666;
+	font-size: 10px;
+}
+.code, pre, .textbox_outer textarea {
+	font-family: monospace;
+	font-size: 12px;
+	border: 1px solid #ccc;
+	margin: 0px 0px 0px 3px;
+}
+.code, pre {
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap !important;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+	background-color: #fff;
+	border-bottom: 0px;
+	border-right: 0px;
+	color: darkblue;
+	padding: 5px;
+	border-radius: 0;
+}
+.plaintext {
+	font-family: monospace;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+	font-size: 13px;
+	color: #000;
+	border: 0px;
+	line-height: 120%;
+}
+tt {
+	color: #468847;
+}
+pre {
+	border: 1px solid #ccc;
+}
+.code_outer pre {
+	border-right: 0px;
+	border-bottom: 0px;
+}
+iframe {
+	border: 1px solid #ddd;
+}
+.textbox_outer textarea {
+	width: 99%;
+}
+.table {
+	border: 1px solid #ddd;
+}
+.table .table_th, .table .table_td {
+	border-right: 1px solid #ddd;
+}
+.simpletable {
+	width: auto;
+}
+.image {}
+.image_link {}
+.auth {
+	margin-left: -2px;
+	padding-left: 2px;
+	border-left: 1px solid #FF9900;
+}
+.auth_inline {
+	display: inline;
+	background-color: #F0F0F0;
+	margin-left: 1px;
+	padding-left: 2px;
+	border-left: 1px solid #FF9900;
+}
+.private {
+	margin-left: -2px;
+	padding-left: 2px;    
+	border-left: 1px solid #FF0000;
+}
+.private_inline {
+	display: inline;
+	background-color: #F0F0F0;
+	margin-left: 1px;
+	padding-left: 2px;
+	border-left: 1px solid #FF0000;
+}
+.info {
+	float: right;
+	margin-top: -18px;
+	margin-left: 15px;
+	margin-right: -5px;
+	margin-bottom: 5px;
+}
+.infol {
+	float: left;
+	margin-top: -18px;
+	margin-left: -5px;
+	margin-right: 15px;
+}
+.info, .infol {
+
+	font-size: 11px;
+	min-width: 200px;
+	max-width: 300px;
+}
+.box {
+	padding: 5px;
+	white-space: wrap;
+	background-color: #f9f9f9;
+	border: 1px solid #ddd;
+}
+.info .box, .infol .box {
+	border: 1px solid #C9D7F1;
+	border: 1px solid #ddd;
+	background-repeat: repeat-x;
+	background-position: top;
+	background-color: white;
+	font-size: 11px;
+}
+.info .box table, .infol .box table {
+	width: 100%;
+	font-size: 11px;
+}
+.box_left {
+	padding-right: 5px;
+	vertical-align: middle;
+	width: auto;
+	height: 100%;
+}
+.box_right {}
+.highlight {}
+*/

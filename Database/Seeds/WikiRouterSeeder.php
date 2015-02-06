@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Mrcore\Models\Router;
+use Mrcore\Modules\Wiki\Models\Router;
 
 class WikiRouterSeeder extends Seeder
 {

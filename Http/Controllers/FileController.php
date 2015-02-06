@@ -6,7 +6,7 @@ use Route;
 use Request;
 use Response;
 use Sabre\DAV;
-use Mrcore\Models\Post;
+use Mrcore\Modules\Wiki\Models\Post;
 use Mrcore\Support\Guest;
 use Mrcore\Support\Sabredav;
 use Mrcore\Support\Filemanager;

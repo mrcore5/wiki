@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Models;
+<?php namespace Mrcore\Modules\Wiki\Models;
 
 use DB;
 use URL;
@@ -7,11 +7,18 @@ use Input;
 use Config;
 use Session;
 use Mrcore\Models\User;
-use Mrcore\Support\Cache;
 use Mrcore\Support\Crypt;
 use Mrcore\Support\String;
 use Mrcore\Support\Indexer;
+use Mrcore\Modules\Wiki\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
+use Mrcore\Modules\Wiki\Parser\Wiki as WikiParser;
+use Mrcore\Modules\Wiki\Parser\Php as PhpParser;
+use Mrcore\Modules\Wiki\Parser\PhpW as PhpWParser;
+use Mrcore\Modules\Wiki\Parser\Html as HtmlParser;
+use Mrcore\Modules\Wiki\Parser\HtmlW as HtmlWParser;
+use Mrcore\Modules\Wiki\Parser\Text as TextParser;
+
 
 class Post extends Model
 {
@@ -43,7 +50,7 @@ class Post extends Model
 	 */
 	public function badges()
 	{
-		return $this->belongsToMany('Mrcore\Models\Badge', 'post_badges');
+		return $this->belongsToMany('Mrcore\Modules\Wiki\Models\Badge', 'post_badges');
 	}
 
 
@@ -53,7 +60,7 @@ class Post extends Model
 	 */
 	public function tags()
 	{
-		return $this->belongsToMany('Mrcore\Models\Tag', 'post_tags');
+		return $this->belongsToMany('Mrcore\Modules\Wiki\Models\Tag', 'post_tags');
 	}
 
 
@@ -63,7 +70,7 @@ class Post extends Model
 	 */
 	public function format()
 	{
-		return $this->hasOne('Mrcore\Models\Format', 'id', 'format_id');
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\Format', 'id', 'format_id');
 	}
 
 
@@ -73,7 +80,7 @@ class Post extends Model
 	 */
 	public function type()
 	{
-		return $this->hasOne('Mrcore\Models\Type', 'id', 'type_id');
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\Type', 'id', 'type_id');
 	}
 
 
@@ -83,7 +90,7 @@ class Post extends Model
 	 */
 	public function framework()
 	{
-		return $this->belongsTo('Mrcore\Models\Framework');
+		return $this->belongsTo('Mrcore\Modules\Wiki\Models\Framework');
 	}
 
 
@@ -93,7 +100,7 @@ class Post extends Model
 	 */
 	public function mode()
 	{
-		return $this->belongsTo('Mrcore\Models\Mode');
+		return $this->belongsTo('Mrcore\Modules\Wiki\Models\Mode');
 	}
 
 
@@ -103,7 +110,7 @@ class Post extends Model
 	 */
 	public function creator()
 	{
-		return $this->belongsTo('Mrcore\Models\User', 'created_by');
+		return $this->belongsTo('Mrcore\Modules\Wiki\Models\User', 'created_by');
 	}
 
 
@@ -113,7 +120,7 @@ class Post extends Model
 	 */
 	public function updater()
 	{
-		return $this->belongsTo('Mrcore\Models\User', 'updated_by');
+		return $this->belongsTo('Mrcore\Modules\Wiki\Models\User', 'updated_by');
 	}
 
 	/**
@@ -138,7 +145,7 @@ class Post extends Model
 	 */
 	public static function get($id, $columns = array('*'))
 	{
-		return self::find($id);
+		return Post::find($id);
 	}
 
 	/**
@@ -214,41 +221,41 @@ class Post extends Model
 		# Setup the Parser
 		$format = strtolower($this->format->constant);
 		if ($format == 'wiki') {
-			$parser = new \Mrcore\Parser\Wiki();
+			$parser = new WikiParser();
 			$parser->userID = Auth::user()->id;
 			$parser->postID = $this->id;
 			$parser->postCreator = $this->created_by;
-			$parser->isAuthenticated = User::isAuthenticated();
-			$parser->isAdmin = User::isAdmin();
+			$parser->isAuthenticated = Auth::check();
+			$parser->isAdmin = Auth::admin();
 		
 		} elseif ($format == 'php') {
-			$parser = new \Mrcore\Parser\Php();
+			$parser = new PhpParser();
 
 		} elseif ($format == 'phpw') {
-			$parser = new \Mrcore\Parser\PhpW();
+			$parser = new PhpWParser();
 			$parser->userID = Auth::user()->id;
 			$parser->postID = $this->id;
 			$parser->postCreator = $this->created_by;
-			$parser->isAuthenticated = User::isAuthenticated();
-			$parser->isAdmin = User::isAdmin();
+			$parser->isAuthenticated = Auth::check();
+			$parser->isAdmin = Auth::admin();
 			#$parser->disabledRules = array('Html', 'Newline', 'Paragraph');
 			$parser->disabledRules = array('Html');
 
 		} elseif ($format == 'html') {
-			$parser = new \Mrcore\Parser\Html();
+			$parser = new HtmlParser();
 
 		} elseif ($format == 'htmlw') {
-			$parser = new \Mrcore\Parser\HtmlW();
+			$parser = new HtmlWParser();
 			$parser->userID = Auth::user()->id;
 			$parser->postID = $this->id;
 			$parser->postCreator = $this->created_by;
-			$parser->isAuthenticated = User::isAuthenticated();
-			$parser->isAdmin = User::isAdmin();
+			$parser->isAuthenticated = Auth::check();
+			$parser->isAdmin = Auth::admin();
 			#$parser->disabledRules = array('Html', 'Newline', 'Paragraph');
 			$parser->disabledRules = array('Html');
 
 		} elseif ($format == 'text' || $format == 'md') {
-			$parser = new \Mrcore\Parser\Text();
+			$parser = new TextParser();
 		}
 
 		// Decrypt content if not already decrypted
@@ -445,7 +452,7 @@ class Post extends Model
 
 
 		// Filter posts by read permissions (or user is creator)
-		if (!User::isAdmin()) {
+		if (!Auth::admin()) {
 			$posts = $posts
 			->leftJoin('post_permissions', 'posts.id', '=', 'post_permissions.post_id')
 			->leftJoin('permissions', 'post_permissions.permission_id', '=', 'permissions.id')
@@ -586,7 +593,7 @@ class Post extends Model
 	 */
 	private function getPermissions()
 	{
-		if (User::isAdmin()) {
+		if (Auth::admin()) {
 			$this->permissions = array();
 		} else {
 			
@@ -688,7 +695,7 @@ class Post extends Model
 	 */
 	public function hasPermission($constant)
 	{
-		if (User::isAdmin()) {
+		if (Auth::admin()) {
 			// Super admin is always true
 			return true;
 		} else {

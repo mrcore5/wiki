@@ -11,10 +11,7 @@
 |
 */
 
-
-
-
-Route::get('/', function() {
+/*Route::get('/', function() {
 	#dd(Auth::check());
 
 	#abort(401);
@@ -27,8 +24,7 @@ Route::get('home', function() {
 	return view('welcome-to-mrcore');
 });
 
-return;
-
+return;*/
 
 
 

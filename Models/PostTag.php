@@ -1,5 +1,6 @@
-<?php namespace Mrcore\Models;
+<?php namespace Mrcore\Modules\Wiki\Models;
 
+use Mrcore\Modules\Wiki\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class PostTag extends Model

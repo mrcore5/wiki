@@ -1,0 +1,43 @@
+.search-results {
+	margin-top: 20px;
+}
+.search-filter .search-filter-section {
+	margin-bottom : 40px;
+}
+
+
+
+/* List View */
+.listview .search-post {
+	margin-bottom: 10px;
+
+}
+.search-post-title {
+	/*font-size: 16px;
+	font-weight: bold;*/
+}
+.search-post-creator {
+	/*font-size: 10px;*/
+	font-size: 80%;
+}
+.search-post-url {
+	margin-top: 2px;
+	font-size: 80%;
+}
+.search-post-url a {
+	/*text-decoration: none;*/
+}
+.search-post-url i {
+	margin-right: 5px;
+}
+.search-post-badges img {
+	width: 16px;
+}
+.search-post-tags {
+	margin-left: 3px;
+	font-size: 80%;
+}
+.search-post-tag {
+	margin-left: 4px;
+	margin-right: 5px;
+}
