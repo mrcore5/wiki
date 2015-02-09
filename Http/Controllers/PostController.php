@@ -19,6 +19,7 @@ class PostController extends Controller {
 	 */
 	public function showPost()
 	{
+
 		// Redirect router results here (not in the middleware)
 		$router = Mrcore::router();
 		if (isset($router)) {
@@ -86,7 +87,7 @@ class PostController extends Controller {
 		$postID = Input::get('postID');
 		$userID = Input::get('userID');
 		if ($postID > 0 && $userID > 0 && Mrcore::user()->isAuthenticated()) {
-			$post = Post::get($postID);
+			$post = Post::find($postID);
 			if (isset($post)) {
 				if ($post->hasPermission('write')) {
 					$revision = Revision::where('post_id', '=', $postID)

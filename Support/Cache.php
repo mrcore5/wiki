@@ -3,7 +3,7 @@
 use Config;
 use Closure;
 use Cache as LaravelCache;
-
+ 
 class Cache {
 
 	/**
@@ -13,11 +13,25 @@ class Cache {
 	 */
 	public static function remember($key, Closure $callback)
 	{
+		$key = self::adjustKey($key);
 		if (Config::get('mrcore.use_cache')) {
 			return LaravelCache::remember($key, Config::get('mrcore.cache_expires'), $callback);
 		} else {
 			return $callback();
 		}
+	}
+
+	public static function forget($key)
+	{
+		$key = self::adjustKey($key);
+		LaravelCache::forget($key);
+	}
+
+	private static function adjustKey($key)
+	{
+		$key = str_replace("\\", "/", $key);
+		$key = "mrcore/cache::$key";
+		return $key;		
 	}
 
 }

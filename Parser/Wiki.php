@@ -288,7 +288,7 @@ Class Wiki
 		if (!is_numeric($id)) return null;
 		if ($id == $this->postID) return null;
 
-		$post = Post::get($id);
+		$post = Post::find($id);
 		if (!isset($post)) return null;
 		if (!$post->hasPermission('read')) return null;
 
@@ -331,7 +331,8 @@ Class Wiki
 		// Initialize Text_Wiki object with the default rule set
 		$wiki = new \Text_Wiki();
 		$baseURL = "/";
-		$posts = Post::allArray();
+		$posts = Post::allTitles();
+
 	   
 		// Enable rules
 		#$wiki->enableRule('embed');

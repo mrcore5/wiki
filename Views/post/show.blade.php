@@ -8,7 +8,7 @@
 
 @section('css')
 	<style>
-		.body {
+		.bodyXXX {
 			padding-top: 15px;
 		}		
 	</style>

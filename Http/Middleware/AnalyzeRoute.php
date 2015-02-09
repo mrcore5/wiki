@@ -9,7 +9,6 @@ use Closure;
 use Redirect;
 use Response;
 use Mrcore\Modules\Wiki\Models\Post;
-use Mrcore\Models\User;
 
 class AnalyzeRoute {
 
@@ -29,10 +28,20 @@ class AnalyzeRoute {
 		#	return;
 		#}
 
+		// If not loggedin, login first time automatically as mrcore anonymous user
+		// CANNOT use Auth::check() here becuase I overrode it to return false if using anonymous
+		if (is_null(Auth::user())) Auth::loginUsingId(1);
 
-		// If not loggedin, login automatically as anonymous user
-		if (!Auth::check()) Auth::loginUsingId(1);
+		// Analyze Route
+		$this->analyzeRoute();
 
+		// Next middleware
+		return $next($request);
+
+	}
+
+	private function analyzeRoute()
+	{
 		// Analyse URL and find matching mrcore router tabel entry
 		$route = app('Mrcore\Modules\Wiki\Support\RouteAnalyzer');
 		$route->analyzeUrl(Config::get('mrcore.reserved_routes'), Config::get('mrcore.legacy_routes'));
@@ -40,7 +49,7 @@ class AnalyzeRoute {
 		if ($route->foundRoute()) {
 
 			// Get post defined by route
-			$post = Post::get($route->currentRoute()->post_id);
+			$post = Post::find($route->currentRoute()->post_id);
 
 			// Check deleted
 			if ($post->deleted && !Auth::admin()) {
@@ -89,10 +98,6 @@ class AnalyzeRoute {
 		Mrcore::router()->setModel($route->currentRoute());
 		Mrcore::router()->responseCode($route->responseCode);
 		Mrcore::router()->responseRedirect($route->responseRedirect);
-
-		// Next middleware
-		return $next($request);
-
 	}
 
 }

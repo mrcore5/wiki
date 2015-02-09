@@ -1,10 +1,12 @@
 <?php namespace Mrcore\Modules\Wiki\Providers;
 
-use View;
 use Auth;
+use Event;
 use Config;
 use Layout;
-use Illuminate\Routing\Router;
+use Mrcore;
+use Module;
+use Mrcore\Modules\Wiki\Models\Post;
 use Mrcore\Modules\Foundation\Support\ServiceProvider;
 
 class WikiServiceProvider extends ServiceProvider {
@@ -21,29 +23,20 @@ class WikiServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function boot(Router $router)
+	public function boot()
 	{
+		// Mrcore Module Tracking
+		Module::trace(get_class(), __function__);
+
+		// Define publishing rules
+		$this->definePublishing();
+
+		// Subscribe to Events
+		Event::subscribe('UserEventHandler');		
 
 		// Register additional css assets
 		Layout::css('css/dataTables.bootstrap.css');
 		Layout::css('css/wiki.css'); #should be last css
-
-		// Register additional routes
-		$router->group(['namespace' => 'Mrcore\Modules\Wiki\Http\Controllers'], function($router) {
-			require __DIR__.'/../Http/routes.php';
-		});		
-		
-		// Migration publishing rules
-		// ./artisan vendor:publish --provider="Mrcore\Modules\Wiki\Providers\WikiServiceProvider" --tag="migrations" --force
-		$this->publishes([
-			__DIR__.'/../Database/Migrations' => base_path('/database/migrations'),
-		], 'migrations');
-
-		// Seed publishing rules
-		// ./artisan vendor:publish --provider="Mrcore\Modules\Wiki\Providers\WikiServiceProvider" --tag="seeds" --force
-		$this->publishes([
-			__DIR__.'/../Database/Seeds' => base_path('/database/seeds'),
-		], 'seeds');
 
 		// Add my own internal configs
 		Config::set('mrcore.reserved_routes', array(
@@ -54,7 +47,6 @@ class WikiServiceProvider extends ServiceProvider {
 		));
 		Config::set('mrcore.magic_folders', array('.sys', 'app'));
 		Config::set('mrcore.magic_folders_exceptions', array('.sys/public', 'app/public'));
-
 	}
 
 	/**
@@ -63,6 +55,43 @@ class WikiServiceProvider extends ServiceProvider {
 	 * @return void
 	 */
 	public function register()
+	{
+		// Mrcore Module Tracking
+		Module::trace(get_class(), __function__);
+
+		// Extend both Auth Guard and UserProvider
+		$this->extendAuth();
+
+		// Event Handler Bindings
+		$this->app->bind('UserEventHandler', 'Mrcore\Modules\Wiki\Handlers\Events\UserEventHandler');
+	}
+
+	/**
+	 * Define publishing rules
+	 * 
+	 * @return void
+	 */
+	private function definePublishing()
+	{
+		// Migration publishing rules
+		// ./artisan vendor:publish --provider="Mrcore\Modules\Wiki\Providers\WikiServiceProvider" --tag="migrations" --force
+		$this->publishes([
+			__DIR__.'/../Database/Migrations' => base_path('/database/migrations'),
+		], 'migrations');
+
+		// Seed publishing rules
+		// ./artisan vendor:publish --provider="Mrcore\Modules\Wiki\Providers\WikiServiceProvider" --tag="seeds" --force
+		$this->publishes([
+			__DIR__.'/../Database/Seeds' => base_path('/database/seeds'),
+		], 'seeds');	
+	}
+
+	/**
+	 * Extend both Auth Guard and UserProvider
+	 * 
+	 * @return void
+	 */
+	private function extendAuth()
 	{
 		// Extend both Guard and EloquentUserProvider
 		// This makes my own 'mrcore' auth provider in config/app.php which 
@@ -79,12 +108,7 @@ class WikiServiceProvider extends ServiceProvider {
 			
 			// Fire up my custom Auth Provider as an extension to Laravels
 			return new \Mrcore\Modules\Wiki\Auth\Guard($provider, $session);
-		 });
-
-		// Register additional views
-		// For wiki provider, this needs to be here instead of in boot()
-		// So that it comes BEFORE the other ones in boot like Foundation
-		View::addLocation(__DIR__.'/../Views');		
+		});
 	}
 
 }

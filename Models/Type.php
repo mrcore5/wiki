@@ -29,50 +29,32 @@ class Type extends Model
 	 */
 	public static function find($id, $columns = array('*'))
 	{
-		return Cache::remember(strtolower(get_class())."_$id", function() use($id, $columns) {
+		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
 			return parent::find($id, $columns);
 		});		
+	}
+
+	/**
+	 * Get all of the models from the database.
+	 *
+	 * @param  array  $columns
+	 * @return \Illuminate\Database\Eloquent\Collection|static[]
+	 */
+	public static function all($columns = array('*'))
+	{
+		return Cache::remember(strtolower(get_class()).":all", function()  {
+			return parent::orderBy('constant')->get($columns);
+		});
 	}
 
 	/*
 	 * Clear all cache
 	 *
 	 */
-	public static function forgetCache()
+	public static function forgetCache($id = null)
 	{
-		Cache::forget('types_id-name');
-		Cache::forget('types');
+		Cache::forget(strtolower(get_class()).':all');
+		if (isset($id)) Cache::forget(strtolower(get_class()).":$id");
 	}
 
-	/**
-	 * Get all types
-	 *
-	 * @return array of types
-	 */
-	public static function getAll()
-	{
-		return Cache::remember("types", function()
-		{
-			return Type::all();
-		});
-	}
-
-	/**
-	 * Get all types as array
-	 *
-	 * @return assoc array of types
-	 */
-	public static function allArray($keyField = 'id', $valueField = 'name')
-	{
-		$function = function() use ($keyField, $valueField) {
-			return Type::all()->lists($valueField, $keyField);
-		};
-		
-		//Only cache if using default id/name
-		if ($keyField == 'id' && $valueField == 'name') {
-			return Cache::remember("types_$keyField-$valueField", $function);
-		} else {
-			return $function;
-		}
-	}
 }

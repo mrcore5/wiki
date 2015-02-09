@@ -7,9 +7,9 @@ use Input;
 use Config;
 use Session;
 use Mrcore\Models\User;
-use Mrcore\Support\Crypt;
 use Mrcore\Support\String;
 use Mrcore\Support\Indexer;
+use Mrcore\Modules\Wiki\Support\Crypt;
 use Mrcore\Modules\Wiki\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Mrcore\Modules\Wiki\Parser\Wiki as WikiParser;
@@ -110,7 +110,7 @@ class Post extends Model
 	 */
 	public function creator()
 	{
-		return $this->belongsTo('Mrcore\Modules\Wiki\Models\User', 'created_by');
+		return $this->belongsTo('Mrcore\Models\User', 'created_by');
 	}
 
 
@@ -120,7 +120,7 @@ class Post extends Model
 	 */
 	public function updater()
 	{
-		return $this->belongsTo('Mrcore\Modules\Wiki\Models\User', 'updated_by');
+		return $this->belongsTo('Mrcore\Models\User', 'updated_by');
 	}
 
 	/**
@@ -132,21 +132,35 @@ class Post extends Model
 	 */
 	public static function find($id, $columns = array('*'))
 	{
-		return Cache::remember(strtolower(get_class())."_$id", function() use($id, $columns) {
+		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
 			return parent::find($id, $columns);
 		});		
 	}
-	
+
 	/**
-	 * Legacy alias to find now that find is cacheable
+	 * Get all of the models from the database.
 	 *
-	 * @param int $id post ID
-	 * @return object of type post
+	 * @param  array  $columns
+	 * @return \Illuminate\Database\Eloquent\Collection|static[]
 	 */
-	public static function get($id, $columns = array('*'))
+	public static function all($columns = array('*'))
 	{
-		return Post::find($id);
-	}
+		#dd($this->where());
+		return Cache::remember(strtolower(get_class()).":all", function()  {
+			return parent::orderBy('constant')->get($columns);
+		});
+	}	
+
+	/*
+	 * Clear all cache
+	 *
+	 */
+	public static function forgetCache($id = null)
+	{
+		Cache::forget(strtolower(get_class()).':all');
+		Cache::forget(strtolower(get_class()).'/titles:all');
+		if (isset($id)) Cache::forget(strtolower(get_class()).":$id");
+	}	
 
 	/**
 	 * Decrypt $this->content
@@ -156,7 +170,6 @@ class Post extends Model
 		$this->content = Crypt::decrypt($this->content);
 		$this->decrypted = true;
 	}
-
 	
 	/**
 	 * Encrypt $this->content
@@ -166,7 +179,6 @@ class Post extends Model
 		$this->content = Crypt::encrypt($this->content);
 		$this->decrypted = false;
 	}
-
 
 	/**
 	 * Get the primary URL for the given post
@@ -199,9 +211,9 @@ class Post extends Model
 	 *
 	 * @return assoc array of all undeleted posts [id]=title
 	 */
-	public static function allArray()
+	public static function allTitles()
 	{
-		return Cache::remember("posts_array", function() 
+		return Cache::remember(strtolower(get_class()).'/titles:all', function() 
 		{
 			return Post::where('deleted', false)->get()->lists('id', 'title');
 		});
@@ -288,7 +300,7 @@ class Post extends Model
 			// Add User Global Content
 			if (isset(Auth::user()->global_post_id)) {
 				if ($this->id != Auth::user()->global_post_id) {
-					$userGlobal = Post::get(Auth::user()->global_post_id);
+					$userGlobal = Post::find(Auth::user()->global_post_id);
 					if (isset($userGlobal)) {
 						$userGlobal->parse();
 						$this->content = $userGlobal->content . $this->content;
@@ -299,7 +311,7 @@ class Post extends Model
 			// Add Site Global Content
 			if (Config::get('mrcore.global') > 0) {
 				if ($this->id != Config::get('mrcore.global')) {
-					$global = Post::get(Config::get('mrcore.global'));
+					$global = Post::find(Config::get('mrcore.global'));
 					if (isset($global)) {
 						$global->parse();
 						$this->content = $global->content . $this->content;

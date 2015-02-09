@@ -62,17 +62,16 @@ class SearchController extends Controller {
 
 
 		// Get all types
-		$types = Type::getAll();
+		$types = Type::all();
 
 		// Get all formats
-		$formats = Format::getAll();
+		$formats = Format::all();
 
 		// Get all badges
-		$badges = Badge::getAll();
+		$badges = Badge::all();
 		
 		// Get all tags
-		#$tags = Tag::allArray();
-		$tags = Tag::getAll();
+		$tags = Tag::all();
 
 		// Sort options
 		$sortOptions = array(
@@ -112,7 +111,7 @@ class SearchController extends Controller {
 		// // FIX ME these show up as mreschke then site global, should be reversed
 		// need to make more permanent solution, this sucks
 		// need to be on all pages like admin, router, search, login...fix it good
-		#$post = Post::get(\Config::get('mrcore.global'));
+		#$post = Post::find(\Config::get('mrcore.global'));
 		#Mrcore::post()->setModel($post);
 		#$post->prepare();
 		#$postContent = $post->content;
@@ -140,7 +139,7 @@ class SearchController extends Controller {
 		// Ajax only controller
 		if (!Request::ajax()) return Response::notFound();
 
-		$post = Post::get(Config::get('mrcore.searchmenu'));
+		$post = Post::find(Config::get('mrcore.searchmenu'));
 		if (!isset($post)) return Response::notFound();
 
 		// Parse Post Now!

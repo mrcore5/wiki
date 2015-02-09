@@ -163,17 +163,21 @@ Route::any('/search/{slug?}', array(
 
 // Net route
 
-// Admin Router route
-Route::get('/router', array(
-	'uses' => 'RouterController@showRouter',
-	'as' => 'router'
-));
-
 
 // Admin Routes
 Route::group(array('prefix' => 'admin'), function() {
 	
-	Route::resource('user', 'UserController');
+	// Cannot get resource controllers action() to work
+	//<li><a href="{{ action('Mrcore\Modules\Wiki\Http\Controllers\UserController@index') }}">Users</a></li>
+	// Gives Call to a member function domain() on null
+	#Route::resource('user', 'UserController');
+
+	// Admin Router route
+	Route::get('router', array(
+		'uses' => 'RouterController@showRouter',
+		'as' => 'router'
+	));
+
 
 	Route::get('badge', array(
 		'uses' => 'AdminController@showBadges',

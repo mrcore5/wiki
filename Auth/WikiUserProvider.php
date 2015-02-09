@@ -3,7 +3,7 @@
 // use mrcore support cache!!!!!!!!!!!! ????????
 // though where does that reside? foundation probably?
 // Mrcore\Foundation\Support\Cache
-use Cache;
+use Mrcore\Modules\Wiki\Support\Cache;
 use Illuminate\Auth\EloquentUserProvider;
 
 class WikiUserProvider extends EloquentUserProvider {
@@ -16,8 +16,8 @@ class WikiUserProvider extends EloquentUserProvider {
 	 */
 	public function retrieveById($identifier)
 	{
-		return Cache::remember('userById_'.$identifier, 60,
-			function() use($model, $identifier) {
+		return Cache::remember('auth/userprovider/user:'.$identifier,
+			function() use($identifier) {
 				return $this->createModel()->newQuery()->find($identifier);	
 			}
 		);
@@ -34,7 +34,7 @@ class WikiUserProvider extends EloquentUserProvider {
 	{
 		$model = $this->createModel();
 
-		return Cache::remember('userByIdAndToken_'.$identifier.$token, 60,
+		return Cache::remember('auth/userprovider/user:'.$identifier.$token,
 			function() use($model, $identifier, $token) {
 				return $model->newQuery()
 					->where($model->getKeyName(), $identifier)

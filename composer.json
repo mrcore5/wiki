@@ -19,6 +19,9 @@
 		"php": ">=5.4.0"
 	},
 	"autoload": {
+		"classmap": [
+			"Libraries"
+		],		
 		"psr-4": {
 			"Mrcore\\Modules\\Wiki\\": ""
 		}

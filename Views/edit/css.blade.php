@@ -4,6 +4,9 @@
 	body {
 		overflow: hidden;
 	}
+	.body {
+		margin: 0px;
+	}
 	.no-container .body {
 		padding: 5px 0px 0px 0px;
 	}

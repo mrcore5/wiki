@@ -191,7 +191,7 @@ class FileController extends Controller {
 		if (isset($getText)) $mimetype = 'text/plain';
 		if (($extension == 'wiki' && !isset($getText)) || isset($getWiki)) {
 			// Parse file content and display
-			$post = Post::get($url->getPostID());
+			$post = Post::find($url->getPostID());
 			echo $post->parse(file_get_contents($abs));
 			return Response::make(null, http_response_code());
 		}

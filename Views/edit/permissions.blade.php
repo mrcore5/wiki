@@ -73,7 +73,7 @@
 
 
 			<p>
-				Public URL: <a href="{{ \Mrcore\Models\Post::route($post->id) }}?uuid={{ $post->uuid }}">{{ Mrcore\Models\Post::route($post->id) }}?uuid={{ $post->uuid }}</a>
+				Public URL: <a href="{{ $post->route($post->id) }}?uuid={{ $post->uuid }}">{{ $post->route($post->id) }}?uuid={{ $post->uuid }}</a>
 			</p>
 		</div>
 

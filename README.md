@@ -14,6 +14,7 @@ Auth must come before wiki, becuase it sets routes auth...and wiki routes have a
 * add in composer.json
 * add to providers array
 * change auth driver to 'mrcore' in config/auth.php
+* change auth model to 'Mrcore\Modules\Wiki\Models\User' in config/auth.php
 * publish, migrate, seed
 * requires my custom config/mrcore.php
 * Add to config/theme.php assets array

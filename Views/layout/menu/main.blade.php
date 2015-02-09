@@ -3,7 +3,7 @@
 	@if (isset($post))
 	<li class="dropdown">
 		<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-			<i class="fa fa-rocket" style="font-size: 130%"></i>
+			<i class="fa fa-bars" style="font-size: 130%"></i>
 		</a>
 
 		<ul id="post-menu" class="dropdown-menu">

@@ -30,7 +30,7 @@ class Router extends Model
 	 */
 	public static function findDefault($id)
 	{
-		return Cache::remember(strtolower(get_class())."_default_$id", function() use($id) {
+		return Cache::remember(strtolower(get_class()).":$id", function() use($id) {
 			return Router::where('id', $id)
 				->where('default', true)
 				->where('disabled', false)
@@ -45,7 +45,7 @@ class Router extends Model
 	 */
 	public static function findDefaultByPost($postID)
 	{
-		return Cache::remember(strtolower(get_class())."_default_post_$postID", function() use($postID) {
+		return Cache::remember(strtolower(get_class())."/post:$postID", function() use($postID) {
 			return Router::where('post_id', $postID)
 				->where('default', true)
 				->where('disabled', false)
@@ -69,13 +69,24 @@ class Router extends Model
 	 */
 	public static function bySlug($slug)
 	{
-		return Cache::remember(strtolower(get_class())."_static_$slug", function() use($slug) {
+		return Cache::remember(strtolower(get_class())."/slug:$slug", function() use($slug) {
 			return Router::where('slug', $slug)
 				->where('disabled', false)
 				->where('static', true)
 				->first();
 		});
 	}
+
+	/*
+	 * Clear all cache
+	 *
+	 */
+	public static function forgetCache($id = null)
+	{
+		if (isset($id)) Cache::forget(strtolower(get_class()).":$id");
+		if (isset($id)) Cache::forget(strtolower(get_class())."/post:$id");
+		if (isset($id)) Cache::forget(strtolower(get_class())."/slug:$id");
+	}	
 
 	/**
 	 * Increment route clicks (views)

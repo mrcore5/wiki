@@ -44,7 +44,7 @@
 					<i class="fa fa-lock"></i>
 				</a>
 			</li>
-			@if (Mrcore::user()->isAdmin())
+			@if (Auth::admin())
 			<li>
 				<a data-toggle="tab" href="#advanced" title="Advanced settings">
 					<i class="fa fa-cog"></i>
@@ -131,7 +131,7 @@
 			</div>
 
 			{{-- ===== Advanced Tag ===== --}}
-			@if (Mrcore::user()->isAdmin())
+			@if (Auth::admin())
 				<div id="advanced" class="tab-pane pad">
 					@yield('advanced')
 				</div>

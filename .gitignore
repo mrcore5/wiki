@@ -1,4 +1,4 @@
-/vendor
+#/vendor -NO, not from modules
 /node_modules
 .DS_Store
 Thumbs.db

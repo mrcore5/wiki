@@ -29,52 +29,32 @@ class Badge extends Model
 	 */
 	public static function find($id, $columns = array('*'))
 	{
-		return Cache::remember(strtolower(get_class())."_$id", function() use($id, $columns) {
+		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
 			return parent::find($id, $columns);
 		});		
+	}
+
+	/**
+	 * Get all of the models from the database.
+	 *
+	 * @param  array  $columns
+	 * @return \Illuminate\Database\Eloquent\Collection|static[]
+	 */
+	public static function all($columns = array('*'))
+	{
+		return Cache::remember(strtolower(get_class()).":all", function()  {
+			return parent::orderBy('name')->get($columns);
+		});
 	}
 
 	/*
 	 * Clear all cache
 	 *
 	 */
-	public static function forgetCache()
+	public static function forgetCache($id = null)
 	{
-		Cache::forget('badges_id-name');
-		Cache::forget('badges');
-	}
-
-	/**
-	 * Get all badges
-	 *
-	 * @return array of badges
-	 */
-	public static function getAll()
-	{
-		return Cache::remember("badges", function()
-		{
-			return Badge::orderBy('name')->get();
-		});
-	}
-
-
-	/**
-	 * Get all badges as array
-	 *
-	 * @return assoc array of badges
-	 */
-	public static function allArray($keyField = 'id', $valueField = 'name')
-	{
-		$function = function() use ($keyField, $valueField) {
-			return Badge::all()->lists($valueField, $keyField);
-		};
-
-		//Only cache if using default id/name
-		if ($keyField == 'id' && $valueField == 'name') {
-			return Cache::remember("badges_$keyField-$valueField", $function);
-		} else {
-			return $function;
-		}
+		Cache::forget(strtolower(get_class()).':all');
+		if (isset($id)) Cache::forget(strtolower(get_class()).":$id");
 	}
 
 }

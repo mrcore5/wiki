@@ -1,10 +1,11 @@
 <?php namespace Mrcore\Modules\Wiki\Http\Controllers;
 
+use Auth;
 use View;
 use Mrcore;
 use Layout;
 use Response;
-use Mrcore\Models\Router;
+use Mrcore\Modules\Wiki\Models\Router;
 
 class RouterController extends Controller {
 
@@ -15,7 +16,7 @@ class RouterController extends Controller {
 	 */
 	public function showRouter()
 	{
-		if (!Mrcore::user()->isAdmin()) return Response::denied();
+		if (!Auth::admin()) return Response::denied();
 
 		$router = Router::getRoutes();
 

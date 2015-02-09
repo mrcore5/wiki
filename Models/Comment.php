@@ -29,9 +29,18 @@ class Comment extends Model
 	 */
 	public static function find($id, $columns = array('*'))
 	{
-		return Cache::remember(strtolower(get_class())."_$id", function() use($id, $columns) {
+		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
 			return parent::find($id, $columns);
 		});		
-	}	
+	}
+
+	/*
+	 * Clear all cache
+	 *
+	 */
+	public static function forgetCache($id = null)
+	{
+		if (isset($id)) Cache::forget(strtolower(get_class()).":$id");
+	}
 
 }

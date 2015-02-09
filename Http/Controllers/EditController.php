@@ -10,17 +10,17 @@ use Request;
 use Response;
 use Redirect;
 use Carbon\Carbon;
-use Mrcore\Support\Crypt;
+use Mrcore\Models\User;
 use Mrcore\Support\String;
 use Mrcore\Modules\Wiki\Models\Tag;
 use Mrcore\Modules\Wiki\Models\Mode;
 use Mrcore\Modules\Wiki\Models\Post;
 use Mrcore\Modules\Wiki\Models\Role;
 use Mrcore\Modules\Wiki\Models\Type;
-use Mrcore\Modules\Wiki\Models\User;
 use Mrcore\Modules\Wiki\Models\Badge;
 use Mrcore\Modules\Wiki\Models\Format;
 use Mrcore\Modules\Wiki\Models\Router;
+use Mrcore\Modules\Wiki\Support\Crypt;
 use Mrcore\Modules\Wiki\Models\Hashtag;
 use Mrcore\Modules\Wiki\Models\PostTag;
 use Mrcore\Modules\Wiki\Models\Revision;
@@ -28,7 +28,7 @@ use Mrcore\Modules\Wiki\Models\Framework;
 use Mrcore\Modules\Wiki\Models\PostBadge;
 use Mrcore\Modules\Wiki\Models\Permission;
 use Mrcore\Modules\Wiki\Models\PostPermission;
-use Mrcore\Support\Filemanager\Symlink;
+use Mrcore\Modules\Wiki\Support\Filemanager\Symlink;
 
 class EditController extends Controller {
 
@@ -37,15 +37,14 @@ class EditController extends Controller {
 	 */
 	public function editPost($id)
 	{
-		$post = Post::get($id);
+		$post = Post::find($id);
 		if (!isset($post)) return Response::notFound();
 		if (!$post->hasPermission('write')) return Response::denied();
 
 		// Adjust layout
 		Layout::title($post->title);
 		Layout::hideAll(true);
-		Layout::container(false);
-
+		Layout::container(false, false, false);
 
 		// Decrypt content
 		$post->content = Crypt::decrypt($post->content);
@@ -54,23 +53,23 @@ class EditController extends Controller {
 		$uncommitted = Revision::where('post_id', '=', $id)->where('revision', '=', 0)->get();
 
 		// Get all formats
-		$formats = Format::allArray('id');
+		$formats = Format::all(['name', 'id'])->lists('name', 'id');
 
 		// Get all types
-		$types = Type::allArray();
+		$types = Type::all(['name', 'id'])->lists('name', 'id');
 
 		// Get all frameworks
-		$frameworks = Framework::allArray();
+		$frameworks = Framework::all(['name', 'id'])->lists('name', 'id');
 
 		// Get all modes
-		$modes = Mode::allArray();
+		$modes = Mode::all(['name', 'id'])->lists('name', 'id');
 
 		// Get all badges
-		$badges = Badge::allArray();
+		$badges = Badge::all(['name', 'id'])->lists('name', 'id');
 		$postBadges = $post->badges->lists('id');
 
 		// Get all tags
-		$tags = Tag::allArray();
+		$tags = Tag::all(['name', 'id'])->lists('name', 'id');
 		$postTags = $post->tags->lists('id');
 
 		// Get hashtag
@@ -124,7 +123,7 @@ class EditController extends Controller {
 		// Ajax only controller
 		if (!Request::ajax()) return Response::notFound();
 
-		$post = Post::get($id);
+		$post = Post::find($id);
 		if (!isset($post)) return Response::notFound();
 		if (!$post->hasPermission('write')) return Response::denied();
 
@@ -149,10 +148,7 @@ class EditController extends Controller {
 			$post->save();
 
 			// Clear this posts cache
-			Cache::forget("post_$id");
-
-			// Clear Posts Array Cache for Wiki FreeLinks
-			Cache::forget("posts_array");
+			Post::forgetCache($id);
 
 			$lastRevisionNum = 0;
 			$lastRevision = Revision::where('post_id', '=', $id)->orderBy('revision', 'desc')->first();
@@ -176,7 +172,7 @@ class EditController extends Controller {
 		// Ajax only controller
 		if (!Request::ajax()) return Response::notFound();
 
-		$post = Post::get($id);
+		$post = Post::find($id);
 		if (!isset($post)) return Response::notFound();
 		if (!$post->hasPermission('write')) return Response::denied();
 
@@ -199,15 +195,14 @@ class EditController extends Controller {
 				$route->slug = Input::get('slug');
 				$route->save();
 			}
-
-			// Clear Posts Array Cache for Wiki FreeLinks
-			Cache::forget("posts_array");
 		}
 		
 		$post->slug = Input::get('slug');
 		$post->hidden = (Input::get('hidden') == 'true' ? true : false);
 		$post->save();
-		Cache::forget("post_$id");
+
+		// Clear this posts cache
+		Post::forgetCache($id);
 
 		// Update badges and tags
 		PostBadge::set($id, Input::get('badges'));
@@ -258,14 +253,16 @@ class EditController extends Controller {
 		// Ajax only controller
 		if (!Request::ajax()) return Response::notFound();
 
-		$post = Post::get($id);
+		$post = Post::find($id);
 		if (!isset($post)) return Response::notFound();
 		if (!$post->hasPermission('write')) return Response::denied();
 
 		// Update post info
 		$post->shared = (Input::get('shared') == 'true' ? true : false);
 		$post->save();
-		Cache::forget("post_$id");
+
+		// Clear this posts cache
+		Post::forgetCache($id);
 
 		// Update post permissions
 		$perms = json_decode(Input::get('perms'));
@@ -291,12 +288,12 @@ class EditController extends Controller {
 		// Ajax only controller
 		if (!Request::ajax()) return Response::notFound();
 
-		$post = Post::get($id);
+		$post = Post::find($id);
 		if (!isset($post)) return Response::notFound();
 		if (!$post->hasPermission('write')) return Response::denied();
 
 		$ret = "preferences saved";
-		if (User::isAdmin()) {
+		if (Auth::admin()) {
 			$defaultSlug = trim(Input::get('default-slug'));
 			$defaultSlug = preg_replace("'//'", "/", $defaultSlug);
 			if ($defaultSlug == '/') $defaultSlug = '';
@@ -305,7 +302,6 @@ class EditController extends Controller {
 			} else {
 				$static = false;
 			}
-			#$static = (Input::get('static') == 'true' ? true : false);
 			$symlink = (Input::get('symlink') == 'true' ? true : false);
 			if ($static == false) {
 				$symlink = false;	
@@ -317,7 +313,6 @@ class EditController extends Controller {
 					return "ERROR: workbench must be vendor/package format";
 				}
 			}
-
 			
 			if (substr($defaultSlug, 0, 1) == '/') $defaultSlug = substr($defaultSlug, 1);
 			if (substr($defaultSlug, -1) == '/') $defaultSlug = substr($defaultSlug, 0, -1);
@@ -326,7 +321,9 @@ class EditController extends Controller {
 			$post->symlink = $symlink;
 			$post->workbench = $workbench;
 			$post->save();
-			Cache::forget("post_$id");
+
+			// Clear this posts cache
+			Post::forgetCache($id);
 
 			// Update router
 			$route = Router::findDefaultByPost($id);
@@ -364,8 +361,6 @@ class EditController extends Controller {
 						$valid = false;
 					}
 				}
-				
-
 
 			} else {
 				$route->slug = $post->slug;
@@ -375,6 +370,10 @@ class EditController extends Controller {
 				// Save Route
 				$route->static = $static;
 				$route->save();
+
+				Router::forgetCache($slug);
+				Router::forgetCache($id);
+				Router::forgetCache($originalRoute->slug);
 
 				// Symlink Management, only create initially and only if static
 				if ($static) {
@@ -395,7 +394,7 @@ class EditController extends Controller {
 		// Ajax only controller
 		if (!Request::ajax()) return Response::notFound();
 
-		$post = Post::get($id);
+		$post = Post::find($id);
 		if (!isset($post)) return Response::notFound();
 		if (!$post->hasPermission('write')) return Response::denied();
 		if (!isset($post->framework_id)) return "ERROR: No framework selected";
@@ -466,7 +465,9 @@ class EditController extends Controller {
 			if ($workbench != $post->workbench) {
 				$post->workbench = $workbench;
 				$post->save();
-				Cache::forget("post_$id");
+
+				// Clear this posts cache
+				Post::forgetCache($id);
 			}
 		} else {
 			return "ERROR: Framework must be set to workbench";
@@ -483,19 +484,19 @@ class EditController extends Controller {
 		if (!User::hasPermission('create')) return Response::denied();
 
 		// Get all formats
-		$formats = Format::allArray();
+		$formats = Format::all(['name', 'id'])->lists('name', 'id');
 
 		// Get all types
-		$types = Type::allArray();
+		$types = Type::all(['name', 'id'])->lists('name', 'id');
 
 		// Get all frameworks
-		$frameworks = Framework::allArray();
+		$frameworks = Framework::all(['name', 'id'])->lists('name', 'id');
 
 		// Get all badges
-		$badges = Badge::allArray();
+		$badges = Badge::all(['name', 'id'])->lists('name', 'id');
 
 		// Get all tags
-		$tags = Tag::allArray();
+		$tags = Tag::all(['name', 'id'])->lists('name', 'id');
 
 		return View::make('edit.new', array(
 			'formats' => $formats,
@@ -555,8 +556,8 @@ class EditController extends Controller {
 		$route->post_id = $post->id;
 		$route->save();
 
-		// Clear Posts Array Cache for Wiki FreeLinks
-		Cache::forget("posts_array");
+		// Clear this posts cache
+		Post::forgetCache($id);
 
 		// Updates badges and tags
 		PostBadge::set($post->id, Input::get('badges'));

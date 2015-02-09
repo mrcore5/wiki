@@ -29,21 +29,32 @@ class Mode extends Model
 	 */
 	public static function find($id, $columns = array('*'))
 	{
-		return Cache::remember(strtolower(get_class())."_$id", function() use($id, $columns) {
+		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
 			return parent::find($id, $columns);
 		});		
 	}
-	
+
 	/**
-	 * Get all modes as array
+	 * Get all of the models from the database.
 	 *
-	 * @return assoc array of modes
+	 * @param  array  $columns
+	 * @return \Illuminate\Database\Eloquent\Collection|static[]
 	 */
-	public static function allArray($keyField = 'id', $valueField = 'name')
+	public static function all($columns = array('*'))
 	{
-		return Cache::remember("modes_$keyField-$valueField", function() use($keyField, $valueField)
-		{
-			return Mode::all()->lists($valueField, $keyField);
+		return Cache::remember(strtolower(get_class()).":all", function()  {
+			return parent::orderBy('constant')->get($columns);
 		});
 	}
+
+	/*
+	 * Clear all cache
+	 *
+	 */
+	public static function forgetCache($id = null)
+	{
+		Cache::forget(strtolower(get_class()).':all');
+		if (isset($id)) Cache::forget(strtolower(get_class()).":$id");
+	}
+
 }
