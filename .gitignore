@@ -1,4 +1,4 @@
-#/vendor -NO, not from modules
+# Keep /vendor in git for modules
 /node_modules
 .DS_Store
 Thumbs.db
