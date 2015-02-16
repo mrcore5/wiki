@@ -1,4 +1,4 @@
-# Keep /vendor in git for modules
+/vendor
 /node_modules
 .DS_Store
 Thumbs.db
