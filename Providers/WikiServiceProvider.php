@@ -64,6 +64,7 @@ class WikiServiceProvider extends ServiceProvider {
 
 		// Event Handler Bindings
 		$this->app->bind('UserEventHandler', 'Mrcore\Modules\Wiki\Handlers\Events\UserEventHandler');
+
 	}
 
 	/**

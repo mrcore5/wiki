@@ -3,7 +3,7 @@
 use Route;
 use Config;
 use Request;
-use Url as LaravelUrl;
+use URL as LaravelUrl;
 use Mrcore\Modules\Wiki\Models\Post;
 
 class Url {

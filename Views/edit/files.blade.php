@@ -6,7 +6,7 @@ dont add this in until you get files to open via ajax or else they
 post off the edit page :(
 
 <div class="fm" data-path="1" data-params="embed;">
-	<i class="icon-spinner icon-spin blue"></i>
+	<i class="fa fa-spinner spin"></i>
 	Loading File Manager ...
 </div>-->
 

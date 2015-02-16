@@ -20,7 +20,7 @@ class PostController extends Controller {
 	public function showPost()
 	{
 
-		// Redirect router results here (not in the middleware)
+		// Redirect router results here
 		$router = Mrcore::router();
 		if (isset($router)) {
 			if ($router->responseCode == 404) {
@@ -37,6 +37,7 @@ class PostController extends Controller {
 		// Gets post, parse + globals
 		// If ajax, do NOT include globals
 		$post = Mrcore::post()->prepare(!Request::ajax());
+
 
 		// If post is a workbench and we get to this point then
 		// The custom workbench route was not found, meaning we

@@ -4,11 +4,6 @@
 	New Post
 @stop
 
-@section('titlebar-title')
-	<i class="icon-plus"></i>
-	New Post
-@stop
-
 @section('css')
 <link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet" />
 <style>

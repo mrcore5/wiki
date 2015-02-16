@@ -11,11 +11,11 @@
 
 		@if ($post->type->constant == 'doc')
 			<div class="post-info">
-				<i class="fa fa-info-circle smaller-90 grey"></i>
+				<i class="fa fa-info-circle"></i>
 				Post <a href="{{ route('permalink', $post->id) }}">#{{ $post->id }}</a> by {{ $post->creator->alias }} {{ date("Y-m-d H:i:s", strtotime($post->created_at)) }} updated by {{ $post->updater->alias }} {{ date("Y-m-d H:i:s", strtotime($post->updated_at)) }} ({{ $post->clicks }} views)
 			</div>
 			<div class="post-tags">
-				<i class="fa fa-tags smaller-90 grey"></i>
+				<i class="fa fa-tags"></i>
 				@foreach ($post->tags as $tag)
 					<span class="post-tag">
 						<a href="{{ URL::route('search').'?tag'.$tag->id.'=1' }}">{{ $tag->name }}</a>

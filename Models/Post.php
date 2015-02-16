@@ -7,7 +7,7 @@ use Input;
 use Config;
 use Session;
 use Mrcore\Models\User;
-use Mrcore\Support\String;
+use Mreschke\Helpers\String;
 use Mrcore\Support\Indexer;
 use Mrcore\Modules\Wiki\Support\Crypt;
 use Mrcore\Modules\Wiki\Support\Cache;

@@ -3,14 +3,15 @@
 use View;
 use Input;
 use Route;
+use Layout;
 use Request;
 use Response;
 use Sabre\DAV;
 use Mrcore\Modules\Wiki\Models\Post;
-use Mrcore\Support\Guest;
-use Mrcore\Support\Sabredav;
-use Mrcore\Support\Filemanager;
-use Mrcore\Support\Filemanager\Url;
+use Mreschke\Helpers\Guest;
+use Mrcore\Modules\Wiki\Support\Sabredav;
+use Mrcore\Modules\Wiki\Support\Filemanager;
+use Mrcore\Modules\Wiki\Support\Filemanager\Url;
 
 class FileController extends Controller {
 
@@ -23,8 +24,6 @@ class FileController extends Controller {
 	{
 		// Instantiate our url analyzer class
 		$url = new Url(Request::url());
-
-		
 
 		/*echo "<hr />";
 		echo "Protocol: ".$url->getProtocol()."<br />";
@@ -42,7 +41,6 @@ class FileController extends Controller {
 		echo "Writable: ".$url->isWritable()."<br />";
 		echo "<hr />";
 		exit();*/
-
 
 		if ($url->isMethod('GET') || $url->isMethod('POST')) {
 			// GET file or directory (webdav file only or http dir/file both)
@@ -133,7 +131,6 @@ class FileController extends Controller {
 
 	}
 
-
 	/**
 	 * Show my custom sabredav protocol
 	 */
@@ -145,7 +142,6 @@ class FileController extends Controller {
 		$server->exec();
 		return Response::make(null, http_response_code());
 	}
-
 
 	/**
 	 * Show default sabredav protocol
@@ -159,7 +155,6 @@ class FileController extends Controller {
 		$server->exec();
 		return Response::make(null, http_response_code());
 	}
-
 
 	/**
 	 * Download/Stream the file
@@ -189,11 +184,14 @@ class FileController extends Controller {
 		$getDownload = Input::get('download');
 
 		if (isset($getText)) $mimetype = 'text/plain';
-		if (($extension == 'wiki' && !isset($getText)) || isset($getWiki)) {
-			// Parse file content and display
+		if (($extension == 'wiki' && !isset($getText)) && !isset($getDownload) || isset($getWiki)) {
+			// Parse file content and display in simple mode!
+			Layout::mode('simple');
 			$post = Post::find($url->getPostID());
-			echo $post->parse(file_get_contents($abs));
-			return Response::make(null, http_response_code());
+			$content = $post->parse(file_get_contents($abs));
+			return View::make('file.wiki', [
+				'content' => $content
+			]);
 		}
 
 		if (isset($getDownload)) {
@@ -210,7 +208,9 @@ class FileController extends Controller {
 			// Checking if the client is validating his cache and if it is current.
 			if (isset($headers['If-Modified-Since']) && (strtoupper($headers['If-Modified-Since']) == strtoupper(gmdate('D, d M Y H:i:s', filemtime($abs)).' GMT'))) {
 				// Client's cache IS current, so we just respond '304 Not Modified'.
-				header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($abs)).' GMT', true, 304);
+				#header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($abs)).' GMT', true, 304);
+				header('HTTP/1.1 304 Not Modified');
+				exit();
 			} else {
 				// Image not cached or cache outdated, we respond '200 OK' and output the image.
 				header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($abs)).' GMT', true, 200);
@@ -238,7 +238,6 @@ class FileController extends Controller {
 		return $response;
 	}
 
-
 	/**
 	 * Show directory contents, this is http only (not webdav)
 	 */
@@ -258,7 +257,6 @@ class FileController extends Controller {
 		// We use our sabredav dir object so I don't have to make two
 		// We don't actually use webdav here but the object works great
 		$dir = new Sabredav\Directory($url->getPath(), $url);
-
 
 		// Default Parameters (name all so false is default)
 		$params = array();
@@ -318,7 +316,6 @@ class FileController extends Controller {
 
 	}
 
-
 	/**
 	 * Show error code
 	 */
@@ -333,7 +330,7 @@ class FileController extends Controller {
 			return Response::make(null, $responseCode);
 		} else {
 			// Show nice graphical 404 and 401 gui
-			return Response::view('error.'.$responseCode, array('view'=>$this), $responseCode);
+			return Response::view('errors.'.$responseCode, array('view'=>$this), $responseCode);
 		}
 	}
 

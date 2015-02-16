@@ -2,8 +2,8 @@
 
 use Mrcore\Modules\Wiki\Models\Post;
 use Mrcore\Modules\Wiki\Models\Router;
-use Mrcore\Support\Crypt;
-use Mrcore\Support\String;
+use Mrcore\Modules\Wiki\Support\Crypt;
+use Mreschke\Helpers\String;
 use Illuminate\Database\Seeder;
 
 class WikiPostSeeder extends Seeder

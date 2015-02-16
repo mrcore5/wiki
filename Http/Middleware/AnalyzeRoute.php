@@ -5,6 +5,7 @@ use Input;
 use Config;
 use Layout;
 use Mrcore;
+use Module;
 use Closure;
 use Redirect;
 use Response;
@@ -52,31 +53,68 @@ class AnalyzeRoute {
 			$post = Post::find($route->currentRoute()->post_id);
 
 			// Check deleted
-			if ($post->deleted && !Auth::admin()) {
-				$route->responseCode = 401;
-				abort(401); #Response::denied(); ??
-			}
+			if ($post->deleted && !Auth::admin()) $route->responseCode = 401;
 
-			// Check post permissions including UUID
-			if (!$post->uuidPermission()) {
-				$route->responseCode = 401;
-				abort(401); #Response::denied(); ??
-			}
-
-			// Update clicks for post and router table
+			
 			if ($route->responseCode == 200) {
-				$route->currentRoute()->incrementClicks($route);
-				$post->incrementClicks();
-			}
+				
+				// Check post permissions including UUID
+				if (!$post->uuidPermission()) $route->responseCode = 401;
 
-			// Adjust $view for this $this->post
-			Layout::title($post->title);
-			if ($post->mode_id <> Config::get('mrcore.default_mode')) {
-				Layout::mode($post->mode->constant);	
-			}
+				
+				if ($route->responseCode == 200) {
 
-			// Store post and router in the IoC for future usage
-			Mrcore::post()->setModel($post);
+					// Update clicks for post and router table
+					$route->currentRoute()->incrementClicks($route);
+					$post->incrementClicks();
+
+					// Adjust $view for this $this->post
+					Layout::title($post->title);
+					if ($post->mode_id <> Config::get('mrcore.default_mode')) {
+						Layout::mode($post->mode->constant);	
+					}
+
+					// Store post and router in the IoC for future usage
+					Mrcore::post()->setModel($post);
+
+					// Load App (workbench)
+					if ($post->workbench) {
+						$segments = explode("/", $post->workbench);
+						if (count($segments) == 2) {
+							$namespace = ''; $vendor = ''; $package = '';
+							$vendor = $segments[0];
+							$package = $segments[1];
+							$namespace = studly_case($vendor) ."\\". studly_case($package);
+							$path = str_replace("\\", "/", $namespace);
+							$namespace = "Mrcore\Apps\\$namespace";
+
+							if (realpath(base_path()."/../Apps/$path")) {
+								// Define app (as module array)
+								$app = [
+									'type' => 'app',
+									'namespace' => "$namespace",
+									'controller_namespace' => "$namespace\Http\Controllers",
+									'provider' => "$namespace\Providers\AppstubServiceProvider",
+									'path' => "../Apps/$path",
+									'routes' => "../Apps/$path/Http/routes.php",
+									'route_prefix' => $route->currentRoute()->slug,
+									'views' => "../Apps/$path/Views",
+									'view_prefix' => $package,
+									'assets' => "../Apps/$path/Assets",
+									'enabled' => true,
+								];
+
+								// Dynamically add the module
+								Module::addModule('%app%', $app);
+
+								// Register the new module
+								Module::register('%app%');
+							}
+						}
+					}
+
+				}
+			}
 
 	
 		} elseif ($route->foundRedirect()) {

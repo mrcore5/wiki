@@ -56,7 +56,7 @@
 				@foreach ($types as $type)
 					<div class="checkbox">
 						<label>
-							<input name="type{{ $type->id }}" type="checkbox" class="ace" value="1" {{ Input::has('type'.$type->id) ? 'checked="checked"' : '' }}>
+							<input name="type{{ $type->id }}" type="checkbox" value="1" {{ Input::has('type'.$type->id) ? 'checked="checked"' : '' }}>
 							<span class="lbl">
 								{{ $type->name }}
 							</span>
@@ -70,7 +70,7 @@
 				@foreach ($formats as $format)
 					<div class="checkbox">
 						<label>
-							<input name="format{{ $format->id }}" type="checkbox" class="ace" value="1" {{ Input::has('format'.$format->id) ? 'checked="checked"' : '' }}>
+							<input name="format{{ $format->id }}" type="checkbox" value="1" {{ Input::has('format'.$format->id) ? 'checked="checked"' : '' }}>
 							<span class="lbl">
 								{{ $format->name }}
 							</span>
@@ -83,7 +83,7 @@
 				<h4>Show Only</h4>
 				<!--<div class="checkbox">
 					<label>
-						<input name="unread" type="checkbox" class="ace" value="1" {{ Input::has('unread') ? 'checked="checked"' : '' }}>
+						<input name="unread" type="checkbox" value="1" {{ Input::has('unread') ? 'checked="checked"' : '' }}>
 						<span class="lbl">
 							Unread
 						</span>
@@ -91,7 +91,7 @@
 				</div>-->
 				<div class="checkbox">
 					<label>
-						<input name="hidden" type="checkbox" class="ace" value="1" {{ Input::has('hidden') ? 'checked="checked"' : '' }}>
+						<input name="hidden" type="checkbox" value="1" {{ Input::has('hidden') ? 'checked="checked"' : '' }}>
 						<span class="lbl">
 							Hidden
 						</span>
@@ -99,7 +99,7 @@
 				</div>
 				<div class="checkbox">
 					<label>
-						<input name="deleted" type="checkbox" class="ace" value="1" {{ Input::has('deleted') ? 'checked="deleted"' : '' }}>
+						<input name="deleted" type="checkbox" value="1" {{ Input::has('deleted') ? 'checked="deleted"' : '' }}>
 						<span class="lbl">
 							Deleted
 						</span>
@@ -112,7 +112,7 @@
 				@foreach ($tags as $tag)
 					<div class="checkbox">
 						<label>
-							<input name="tag{{ $tag->id }}" type="checkbox" class="ace" value="1" {{ Input::has('tag'.$tag->id) ? 'checked="checked"' : '' }}>
+							<input name="tag{{ $tag->id }}" type="checkbox" value="1" {{ Input::has('tag'.$tag->id) ? 'checked="checked"' : '' }}>
 							<span class="lbl">
 								{{ $tag->name }}
 							</span>

@@ -11,7 +11,7 @@ use Response;
 use Redirect;
 use Carbon\Carbon;
 use Mrcore\Models\User;
-use Mrcore\Support\String;
+use Mreschke\Helpers\String;
 use Mrcore\Modules\Wiki\Models\Tag;
 use Mrcore\Modules\Wiki\Models\Mode;
 use Mrcore\Modules\Wiki\Models\Post;
@@ -415,6 +415,7 @@ class EditController extends Controller {
 				}
 
 				// Execute install artisan script
+				/*
 				echo "<pre>";
 				\Artisan::call(
 					"framework:install-".$post->framework->constant,
@@ -422,7 +423,9 @@ class EditController extends Controller {
 					new \Symfony\Component\Console\Output\StreamOutput(
 						fopen('php://output', 'w')
 					)
-				);
+				);*/
+				echo "Done!";
+
 
 				# Absolutely NONE of these work :(
 

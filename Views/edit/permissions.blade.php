@@ -38,10 +38,13 @@
 					@endif
 				@endforeach
 				<td>
-					{!! Form::checkbox('perm', 'role_'.$role->id.'_perm_'.$perm->id, $found, array(
-						'class' => 'ace',
-					)) !!}
-					<span class="lbl"></span>
+					<div class="checkbox">
+						<label>
+						{!! Form::checkbox('perm', 'role_'.$role->id.'_perm_'.$perm->id, $found, array(
+						)) !!}
+						</label>
+					</div>
+					
 				</td>
 			@endforeach
 			</tr>

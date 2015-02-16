@@ -36,7 +36,6 @@
 	<div class="col-sm-9">
 		{{ Form::checkbox('static', 'static', $route->static, array(
 			'id' => 'static',
-			'class' => 'ace'
 		)) }}
 		<span class="lbl">Enable Static Route Slug Above</span>
 	</div> 
@@ -51,7 +50,6 @@
 			<label>
 				{!! Form::checkbox('symlink', 'symlink', $post->symlink, array(
 					'id' => 'symlink',
-					'class' => 'ace'
 				)) !!}
 				Enable Symlink Folder Structure from Static Route
 			</label>

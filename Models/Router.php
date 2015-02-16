@@ -1,5 +1,6 @@
 <?php namespace Mrcore\Modules\Wiki\Models;
 
+use DB;
 use Mrcore\Modules\Wiki\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 
@@ -95,9 +96,21 @@ class Router extends Model
 	 */
 	public function incrementClicks()
 	{
-		$this->timestamps = false;
+		//use this if you decie not to use cache for routes
+		#$this->timestamps = false;
+		#$this->clicks += 1;
+		#$this->save();
+
+		// We cannot simply run a $this->clicks +=1 then $this->save()
+		// because if cache is enabled, then $this is a cahced copy, so incrementing
+		// a cached copy does nothing.  So to increment we need to run a separate query.
+		DB::table('router')->where('id', $this->id)->increment('clicks', 1);
+		
+		// If we are not using cache, the above will update our table
+		// and this will update our current object, for display
+		// just don't run a $this->save() if you will increment twice
 		$this->clicks += 1;
-		$this->save();
+
 	}
 
 	public static function getRoutes()

@@ -1,12 +1,6 @@
 @extends('layout')
 
-
 @section('title')
-	Router
-@stop
-
-@section('titlebar-title')
-	<i class="icon-link"></i>
 	Router
 @stop
 
