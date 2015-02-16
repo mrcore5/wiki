@@ -550,9 +550,6 @@ class EditController extends Controller {
 		$post->updated_by = Auth::user()->id;
 		$post->save();
 
-		// Create folder
-		mkdir(Config::get('mrcore.files')."/index/$post->id");
-
 		// Add route
 		$route = new Router;
 		$route->slug = Input::get('slug');
@@ -565,6 +562,13 @@ class EditController extends Controller {
 		// Updates badges and tags
 		PostBadge::set($post->id, Input::get('badges'));
 		PostTag::set($post->id, Input::get('tags'));
+
+		// Create folder
+		try {
+			mkdir(Config::get('mrcore.files')."/index/$post->id");
+		} catch (\Exception $e) {
+			
+		}
 
 		// Redirect to full edit page
 		return Redirect::route('edit', array('id' => $post->id));
