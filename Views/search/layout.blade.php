@@ -218,7 +218,7 @@
 
 			<div class="results-pagination">
 				<? $get = Input::get();	unset($get['page']); ?>
-				{{ $posts->appends($get)->render() }}
+				{!! $posts->appends($get)->render() !!}
 				<div class="results-pagination-info">
 					Showing {{ $posts->currentPage() }} to {{ $posts->count() }} of {{ $posts->total() }} results
 				</div>
