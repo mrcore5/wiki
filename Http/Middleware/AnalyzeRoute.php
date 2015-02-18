@@ -104,11 +104,8 @@ class AnalyzeRoute {
 									'enabled' => true,
 								];
 
-								// Dynamically add the module
+								// Dynamically add and register this module!
 								Module::addModule('%app%', $app);
-
-								// Register the new module
-								Module::register('%app%');
 							}
 						}
 					}

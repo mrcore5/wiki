@@ -32,7 +32,7 @@ class WikiServiceProvider extends ServiceProvider {
 		$this->definePublishing();
 
 		// Subscribe to Events
-		Event::subscribe('UserEventHandler');		
+		Event::subscribe('UserEventHandler');
 
 		// Register additional css assets
 		Layout::css('css/dataTables.bootstrap.css');

@@ -10,7 +10,7 @@ class UserEventHandler {
 	/**
 	 * Handle user login events.
 	 */
-	public function onUserLogin(Dispatcher $event)
+	public function onUserLoggedIn()
 	{
 		// Application specific login code here
 		$user = Auth::user();
@@ -36,7 +36,7 @@ class UserEventHandler {
 	/**
 	 * Handle user logout events.
 	 */
-	public function onUserLogout(Dispatcher $event)
+	public function onUserLoggedOut()
 	{
 		// Application specific logout code here
 		Session::forget('user');
@@ -50,8 +50,8 @@ class UserEventHandler {
 	 */
 	public function subscribe(Dispatcher $events)
 	{
-		$events->listen('Mrcore\Modules\Auth\Events\UserLoggedIn', 'UserEventHandler@onUserLogin');
-		$events->listen('Mrcore\Modules\Auth\Events\UserLoggedOut', 'UserEventHandler@onUserLogout');
+		$events->listen('Mrcore\Modules\Auth\Events\UserLoggedIn', 'UserEventHandler@onUserLoggedIn');
+		$events->listen('Mrcore\Modules\Auth\Events\UserLoggedOut', 'UserEventHandler@onUserLoggedOut');
 	}
 
 }
