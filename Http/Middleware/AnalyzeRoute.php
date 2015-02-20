@@ -94,7 +94,7 @@ class AnalyzeRoute {
 									'type' => 'app',
 									'namespace' => "$namespace",
 									'controller_namespace' => "$namespace\Http\Controllers",
-									'provider' => "$namespace\Providers\AppstubServiceProvider",
+									'provider' => "$namespace\Providers\\".studly_case($package)."ServiceProvider",
 									'path' => "../Apps/$path",
 									'routes' => "../Apps/$path/Http/routes.php",
 									'route_prefix' => $route->currentRoute()->slug,
