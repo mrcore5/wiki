@@ -40,7 +40,7 @@ class WikiServiceProvider extends ServiceProvider {
 
 		// Add my own internal configs
 		Config::set('mrcore.reserved_routes', array(
-			'admin', 'router', 'file', 'files', 'search', 'auth', 'assets'
+			'admin', 'router', 'file', 'files', 'search', 'auth', 'password', 'assets'
 		));
 		Config::set('mrcore.legacy_routes', array(
 			'topic', 'topics', 'post', 'posts',

@@ -86,7 +86,7 @@ class AnalyzeRoute {
 							$package = $segments[1];
 							$namespace = studly_case($vendor) ."\\". studly_case($package);
 							$path = str_replace("\\", "/", $namespace);
-							$namespace = "Mrcore\Apps\\$namespace";
+							#$namespace = "Mrcore\Apps\\$namespace";
 
 							if (realpath(base_path()."/../Apps/$path")) {
 								// Define app (as module array)

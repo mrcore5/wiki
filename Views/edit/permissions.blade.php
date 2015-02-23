@@ -37,15 +37,7 @@
 						<? $found = true; break; ?>
 					@endif
 				@endforeach
-				<td>
-					<div class="checkbox">
-						<label>
-						{!! Form::checkbox('perm', 'role_'.$role->id.'_perm_'.$perm->id, $found, array(
-						)) !!}
-						</label>
-					</div>
-					
-				</td>
+				<td>{!! Form::checkbox('perm', 'role_'.$role->id.'_perm_'.$perm->id, $found, array()) !!}</td>
 			@endforeach
 			</tr>
 		@endforeach
