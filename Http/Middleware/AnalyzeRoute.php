@@ -106,6 +106,9 @@ class AnalyzeRoute {
 
 								// Dynamically add and register this module!
 								Module::addModule('%app%', $app);
+
+								// Apps default to no body container
+								Layout::container(false);
 							}
 						}
 					}
