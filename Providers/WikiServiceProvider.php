@@ -31,9 +31,6 @@ class WikiServiceProvider extends ServiceProvider {
 		// Define publishing rules
 		$this->definePublishing();
 
-		// Subscribe to Events
-		Event::subscribe('UserEventHandler');
-
 		// Register additional css assets
 		Layout::css('css/dataTables.bootstrap.css');
 		Layout::css('css/wiki.css'); #should be last css
@@ -47,6 +44,19 @@ class WikiServiceProvider extends ServiceProvider {
 		));
 		Config::set('mrcore.magic_folders', array('.sys', 'app'));
 		Config::set('mrcore.magic_folders_exceptions', array('.sys/public', 'app/public'));
+
+		// Login Event Listener
+		Event::listen('auth.login', function($user) {
+			$handler = app('Mrcore\Modules\Wiki\Handlers\Events\UserEventHandler');
+			$handler->onUserLoggedIn($user);
+		});
+
+		// Logout Event Listener
+		Event::listen('auth.logout', function($user) {
+			$handler = app('Mrcore\Modules\Wiki\Handlers\Events\UserEventHandler');
+			$handler->onUserLoggedOut($user);
+		});		
+		
 	}
 
 	/**
@@ -61,9 +71,6 @@ class WikiServiceProvider extends ServiceProvider {
 
 		// Extend both Auth Guard and UserProvider
 		$this->extendAuth();
-
-		// Event Handler Bindings
-		$this->app->bind('UserEventHandler', 'Mrcore\Modules\Wiki\Handlers\Events\UserEventHandler');
 
 	}
 
