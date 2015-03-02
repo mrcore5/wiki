@@ -14,8 +14,8 @@ class Cache {
 	public static function remember($key, Closure $callback)
 	{
 		$key = self::adjustKey($key);
-		if (Config::get('mrcore.use_cache')) {
-			return LaravelCache::remember($key, Config::get('mrcore.cache_expires'), $callback);
+		if (Config::get('mrcore.use_cache', false)) {
+			return LaravelCache::remember($key, Config::get('mrcore.cache_expires', 60), $callback);
 		} else {
 			return $callback();
 		}
@@ -30,6 +30,7 @@ class Cache {
 	private static function adjustKey($key)
 	{
 		$key = str_replace("\\", "/", $key);
+		$key = str_replace(' ', '_', $key);
 		$key = "mrcore/cache::$key";
 		return $key;		
 	}

@@ -50,8 +50,12 @@ class UserEventHandler {
 	 */
 	public function subscribe(Dispatcher $events)
 	{
-		$events->listen('Mrcore\Modules\Auth\Events\UserLoggedIn', 'UserEventHandler@onUserLoggedIn');
-		$events->listen('Mrcore\Modules\Auth\Events\UserLoggedOut', 'UserEventHandler@onUserLoggedOut');
+		#$events->listen('Mrcore\Modules\Auth\Events\UserLoggedIn', 'UserEventHandler@onUserLoggedIn');
+		#$events->listen('Mrcore\Modules\Auth\Events\UserLoggedOut', 'UserEventHandler@onUserLoggedOut');
+
+		$events->listen('auth.login',  'UserEventHandler@onUserLoggedIn');
+		$events->listen('auth.logout', 'UserEventHandler@onUserLoggedOut');
+		
 	}
 
 }
