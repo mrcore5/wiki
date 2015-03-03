@@ -43,7 +43,7 @@ class Text_Wiki_Render_Xhtml_Smiley extends Text_Wiki_Render {
      * @var array 'config-key' => mixed config-value
      */
     var $conf = array(
-        'prefix' => 'images/smiles/icon_',
+        'prefix' => 'images/smileys/icon_',
         'extension' => '.png',
         'css' => null
     );
@@ -58,24 +58,8 @@ class Text_Wiki_Render_Xhtml_Smiley extends Text_Wiki_Render {
       */
     function token($options)
     {
-        //I ignore the passed $this->getConf('prefix') from my class/parser.class.php
-        //And determine the path for each image, since I can have theme overrides
-        
-        // Ability to override using mrcore global topic and <phpw> tags
-        // mReschke 2014-04-30 - 
-        #global $global_smileys_topic_id;
-        $imageName = 'icon_' . $options['name'] . $this->getConf('extension'); //no icon_ prefix
-        #if (isset($global_smileys_topic_id) && file_exists(Config::FILES_DIR."/$global_smileys_topic_id/smileys/$imageName")) {
-        #    //Found image in custom mrcore override topic
-        #    $imageFile = Config::WEB_BASE_URL."/files/$global_smileys_topic_id/smileys/$imageName";
-        #}elseif (file_exists(Config::ABS_BASE."/web/theme/".Config::THEME."/images/smileys/$imageName")) {
-        #    //Found smiley in the override theme
-        #    $imageFile = Config::WEB_BASE_IMAGE_URL."/theme/".Config::THEME."/images/smileys/$imageName";
-        #} else {
-        #    //Found smiley in the default theme
-        #    $imageFile = Config::WEB_BASE_IMAGE_URL."/theme/default/images/smileys/$imageName";    
-        #}
-        $imageFile = asset("images/smileys/$imageName");
+        // Use laravel asset() function to get full path
+        $imageFile = asset($this->getConf('prefix') . $options['name'] . $this->getConf('extension'));
 
         // attempt to get the image size
         // I found this crashed some PHP systems, not needed anyway

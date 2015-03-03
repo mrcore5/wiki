@@ -439,11 +439,10 @@ Class Wiki
 		#$wiki->setRenderConf('xhtml', 'tt', 'css', 'label label-default');
 		$wiki->setRenderConf('xhtml', 'tt', 'css', 'text-success');
 
-		// configure smiley
-		#$wiki->setRenderConf('xhtml', 'smiley', 'prefix', Config::WEB_BASE_IMAGE_URL.'/theme/'.Config::THEME.'/images/smileys/icon_');
-		#$wiki->setRenderConf('xhtml', 'smiley', 'prefix', 'ignored-mreschke');
-		#$wiki->setRenderConf('xhtml', 'smiley', 'extension', 'xx');
-		#$wiki->setRenderConf('xhtml', 'smiley', 'css', 'xx');
+		// configure smiley (defaults are good here and linsted below)
+		#$wiki->setRenderConf('xhtml', 'smiley', 'prefix', 'images/smileys/icon_');
+		#$wiki->setRenderConf('xhtml', 'smiley', 'extension', '.png');
+		#$wiki->setRenderConf('xhtml', 'smiley', 'css', null);
 		
 		// Transform text into XHTML
 		$data = $wiki->transform($data, 'Xhtml');
