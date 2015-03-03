@@ -1,6 +1,12 @@
 <?php namespace Mrcore\Modules\Wiki\Console\Commands;
 
+use Config;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Mrcore\Modules\Wiki\Models\Post;
+use Mrcore\Modules\Wiki\Support\Crypt;
+use Mrcore\Modules\Wiki\Support\Indexer;
+use Mrcore\Modules\Wiki\Models\PostIndex;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -63,9 +69,9 @@ class IndexPosts extends Command {
 		if (isset($post)) {
 			$this->info('Indexing Post '.$post->id.' - '.$post->title);
 			PostIndex::where('post_id', '=', $post->id)->delete();
-			foreach (Mrcore\Indexer::getWords(
+			foreach (Indexer::getWords(
 				$post->title,
-				Mrcore\Crypt::decrypt($post->content),
+				Crypt::decrypt($post->content),
 				$post->badges->lists('name'),
 				$post->tags->lists('name')
 			) as $word => $weight) {
@@ -82,7 +88,7 @@ class IndexPosts extends Command {
 					$postIndex->save();
 
 					// Update post indexed_at
-					$post->indexed_at = \Carbon\Carbon::now();
+					$post->indexed_at = Carbon::now();
 					$post->save();
 				}
 			}

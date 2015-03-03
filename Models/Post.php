@@ -6,12 +6,13 @@ use Auth;
 use Input;
 use Config;
 use Session;
+use Request;
 use Mrcore\Models\User;
 use Mreschke\Helpers\String;
-use Mrcore\Support\Indexer;
 use Mrcore\Modules\Wiki\Support\Crypt;
 use Mrcore\Modules\Wiki\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
+use Mrcore\Modules\Wiki\Support\Indexer;
 use Mrcore\Modules\Wiki\Parser\Wiki as WikiParser;
 use Mrcore\Modules\Wiki\Parser\Php as PhpParser;
 use Mrcore\Modules\Wiki\Parser\PhpW as PhpWParser;
@@ -540,7 +541,8 @@ class Post extends Model
 			});
 			if (!preg_match('/or/i', $query)) {
 				// If using AND we include this having
-				$posts->having('cnt', '>=', count($words));
+				#$posts->having('cnt', '>=', count($words));
+				$posts->select(DB::raw("HAVING count(*) >= ".count($words)));
 			}
 		}
 
@@ -574,7 +576,7 @@ class Post extends Model
 		if ($query) $posts->groupBy('post_indexes.post_id');
 
 		// Return results
-		#echo $posts->toSql(); #sql debug
+		#dd($posts->toSql()); #sql debug
 		if ($query) {
 			$posts = $posts
 				->select(DB::raw("posts.*, count(*) as cnt, sum(weight) as weight"))
@@ -588,9 +590,7 @@ class Post extends Model
 		// Set paginate baseUrl to whats in app.url, for https vs http issue
 		#dd(Config::get('app.url') . '/' . \Request::path());
 		#$posts->setBaseUrl(Config::get('app.url') . '/' . \Request::path());
-
-		$posts->setPath(Config::get('app.url') . '/' . \Request::path());
-
+		$posts->setPath(Config::get('app.url') . '/' . Request::path());
 
 		#var_dump(DB::getQueryLog()); #sql debug
 		#$posts = Post::take(10)->get();
