@@ -75,7 +75,7 @@ class Text_Wiki_Render_Xhtml_Smiley extends Text_Wiki_Render {
         #    //Found smiley in the default theme
         #    $imageFile = Config::WEB_BASE_IMAGE_URL."/theme/default/images/smileys/$imageName";    
         #}
-        $imageFile = asset("theme/images/smileys/$imageName");
+        $imageFile = asset("images/smileys/$imageName");
 
         // attempt to get the image size
         // I found this crashed some PHP systems, not needed anyway
