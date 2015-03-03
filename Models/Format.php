@@ -42,7 +42,7 @@ class Format extends Model
 	 */
 	public static function all($columns = array('*'))
 	{
-		return Cache::remember(strtolower(get_class()).":all", function()  {
+		return Cache::remember(strtolower(get_class()).":all", function() use($columns) {
 			return parent::orderBy('order')->get($columns);
 		});
 	}

@@ -3,7 +3,7 @@
 use URL;
 use Layout;
 use Config;
-use Mrcore\Support\Crypt;
+use Mrcore\Modules\Wiki\Support\Crypt;
 use Mrcore\Modules\Wiki\Models\Post;
 
 Class Wiki
@@ -61,13 +61,19 @@ Class Wiki
 		$data = $this->preParsePhpW($data);
 
 		//Pre Parse <include>
-		$data = preg_replace('"<include (.*?)>"ie', "$this->preParseInclude(\"\\1\")", $data);
+		$data = preg_replace_callback('"<include (.*?)>"i', function($matches) {
+			return $this->preParseInclude($matches[1]);
+		}, $data);
 		$data = preg_replace('"<exclude>|</exclude>"', '', $data);
 		$data = preg_replace('"<section(.*)>|</section>"', '', $data);
 
 		//Pre Parse <files> (must be before the <php> tag because <files> returns php data which needs evaluated)
-		$data = preg_replace('"<files>"ie', "$this->preParseFiles(\"\\1\")", $data);
-		$data = preg_replace('"<files (.*?)>"ie', "$this->preParseFiles(\"\\1\")", $data);
+		$data = preg_replace_callback('"<files>"i', function($matches) {
+			return $this->preParseFiles($matches[1]);
+		}, $data);
+		$data = preg_replace_callback('"<files (.*?)>"i', function($matches) {
+			return $this->preParseFiles($matches[1]);
+		}, $data);	
 
 		//Pre Parse <search> (must be before the <php> tag because <search> returns php data which needs evaluated)
 		###$data = preg_replace('"<search>"ie', "Parser::pre_parse_search(\"\\1\")", $data);
@@ -80,7 +86,9 @@ Class Wiki
 		$data = $this->preParseCmd($data);
 
 		//Pre Parse <embed xxx yyy>
-		$data = preg_replace('"<embed (.*?)>"ie', "$this->preParseEmbed(\"\\1\")", $data);
+		$data = preg_replace_callback('"<embed (.*?)>"i', function($matches) {
+			return $this->preParseEmbed($matches[1]);
+		}, $data);
 		
 		//Pre Parse <textarea></textarea>
 		$data = preg_replace('"</!textarea>"', "</textarea>", $data);
@@ -174,7 +182,7 @@ Class Wiki
 			function ($matches) {
 				$cmd = preg_replace('"<cmd |>"', '', $matches[0]);
 				if ($cmd != '') {
-					$cmd = preg_replace('"\#"', \Config::get('mrcore.files').'/index/'.$this->postID, $cmd); //Wildcards
+					$cmd = preg_replace('"\#"', Config::get('mrcore.files').'/index/'.$this->postID, $cmd); //Wildcards
 					exec($cmd, $return);
 					$return = implode("\r\n", $return);
 				}
@@ -316,7 +324,9 @@ Class Wiki
 		}
 
 		// Recurse <includes>
-		$data = preg_replace('"<include (.*?)>"ie', "$this->preParseInclude(\"\\1\")", $data);	
+		$data = preg_replace_callback('"<include (.*?)>"i', function($matches) {
+			return $this->preParseInclude($matches[1]);
+		}, $data);	
 
 		// Return unparsed included data
 		return $data;
@@ -478,8 +488,12 @@ Class Wiki
 
 
 		//Post parse <highlight></highlight>
-		$data = preg_replace('"&lt;highlight(.*?)&gt;(.*?)&lt;/highlight&gt;"ie', "$this->postParseHighlight(true, \"\\1\", \"\\2\")", $data); //Own Line
-		$data = preg_replace('"&lt;highlight(.*?)&gt;(<br />|</p>)"ie', "$this->postParseHighlight(false, \"\\1\")", $data); //Own Line
+		$data = preg_replace_callback('"&lt;highlight(.*?)&gt;(.*?)&lt;/highlight&gt;"i', function($matches) {
+			return $this->postParseHighlight(true, $matches[1], $matches[2]);
+		}, $data); //Own Line
+		$data = preg_replace_callback('"&lt;highlight(.*?)&gt;(<br />|</p>)"i', function($matches) {
+			return $this->postParseHighlight(false, $matches[1]);
+		}, $data); //Own Line
 		$data = preg_replace('"&lt;/highlight&gt;"', '</div>', $data);
 
 
