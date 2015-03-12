@@ -55,13 +55,13 @@ class AnalyzeRoute {
 			// Check deleted
 			if ($post->deleted && !Auth::admin()) $route->responseCode = 401;
 
-			
+
 			if ($route->responseCode == 200) {
-				
+
 				// Check post permissions including UUID
 				if (!$post->uuidPermission()) $route->responseCode = 401;
 
-				
+
 				if ($route->responseCode == 200) {
 
 					// Update clicks for post and router table
@@ -71,7 +71,7 @@ class AnalyzeRoute {
 					// Adjust $view for this $this->post
 					Layout::title($post->title);
 					if ($post->mode_id <> Config::get('mrcore.default_mode')) {
-						Layout::mode($post->mode->constant);	
+						Layout::mode($post->mode->constant);
 					}
 
 					// Store post and router in the IoC for future usage
@@ -89,7 +89,8 @@ class AnalyzeRoute {
 							#$namespace = "Mrcore\Apps\\$namespace";
 
 							if (realpath(base_path()."/../Apps/$path")) {
-								// Define app (as module array)
+                                // Define app (as module array)
+                                $routePrefix = $route->currentRoute()->slug == 'home' ? '' : $route->currentRoute()->slug;
 								$app = [
 									'type' => 'app',
 									'namespace' => "$namespace",
@@ -97,7 +98,7 @@ class AnalyzeRoute {
 									'provider' => "$namespace\Providers\\".studly_case($package)."ServiceProvider",
 									'path' => "../Apps/$path",
 									'routes' => "../Apps/$path/Http/routes.php",
-									'route_prefix' => $route->currentRoute()->slug,
+									'route_prefix' => $routePrefix,
 									'views' => "../Apps/$path/Views",
 									'view_prefix' => $package,
 									'assets' => "../Apps/$path/Assets",
@@ -116,19 +117,19 @@ class AnalyzeRoute {
 				}
 			}
 
-	
+
 		} elseif ($route->foundRedirect()) {
 			#if (\Request::segment(1) == 'post' && \Request::segment(3) == 'edit') {
 				// FIXME later, don't redirect if post/1/edit, or edit won't hit
 			#} else {
-			#	return Redirect::to($route->responseRedirect);	
+			#	return Redirect::to($route->responseRedirect);
 			#}
 
 		} elseif ($route->notFound()) {
 			#abort(404);
 			#Response::notFound(); ??
 		}
-		
+
 		// Will also return 202 which means URL is reserved
 		// and will be handled by laravel routes file, like /search, /login...
 
