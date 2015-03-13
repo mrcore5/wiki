@@ -30,7 +30,7 @@ class Badge extends Model
 	public static function find($id, $columns = array('*'))
 	{
 		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
-			return parent::find($id, $columns);
+			return parent::query()->find($id, $columns);
 		});		
 	}
 
