@@ -7,18 +7,20 @@
 @stop
 
 @section('content')
-	@if (Layout::modeIs('raw'))
-		{!! $post->content !!}
-	@else
-		<form method="post">
+	@if (isset($post))
+		@if (Layout::modeIs('raw'))
+			{!! $post->content !!}
+		@else
+			<form method="post">
 
-			@if ($post->type->constant == 'doc')
-				@yield('post-header')
-			@endif
+				@if ($post->type->constant == 'doc')
+					@yield('post-header')
+				@endif
 
-			<div><div><div><div><div><div>{!! $post->content !!}</div></div></div></div></div></div>			
+				<div><div><div><div><div><div>{!! $post->content !!}</div></div></div></div></div></div>			
 
-		</form>
+			</form>
+		@endif
 	@endif
 @stop
 
