@@ -203,6 +203,7 @@ class EditController extends Controller {
 
 		// Clear this posts cache
 		Post::forgetCache($id);
+		Router::forgetCache($id);
 
 		// Update badges and tags
 		PostBadge::set($id, Input::get('badges'));
@@ -371,7 +372,7 @@ class EditController extends Controller {
 				$route->static = $static;
 				$route->save();
 
-				Router::forgetCache($slug);
+				Router::forgetCache($route->slug);
 				Router::forgetCache($id);
 				Router::forgetCache($originalRoute->slug);
 
