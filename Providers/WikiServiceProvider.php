@@ -7,6 +7,7 @@ use Layout;
 use Mrcore;
 use Module;
 use Mrcore\Modules\Wiki\Models\Post;
+use Illuminate\Foundation\AliasLoader;
 use Mrcore\Modules\Foundation\Support\ServiceProvider;
 
 class WikiServiceProvider extends ServiceProvider {
@@ -69,8 +70,25 @@ class WikiServiceProvider extends ServiceProvider {
 		// Mrcore Module Tracking
 		Module::trace(get_class(), __function__);
 
+		// Register Facades
+		$facade = AliasLoader::getInstance();
+		$facade->alias('Mrcore', 'Mrcore\Modules\Wiki\Facades\Mrcore');
+
+		// Mrcore Api Interface Aliases
+		#$this->app->alias('Mrcore\Modules\Wiki\Api\Mrcore', 'mrcore'); #never used I believe, don't want it
+		$this->app->alias('Mrcore\Modules\Wiki\Api\Mrcore', 'Mrcore\Modules\Wiki\Api\MrcoreInterface');
+		$this->app->alias('Mrcore\Modules\Wiki\Api\Config', 'Mrcore\Modules\Wiki\Api\ConfigInterface');
+		$this->app->alias('Mrcore\Modules\Wiki\Api\Layout', 'Mrcore\Modules\Wiki\Api\LayoutInterface');
+		$this->app->alias('Mrcore\Modules\Wiki\Api\Post',   'Mrcore\Modules\Wiki\Api\PostInterface');
+		$this->app->alias('Mrcore\Modules\Wiki\Api\Router', 'Mrcore\Modules\Wiki\Api\RouterInterface');
+		$this->app->alias('Mrcore\Modules\Wiki\Api\User',   'Mrcore\Modules\Wiki\Api\UserInterface');		
+
 		// Extend both Auth Guard and UserProvider
 		$this->extendAuth();
+
+		// Register our Artisan Commands
+		$this->commands('Mrcore\Modules\Wiki\Console\Commands\IndexPosts');
+
 
 	}
 
