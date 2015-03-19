@@ -69,7 +69,7 @@ Class Wiki
 
 		//Pre Parse <files> (must be before the <php> tag because <files> returns php data which needs evaluated)
 		$data = preg_replace_callback('"<files>"i', function($matches) {
-			return $this->preParseFiles($matches[1]);
+			return $this->preParseFiles('');
 		}, $data);
 		$data = preg_replace_callback('"<files (.*?)>"i', function($matches) {
 			return $this->preParseFiles($matches[1]);

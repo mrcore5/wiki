@@ -558,7 +558,7 @@ class EditController extends Controller {
 		$route->save();
 
 		// Clear this posts cache
-		Post::forgetCache($id);
+		Post::forgetCache($post->id);
 
 		// Updates badges and tags
 		PostBadge::set($post->id, Input::get('badges'));
