@@ -14,14 +14,13 @@ class Router extends Model
 	 */
 	protected $table = 'router';
 
-
 	/**
-	 * Eager loading router.created_by to users table
+	 * A route has one creator
 	 * Usage: $router->creator->alias
 	 */
 	public function creator()
 	{
-		return $this->belongsTo('Mrcore\Models\User', 'created_by');
+		return $this->hasOne('Mrcore\Models\User', 'id', 'created_by');
 	}
 
 	/**

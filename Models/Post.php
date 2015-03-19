@@ -86,42 +86,42 @@ class Post extends Model
 
 
 	/**
-	 * Eager loading posts.framework_id to frameworks table
+	 * A post has one framework
 	 * Usage: $post->framework->name
 	 */
 	public function framework()
 	{
-		return $this->belongsTo('Mrcore\Modules\Wiki\Models\Framework');
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\Framework', 'id', 'framework_id');
 	}
 
 
 	/**
-	 * Eager loading posts.mode_id to modes table
+	 * A post has one mode
 	 * Usage: $post->mode->name
 	 */
 	public function mode()
 	{
-		return $this->belongsTo('Mrcore\Modules\Wiki\Models\Mode');
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\Mode', 'id', 'mode_id');
 	}
 
 
 	/**
-	 * Eager loading posts.created_by to users table
+	 * A post has one creator
 	 * Usage: $post->creator->alias
 	 */
 	public function creator()
 	{
-		return $this->belongsTo('Mrcore\Models\User', 'created_by');
+		return $this->hasOne('Mrcore\Models\User', 'id', 'created_by');
 	}
 
 
 	/**
-	 * Eager loading posts.updated_by to users table
+	 * A post has one updator
 	 * Usage: $post->updater->alias
 	 */
 	public function updater()
 	{
-		return $this->belongsTo('Mrcore\Models\User', 'updated_by');
+		return $this->hasOne('Mrcore\Models\User', 'id', 'updated_by');
 	}
 
 	/**
