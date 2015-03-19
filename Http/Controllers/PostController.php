@@ -7,8 +7,8 @@ use Mrcore;
 use Request;
 use Response;
 use Redirect;
-use Mrcore\Models\Post;
-use Mrcore\Models\Revision;
+use Mrcore\Modules\Wiki\Models\Post;
+use Mrcore\Modules\Wiki\Models\Revision;
 
 class PostController extends Controller {
 
@@ -19,7 +19,6 @@ class PostController extends Controller {
 	 */
 	public function showPost()
 	{
-
 		// Redirect router results here
 		$router = Mrcore::router();
 		if (isset($router)) {

@@ -28,6 +28,15 @@ class Hashtag extends Model
 	public $timestamps = false;
 
 	/**
+	 * A hashtag has one route
+	 * Usage: $hashtag->route->slug
+	 */
+	public function route()
+	{
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\Router', 'id', 'route_id');
+	}	
+
+	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
 	 *
 	 * @param  mixed  $id

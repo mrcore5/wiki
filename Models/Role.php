@@ -21,6 +21,16 @@ class Role extends Model
 	public $timestamps = false;
 
 	/**
+	 * A role belongs to many users
+	 * ex: $role->users;
+	 * @return mixed
+	 */
+	public function users()
+	{
+		return $this->belongsToMany('Mrcore\Models\User', 'user_roles');
+	}	
+
+	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
 	 *
 	 * @param  mixed  $id

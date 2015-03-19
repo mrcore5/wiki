@@ -15,6 +15,15 @@ class Router extends Model
 	protected $table = 'router';
 
 	/**
+	 * A route has one post
+	 * Usage: $router->post->title
+	 */
+	public function post()
+	{
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\Post', 'id', 'post_id');
+	}
+
+	/**
 	 * A route has one creator
 	 * Usage: $router->creator->alias
 	 */
@@ -22,6 +31,15 @@ class Router extends Model
 	{
 		return $this->hasOne('Mrcore\Models\User', 'id', 'created_by');
 	}
+
+	/**
+	 * A route has one updator
+	 * Usage: $route->updater->alias
+	 */
+	public function updater()
+	{
+		return $this->hasOne('Mrcore\Models\User', 'id', 'updated_by');
+	}	
 
 	/**
 	 * Find default enalbed route by route id

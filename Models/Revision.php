@@ -21,6 +21,15 @@ class Revision extends Model
 	public $timestamps = false;
 
 	/**
+	 * A revision has one post
+	 * Usage: $revision->post
+	 */
+	public function post()
+	{
+		return $this->hasOne('Mrcore\Models\User', 'id', 'post_id');
+	}
+
+	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
 	 *
 	 * @param  mixed  $id
