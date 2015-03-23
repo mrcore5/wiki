@@ -19,6 +19,16 @@ class Format extends Model
 	 * @var boolean
 	 */
 	public $timestamps = false;
+	
+	/**
+	 * A format has many posts
+	 * ex: $format->posts->all();
+	 * @return mixed
+	 */
+	public function posts()
+	{
+		return $this->hasMany('Mrcore\Modules\Wiki\Models\Post');
+	}	
 
 	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.

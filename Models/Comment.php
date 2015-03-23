@@ -21,6 +21,33 @@ class Comment extends Model
 	public $timestamps = false;
 
 	/**
+	 * A comment has one post
+	 * Usage: $comment->post->title
+	 */
+	public function post()
+	{
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\Post', 'id', 'post_id');
+	}
+
+	/**
+	 * A comment has one creator
+	 * Usage: $comment->creator->alias
+	 */
+	public function creator()
+	{
+		return $this->hasOne('Mrcore\Models\User', 'id', 'created_by');
+	}
+
+	/**
+	 * A comment has one updator
+	 * Usage: $comment->updater->alias
+	 */
+	public function updater()
+	{
+		return $this->hasOne('Mrcore\Models\User', 'id', 'updated_by');
+	}	
+
+	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
 	 *
 	 * @param  mixed  $id

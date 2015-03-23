@@ -21,6 +21,16 @@ class Tag extends Model
 	public $timestamps = false;
 
 	/**
+	 * A tag belongs to many posts
+	 * ex: $tag->posts;
+	 * @return mixed
+	 */
+	public function posts()
+	{
+		return $this->belongsToMany('Mrcore\Modules\Wiki\Models\Post', 'post_tags');
+	}		
+
+	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
 	 *
 	 * @param  mixed  $id

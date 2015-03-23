@@ -21,6 +21,16 @@ class Badge extends Model
 	public $timestamps = false;
 
 	/**
+	 * A badge belongs to many posts
+	 * ex: $badge->posts;
+	 * @return mixed
+	 */
+	public function posts()
+	{
+		return $this->belongsToMany('Mrcore\Modules\Wiki\Models\Post', 'post_badges');
+	}	
+
+	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
 	 *
 	 * @param  mixed  $id

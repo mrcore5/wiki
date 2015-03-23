@@ -56,7 +56,7 @@ class WikiServiceProvider extends ServiceProvider {
 		Event::listen('auth.logout', function($user) {
 			$handler = app('Mrcore\Modules\Wiki\Handlers\Events\UserEventHandler');
 			$handler->onUserLoggedOut($user);
-		});		
+		});
 		
 	}
 

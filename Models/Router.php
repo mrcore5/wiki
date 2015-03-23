@@ -14,15 +14,32 @@ class Router extends Model
 	 */
 	protected $table = 'router';
 
+	/**
+	 * A route has one post
+	 * Usage: $router->post->title
+	 */
+	public function post()
+	{
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\Post', 'id', 'post_id');
+	}
 
 	/**
-	 * Eager loading router.created_by to users table
+	 * A route has one creator
 	 * Usage: $router->creator->alias
 	 */
 	public function creator()
 	{
-		return $this->belongsTo('Mrcore\Models\User', 'created_by');
+		return $this->hasOne('Mrcore\Models\User', 'id', 'created_by');
 	}
+
+	/**
+	 * A route has one updator
+	 * Usage: $route->updater->alias
+	 */
+	public function updater()
+	{
+		return $this->hasOne('Mrcore\Models\User', 'id', 'updated_by');
+	}	
 
 	/**
 	 * Find default enalbed route by route id

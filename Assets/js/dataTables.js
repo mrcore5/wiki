@@ -123,7 +123,7 @@ $(document).ready(function() {
 	} );
 	$("tfoot input").blur( function (i) {
 		if ( this.value == "" ) {
-				this.className = "search_init";
+				this.className = "search_init form-control";
 				this.value = asInitVals[$("tfoot input").index(this)];
 		}
 	} );

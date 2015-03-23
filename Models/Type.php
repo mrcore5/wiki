@@ -21,6 +21,16 @@ class Type extends Model
 	public $timestamps = false;
 
 	/**
+	 * A type has many posts
+	 * ex: $type->posts->all();
+	 * @return mixed
+	 */
+	public function posts()
+	{
+		return $this->hasMany('Mrcore\Modules\Wiki\Models\Post');
+	}	
+
+	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
 	 *
 	 * @param  mixed  $id

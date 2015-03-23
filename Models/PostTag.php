@@ -20,7 +20,6 @@ class PostTag extends Model
 	 */
 	public $timestamps = false;
 
-
 	/**
 	 * Set post tags to the given array
 	 *

@@ -38,12 +38,10 @@ class Post extends Model
 	 */
 	private $permissions;
 
-
 	/**
 	 * Flag weather or not the current $this->content has been decrypted yet
 	 */
 	private $decrypted;
-
   
 	/**
 	 * Many-to-many badges relationship 
@@ -54,7 +52,6 @@ class Post extends Model
 		return $this->belongsToMany('Mrcore\Modules\Wiki\Models\Badge', 'post_badges');
 	}
 
-
 	/**
 	 * Many-to-many badges relationship 
 	 * Usage: foreach ($post->tags as $tag) $tag->name
@@ -63,7 +60,6 @@ class Post extends Model
 	{
 		return $this->belongsToMany('Mrcore\Modules\Wiki\Models\Tag', 'post_tags');
 	}
-
 
 	/**
 	 * A post has one format
@@ -74,7 +70,6 @@ class Post extends Model
 		return $this->hasOne('Mrcore\Modules\Wiki\Models\Format', 'id', 'format_id');
 	}
 
-
 	/**
 	 * A post has one type
 	 * Usage: $post->type->constant
@@ -84,44 +79,40 @@ class Post extends Model
 		return $this->hasOne('Mrcore\Modules\Wiki\Models\Type', 'id', 'type_id');
 	}
 
-
 	/**
-	 * Eager loading posts.framework_id to frameworks table
+	 * A post has one framework
 	 * Usage: $post->framework->name
 	 */
 	public function framework()
 	{
-		return $this->belongsTo('Mrcore\Modules\Wiki\Models\Framework');
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\Framework', 'id', 'framework_id');
 	}
 
-
 	/**
-	 * Eager loading posts.mode_id to modes table
+	 * A post has one mode
 	 * Usage: $post->mode->name
 	 */
 	public function mode()
 	{
-		return $this->belongsTo('Mrcore\Modules\Wiki\Models\Mode');
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\Mode', 'id', 'mode_id');
 	}
 
-
 	/**
-	 * Eager loading posts.created_by to users table
+	 * A post has one creator
 	 * Usage: $post->creator->alias
 	 */
 	public function creator()
 	{
-		return $this->belongsTo('Mrcore\Models\User', 'created_by');
+		return $this->hasOne('Mrcore\Models\User', 'id', 'created_by');
 	}
 
-
 	/**
-	 * Eager loading posts.updated_by to users table
+	 * A post has one updator
 	 * Usage: $post->updater->alias
 	 */
 	public function updater()
 	{
-		return $this->belongsTo('Mrcore\Models\User', 'updated_by');
+		return $this->hasOne('Mrcore\Models\User', 'id', 'updated_by');
 	}
 
 	/**
