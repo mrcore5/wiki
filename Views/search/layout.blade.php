@@ -242,11 +242,11 @@
 
 
 @section('script')
-<script src="{{ asset('js/jquery.chosen.min.js') }}"></script>
+<!--<script src="{{ asset('js/jquery.chosen.min.js') }}"></script>-->
 <script>
 $(function() {
 	// Start chosen (before validator)
-	$(".chosen-select").chosen({ width: '100%' });
+	//$(".chosen-select").chosen({ width: '100%' });
 
 	$('#sort').change(function() {
 		submitForm();

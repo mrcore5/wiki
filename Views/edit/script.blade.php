@@ -5,7 +5,8 @@
 {{-- <script src="{{ asset('typo/typo.js') }}"></script> --}}
 {{-- <script src="{{ asset('typo/spellcheck_ace.js') }}"></script> --}}
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('js/jquery.chosen.min.js') }}"></script>
+<script src="{{ asset('js/select2.min.js') }}"></script>
+<!--<script src="{{ asset('js/jquery.chosen.min.js') }}"></script>-->
 <script>
 $(function() {
 
@@ -284,7 +285,9 @@ $(function() {
 
 
 	// Start chosen (before validator)
-	$(".chosen-select").chosen({ width: '250px' });
+	//$(".chosen-select").chosen({ width: '250px' });
+	// Attach Select2
+	$(".select2-tags").select2();
 
 	// Post organization form validation
 	var validator = $('#organization-form').validate({
@@ -313,14 +316,14 @@ $(function() {
 			$(e).remove();
 		}
 	});
-	$('#organization-form').find('select.chosen-select').each(function(){
+	/*$('#organization-form').find('select.chosen-select').each(function(){
 		$(this).chosen().change(function(){
 			$(this).valid();
 		});
 		$(this).rules('add', {
 			required: true,
 		});
-	});
+	});*/
 
 
 

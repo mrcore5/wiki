@@ -49,9 +49,10 @@
 		<div class="col-sm-6">
 			{!! Form::select('badges[]', $badges, $postBadges, array(
 				'id' => 'badges',
-				'class' => 'form-control chosen-select',
+				'class' => 'select2-tags required form-control',
 				'data-placeholder' => 'Choose a Badge...',
 				'multiple' => 'multiple',
+				'style' => 'width:250px',
 			)) !!}
 		</div>
 	</div>
@@ -63,9 +64,10 @@
 		<div class="col-sm-6">
 			{!! Form::select('tags[]', $tags, $postTags, array(
 				'id' => 'tags',
-				'class' => 'form-control chosen-select',
+				'class' => 'select2-tags required form-control',
 				'data-placeholder' => 'Choose a Tag...',
 				'multiple' => 'multiple',
+				'style' => 'width:250px',
 			)) !!}
 		</div>
 	</div>

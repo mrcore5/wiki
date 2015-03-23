@@ -5,7 +5,9 @@
 @stop
 
 @section('css')
-<link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet" />
+<!--<link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet" />-->
+<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/select2-bootstrap.min.css') }}" />
 <style>
 	.chosen-container-multi .chosen-choices li.search-field input[type="text"] {
 		height: 26px
@@ -54,9 +56,10 @@
 		)) !!}
 		<div class="col-sm-6">
 			{!! Form::select('badges[]', $badges, null, array(
-				'class' => 'chosen-select required',
+				'class' => 'select2-tags required form-control',
 				'data-placeholder' => 'Choose a Badge...',
 				'multiple' => 'multiple',
+				'style' => 'width:250px',
 			)) !!}
 		</div>
 	</div>
@@ -68,9 +71,10 @@
 		<div class="col-sm-6">
 		
 			{!! Form::select('tags[]', $tags, null, array(
-				'class' => 'chosen-select',
+				'class' => 'select2-tags required form-control',
 				'data-placeholder' => 'Choose a Tag...',
 				'multiple' => 'multiple',
+				'style' => 'width:250px',
 			)) !!}
 		</div>
 	</div>
@@ -93,7 +97,7 @@
 			'class' => 'col-sm-3 control-label'
 		)) !!}
 		<div class="col-sm-6">
-			{!! Form::select('type', $types, null, array(
+			{!! Form::select('type', $types, 1, array(
 				'class' => 'form-control'
 			)) !!}
 		</div>
@@ -146,8 +150,11 @@
 
 
 @section('script')
+
+
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('js/jquery.chosen.min.js') }}"></script>
+<!--<script src="{{ asset('js/jquery.chosen.min.js') }}"></script>-->
+<script src="{{ asset('js/select2.min.js') }}"></script>
 <script>
 $(function() {
 
@@ -174,7 +181,10 @@ $(function() {
 	});
 
 	// Start chosen (before validator)
-	$(".chosen-select").chosen({ width: '250px' });
+	//$(".chosen-select").chosen({ width: '250px' });
+
+	// Attach Select2
+	$(".select2-tags").select2();
 
 	// Input Validation
 	var validator = $('#validation-form').validate({
@@ -203,15 +213,15 @@ $(function() {
 			$(e).remove();
 		}
 	});
-	$('#validation-form').find('select.chosen-select').each(function(){
-		console.log(this);
+	/*$('#validation-form').find('select.chosen-select').each(function(){
+		//console.log(this);
 		$(this).chosen().change(function(){
 			$(this).valid();
 		});
 		$(this).rules('add', {
 			required: true,
 		});
-	});
+	});*/
 
 
 	/*
