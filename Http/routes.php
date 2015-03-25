@@ -27,15 +27,6 @@ Route::get('home', function() {
 return;*/
 
 
-
-
-
-
-
-
-
-
-
 // Route to Home Page Post (/)
 $homeExists = Route::getRoutes()->hasNamedRoute('home');
 if (!$homeExists) {
@@ -179,10 +170,116 @@ Route::group(array('prefix' => 'admin'), function() {
 	));
 
 
-	Route::get('badge', array(
-		'uses' => 'AdminController@showBadges',
-		'as' => 'adminBadge'
+	// Badges
+	Route::get('/badge/data', array(
+		'uses' => 'Admin\BadgeController@getData',
+		'as' => 'admin.badge.getData'
 	));
+
+	Route::resource('badge', 'Admin\BadgeController', [
+		'names' => [
+			'index'   => 'admin.badge.index',
+			'store'   => 'admin.badge.store',
+			'update'  => 'admin.badge.update',
+			'destroy' => 'admin.badge.destroy',
+		]
+	]);
+
+	// Frameworks
+	Route::get('/framework/data', array(
+		'uses' => 'Admin\FrameworkController@getData',
+		'as' => 'admin.framework.getData'
+	));
+
+	Route::resource('framework', 'Admin\FrameworkController', [
+		'names' => [
+			'index'   => 'admin.framework.index',
+			'store'   => 'admin.framework.store',
+			'update'  => 'admin.framework.update',
+			'destroy' => 'admin.framework.destroy',
+		]
+	]);
+
+	// Modes
+	Route::get('/mode/data', array(
+		'uses' => 'Admin\ModeController@getData',
+		'as' => 'admin.mode.getData'
+	));
+
+	Route::resource('mode', 'Admin\ModeController', [
+		'names' => [
+			'index'   => 'admin.mode.index',
+			'store'   => 'admin.mode.store',
+			'update'  => 'admin.mode.update',
+			'destroy' => 'admin.mode.destroy',
+		]
+	]);
+
+	// Roles
+	Route::get('/role/data', array(
+		'uses' => 'Admin\RoleController@getData',
+		'as' => 'admin.role.getData'
+	));
+
+	Route::resource('role', 'Admin\RoleController', [
+		'names' => [
+			'index'   => 'admin.role.index',
+			'store'   => 'admin.role.store',
+			'update'  => 'admin.role.update',
+			'destroy' => 'admin.role.destroy',
+		]
+	]);
+
+	// Tags
+	Route::get('/tag/data', array(
+		'uses' => 'Admin\TagController@getData',
+		'as' => 'admin.tag.getData'
+	));
+
+	Route::resource('tag', 'Admin\TagController', [
+		'names' => [
+			'index'   => 'admin.tag.index',
+			'store'   => 'admin.tag.store',
+			'update'  => 'admin.tag.update',
+			'destroy' => 'admin.tag.destroy',
+		]
+	]);
+
+	// Types
+	Route::get('/type/data', array(
+		'uses' => 'Admin\TypeController@getData',
+		'as' => 'admin.type.getData'
+	));
+
+	Route::resource('type', 'Admin\TypeController', [
+		'names' => [
+			'index'   => 'admin.type.index',
+			'store'   => 'admin.type.store',
+			'update'  => 'admin.type.update',
+			'destroy' => 'admin.type.destroy',
+		]
+	]);
+
+	// Users
+	Route::get('/user/data', array(
+		'uses' => 'Admin\UserController@getData',
+		'as' => 'admin.user.getData'
+	));
+
+	Route::get('/user/{id}/data', array(
+		'uses' => 'Admin\UserController@getUserData',
+		'as' => 'admin.user.getUserData'
+	));
+
+
+	Route::resource('user', 'Admin\UserController', [
+		'names' => [
+			'index'   => 'admin.user.index',
+			'store'   => 'admin.user.store',
+			'update'  => 'admin.user.update',
+			'destroy' => 'admin.user.destroy',
+		]
+	]);
 
 });
 

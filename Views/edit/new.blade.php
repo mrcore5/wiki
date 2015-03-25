@@ -59,7 +59,6 @@
 				'class' => 'select2-tags required form-control',
 				'data-placeholder' => 'Choose a Badge...',
 				'multiple' => 'multiple',
-				'style' => 'width:250px',
 			)) !!}
 		</div>
 	</div>
@@ -74,7 +73,6 @@
 				'class' => 'select2-tags required form-control',
 				'data-placeholder' => 'Choose a Tag...',
 				'multiple' => 'multiple',
-				'style' => 'width:250px',
 			)) !!}
 		</div>
 	</div>

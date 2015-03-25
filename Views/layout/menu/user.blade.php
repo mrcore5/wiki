@@ -26,7 +26,7 @@
 				@if (Mrcore::user()->isAdmin())
 					<li class="dropdown-header">Administrator</li>
 					<li>
-						<a href="{{ URL::route('adminBadge') }}">
+						<a href="{{ URL::route('admin.badge.index') }}">
 							<!--<i class="fa fa-lock"></i>-->
 							Admin
 						</a>
