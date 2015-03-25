@@ -6,6 +6,6 @@
 	</div>
 	<div class="col-md-6">
 		{!! Form::label('Image', 'Image') !!}
-		{!! Form::text('image', '', array('id' => 'form-Image', 'class' => 'required form-control')) !!}
+		{!! Form::file('image', array('id' => 'form-Image1', 'class' => 'form-control')) !!}
 	</div>	
 </div>	

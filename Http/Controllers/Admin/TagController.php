@@ -52,8 +52,17 @@ class TagController extends Controller {
 
 		$tag = new Tag;
 		$tag->name = $name;
-		$tag->image = $image;
 		$tag->save();
+
+		if (Input::hasFile('image')) {
+			$file = Input::file('image');
+			file_put_contents(
+				base_path()."/public/uploads/tag".$tag->id.".png",
+				$file
+			);
+			$tag->image = 'tag'.$tag->id.'.png';		
+			$tag->save();	
+		}
 
 		return Response::json([
 			'message' => 'Success! Tag Added!'
@@ -74,7 +83,17 @@ class TagController extends Controller {
 			$tag = Tag::find($id);
 			$tag->name = $name;
 			$tag->image = $image;
-			$tag->save();
+
+			if (Input::hasFile('image')) {
+				$file = Input::file('image');
+				file_put_contents(
+					base_path()."/public/uploads/tag".$tag->id.".png",
+					$file
+				);
+				$tag->image = 'tag'.$tag->id.'.png';
+			}
+
+			$tag->save();	
 
 			return Response::json([
 				'message' => 'Success! Tag Updated!'

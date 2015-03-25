@@ -52,8 +52,17 @@ class BadgeController extends Controller {
 
 		$badge = new Badge;
 		$badge->name = $name;
-		$badge->image = $image;
 		$badge->save();
+
+		if (Input::hasFile('image')) {
+			$file = Input::file('image');
+			file_put_contents(
+				base_path()."/public/uploads/badge".$badge->id.".png",
+				$file
+			);
+			$badge->image = 'badge'.$badge->id.'.png';		
+			$badge->save();	
+		}
 
 		return Response::json([
 			'message' => 'Success! Badge Added!'
@@ -73,8 +82,17 @@ class BadgeController extends Controller {
 		if ($id != 0) {
 			$badge = Badge::find($id);
 			$badge->name = $name;
-			$badge->image = $image;
-			$badge->save();
+			
+			if (Input::hasFile('image')) {
+				$file = Input::file('image');
+				file_put_contents(
+					base_path()."/public/uploads/badge".$badge->id.".png",
+					$file
+				);
+				$badge->image = 'badge'.$badge->id.'.png';					
+			}
+
+			$badge->save();	
 
 			return Response::json([
 				'message' => 'Success! Badge Updated!'

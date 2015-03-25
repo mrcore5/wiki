@@ -1,36 +1,60 @@
 <!-- Admin Badges Partial -->
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-4">
 		{!! Form::label('Email', 'Email') !!}
-		{!! Form::text('email', '', array('id' => 'form-Email', 'class' => 'required form-control')) !!}
+		{!! Form::text('email', null, array('id' => 'form-Email', 'class' => 'required form-control')) !!}
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-4">
 		{!! Form::label('Alias', 'Alias') !!}
-		{!! Form::text('alias', '', array('id' => 'form-Alias', 'class' => 'required form-control')) !!}
+		{!! Form::text('alias', null, array('id' => 'form-Alias', 'class' => 'required form-control')) !!}
+	</div>	
+	<div class="col-md-4">
+		{!! Form::label('Password', 'Password') !!}
+		{!! Form::password('password', array('id' => 'form-Password', 'class' => 'form-control')) !!}
 	</div>	
 </div>
-<div class="row">
-	<div class="col-md-6">
+<div class="row">	
+	<div class="col-md-3">
 		{!! Form::label('FName', 'First Name') !!}
-		{!! Form::text('first', '', array('id' => 'form-FName', 'class' => 'required form-control')) !!}
+		{!! Form::text('first', null, array('id' => 'form-FName', 'class' => 'required form-control')) !!}
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-3">
 		{!! Form::label('LName', 'Last Name') !!}
-		{!! Form::text('last', '', array('id' => 'form-LName', 'class' => 'required form-control')) !!}
+		{!! Form::text('last', null, array('id' => 'form-LName', 'class' => 'required form-control')) !!}
 	</div>	
-</div>
-<div class="row">
-	<div class="col-md-6">
-	<h3>Roles</h3>
-	<hr>
-	<ul id="user-roles">
-	</ul>
+	<div class="col-md-2">
+		{!! Form::label('GlobalPostID', 'Global Post ID') !!}
+		{!! Form::text('global_post_id', null, array('id' => 'form-GlobalPostID', 'class' => 'form-control', 'style' => 'width:100px;')) !!}
 	</div>
+	<div class="col-md-2">
+		{!! Form::label('HomePostID', 'Home Post ID') !!}
+		{!! Form::text('home_post_id', null, array('id' => 'form-HomePostID', 'class' => 'form-control', 'style' => 'width:100px;')) !!}
+	</div>	
+	<div class="col-md-2">	
+		{!! Form::label('Disabled', 'User Disabled') !!}
+		{!! Form::checkbox('disabled', 1, 0, array('id' => 'form-Disabled')) !!}		
+	</div>
+</div>
+<div class="row">	
 	<div class="col-md-6">
-	<h3>Permissions</h3>
+	<h3>Avatar</h3>
 	<hr>
-	<ul id="user-permissions">
-	</ul>
+		{!! Form::label('Avatar', 'Avatar') !!}
+		{!! Form::file('avatar', array('id' => 'form-LName', 'class' => 'form-control')) !!}
+	</div>
+</div>
+<div class="row">	
+	<div class="col-md-4">
+		<h3>Roles</h3>
+		<hr>
+		<ul id="user-roles">
+		</ul>
+	</div>
+	<div class="col-md-8">
+		<h3>Permissions</h3>
+		<hr>
+		<ul id="user-permissions">
+		</ul>
 	</div>
 </div>	
 
@@ -42,7 +66,7 @@
 			var id = $('#form-ID').val();
 			$('#user-roles').empty();
 			$('#user-permissions').empty();
-			console.log('fired');
+			
 		  	$.ajax({
 				type: 'GET',
 				url: '/admin/user/' + id + '/data',
@@ -53,6 +77,11 @@
 						$('#form-FName').val(data.user.first);
 						$('#form-LName').val(data.user.last);
 						$('#form-Email').val(data.user.email);
+						$('#form-GlobalPostID').val(data.user.global_post_id);
+						$('#form-HomePostID').val(data.user.home_post_id);
+						if (data.user.disabled == 1) {
+							$('#form-Disabled').prop('checked', 'checked');
+						}
 					}
 
 					// roles
@@ -76,11 +105,11 @@
 		});
 
 		function buildListItem(chkGroup, value) {
-			var listItem = '<li><div class="checkbox"><input type="checkbox" name="' + chkGroup + '" value="' + value.id + '"';
+			var listItem = '<li><input type="checkbox" name="' + chkGroup + '" value="' + value.id + '"';
 			if (value.set) {
 				listItem += ' checked ';
 			}
-			listItem += ' />' + value.name + '</div>';
+			listItem += ' />' + value.name;
 			return listItem;
 		}
 	</script>

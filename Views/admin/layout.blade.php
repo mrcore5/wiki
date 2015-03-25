@@ -5,6 +5,11 @@
 	hr {
 		margin-bottom: 0px;
 	}
+
+	.modal-body .row {
+		padding-top:15px;
+	}
+
 	.tdID {
 		width:30px;
 		padding-left:10px !important;
@@ -80,6 +85,25 @@
 
 	#user-roles, #user-permissions {
 		list-style:none;
+		padding-left:15px;
+	}
+
+	#user-roles input, #user-permissions input {
+		margin-right:5px;
+	}
+
+
+	#form-modal .modal-dialog {
+		width:800px;
+	}
+
+	#user-permissions {
+		-moz-column-count: 2;
+	    -moz-column-gap: 2.5em;
+	    -webkit-column-count: 2;
+	    -webkit-column-gap: 2.5em;
+	     column-count: 2;
+	     column-gap: 2.5em;
 	}
 
 </style>
@@ -225,11 +249,16 @@
 					url = url + '/' + $('#form-ID').val();
 				}
 
+				var formData = new FormData($(this)[0]);
+				var dataFrom = new FormData(document.forms.namedItem("admin-form"));
 				$.ajax({
 					type: 'POST',
 					url: url,
-					data: form.serialize(),
+					data: new FormData(document.forms.namedItem("admin-form")),
 					async: false,
+					//contentType: 'multipart/form-data',			
+					contentType: false,
+					processData: false,
 					success: function(data) {
 						notify.html(data.message);
 						notify.removeClass('alert-danger').addClass('alert-success');

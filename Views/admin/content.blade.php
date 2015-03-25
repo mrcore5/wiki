@@ -25,7 +25,7 @@
 
 	<div id="form-modal" class="modal fade">
 	  	<div class="modal-dialog">
-	  		{!! Form::open(['data-remote', 'id' => 'admin-form']) !!}
+	  		{!! Form::open(['data-remote', 'id' => 'admin-form', 'name' => 'admin-form', 'files' => true]) !!}
 	    	<div class="modal-content">
 	      		<div class="modal-header">
 	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

@@ -2,13 +2,15 @@
 
 use DB;
 use View;
+use Input;
 use Config;
 use Request;
-use Carbon\Carbon;
-use Input;
+use Hash;
 use stdClass;
 use Response;
+use Carbon\Carbon;
 use Mrcore\Models\User;
+use Mreschke\Helpers\String;
 use Mrcore\Modules\Wiki\Models\Role;
 use Mrcore\Modules\Wiki\Models\UserRole;
 use Mrcore\Modules\Wiki\Models\Permission;
@@ -38,7 +40,7 @@ class UserController extends Controller {
 	 */
 	public function getData()
 	{
-		$items = User::select(array('id as ID', DB::raw('CONCAT(first, " ", last) as User'), 'avatar as Avatar', 'email as Email', 'login_at as LastLogin'))->get();
+		$items = User::select(array('id as ID', DB::raw('CONCAT(first, " ", last) as User'), 'avatar as Avatar', 'email as Email', 'disabled as Disabled', 'login_at as LastLogin'))->get();
 		foreach($items as $item) {
 			$item->User = '<img src="/assets/uploads/'.$item->Avatar.'" /> <div>' . $item->User.'</div>';
 			unset($item->Avatar);
@@ -76,7 +78,17 @@ class UserController extends Controller {
 			}
 		}
 
-		$user = User::select('alias', 'first', 'last', 'email')->find($userID);
+		$columns = [
+			'alias',
+			'first',
+			'last',
+			'email',
+			'disabled',
+			'global_post_id',
+			'home_post_id',				
+		];
+
+		$user = User::select($columns)->find($userID);
 
 		return [
 			"user" => $user,
@@ -96,29 +108,54 @@ class UserController extends Controller {
 		$first = Input::get('first');
 		$last = Input::get('last');
 
+		$password = Input::get('password');
+		$global_post_id = Input::get('global_post_id');
+		$home_post_id = Input::get('home_post_id');
+		$disabled = Input::get('disabled');
+
 		$user = new User;
+		
+		$user->password = Hash::make($password);
 		$user->email = $email;
 		$user->alias = $alias;
 		$user->first = $first;
 		$user->last = $last;
+		$user->uuid = String::getGuid();
+		$user->global_post_id = ($global_post_id) ?: null;
+		$user->home_post_id = ($home_post_id) ?: null;
+		$user->disabled = (isset($disabled)) ?: 0;
+		
 		$user->save();
-
 		$user->id;
 
+		if (Input::hasFile('avatar')) {
+			$file = Input::file('avatar');
+			file_put_contents(
+				base_path()."/public/uploads/avatar_user".$user->id.".png",
+				$file
+			);
+			$user->avatar = 'avatar_user'.$user->id.'.png';
+			$user->save();
+		}
+
 		// Add Roles
-		foreach (Input::get('roles') as $role) {
-			$userRole = new UserRole();
-			$userRole->role_id = $role;
-			$userRole->user_id = $user->id;
-			$userRole->save();
+		if (Input::get('roles')) {
+			foreach (Input::get('roles') as $role) {
+				$userRole = new UserRole();
+				$userRole->role_id = $role;
+				$userRole->user_id = $user->id;
+				$userRole->save();
+			}
 		}
 
 		// Add Permissions
-		foreach (Input::get('permissions') as $permission) {
-			$userPermission = new UserPermission();
-			$userPermission->permission_id = $permission;
-			$userPermission->user_id = $user->id;
-			$userPermission->save();
+		if (Input::get('permissions')) {
+			foreach (Input::get('permissions') as $permission) {
+				$userPermission = new UserPermission();
+				$userPermission->permission_id = $permission;
+				$userPermission->user_id = $user->id;
+				$userPermission->save();
+			}
 		}
 
 		return Response::json([
@@ -137,13 +174,35 @@ class UserController extends Controller {
 		$alias = Input::get('alias');
 		$first = Input::get('first');
 		$last = Input::get('last');
+		$password = Input::get('password');
+		$global_post_id = Input::get('global_post_id');
+		$home_post_id = Input::get('home_post_id');
+		$disabled = Input::get('disabled');
 		
 		if ($id != 0) {
-			$user = User::find($id);
+			$user = User::find($id);	
+
+			if (isset($password) && sizeOf($password > 0) && $password != '') {
+				$user->password = Hash::make($password);
+			}
+			
 			$user->email = $email;
 			$user->alias = $alias;
 			$user->first = $first;
 			$user->last = $last;
+			$user->global_post_id = ($global_post_id) ?: null;
+			$user->home_post_id = ($home_post_id) ?: null;
+			$user->disabled = (isset($disabled)) ?: 0;
+			
+			if (Input::hasFile('avatar')) {
+				$file = Input::file('avatar');
+				file_put_contents(
+					base_path()."/public/uploads/avatar_user".$user->id.".png",
+					$file
+				);
+				$user->avatar = 'avatar_user'.$user->id.'.png';			
+			}
+
 			$user->save();
 
 			// Update Roles
