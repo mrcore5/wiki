@@ -52,9 +52,10 @@ class Badge extends Model
 	 */
 	public static function all($columns = array('*'))
 	{
-		return Cache::remember(strtolower(get_class()).":all", function() use($columns) {
+		#for some reason this was not getting a partial query without images ??
+		#return Cache::remember(strtolower(get_class()).":all", function() use($columns) {
 			return parent::orderBy('name')->get($columns);
-		});
+		#});
 	}
 
 	/*
