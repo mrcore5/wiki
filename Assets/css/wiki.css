@@ -86,7 +86,7 @@ priv
 /* info */
 .info, .infol {
 	font-size: 12px !important;
-	margin-top: -20px;
+	margin-top: -21px;
 	margin-bottom: 15px;
 	min-width: 200px;
 	max-width: 300px; /* set same as .toc width */
