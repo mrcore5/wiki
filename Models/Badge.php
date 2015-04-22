@@ -52,7 +52,7 @@ class Badge extends Model
 	 */
 	public static function all($columns = array('*'))
 	{
-		#for some reason this was not getting a partial query without images ??
+		#for some reason this was getting a partial query without images ??
 		#return Cache::remember(strtolower(get_class()).":all", function() use($columns) {
 			return parent::orderBy('name')->get($columns);
 		#});

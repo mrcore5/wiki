@@ -3,6 +3,7 @@
 use View;
 use Input;
 use Route;
+use Mrcore;
 use Layout;
 use Request;
 use Response;
@@ -188,6 +189,7 @@ class FileController extends Controller {
 			// Parse file content and display in simple mode!
 			Layout::mode('simple');
 			$post = Post::find($url->getPostID());
+			Mrcore::post()->setModel($post);
 			$content = $post->parse(file_get_contents($abs));
 			return View::make('file.wiki', [
 				'content' => $content
