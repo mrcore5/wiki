@@ -20,16 +20,24 @@
 	}
 
 	.tdUser {
-		width:300px;
+		width:280px;
 	}
 
 	.tdEmail {
-		width:300px;
+		width:280px;
 	}
 
 	.tdUser img {
 		height:40px;
 		border:1px solid #dddddd;
+	}
+
+	.tdDisabled {
+		text-align:center;
+	}
+
+	.tdLastLogin {
+		text-align:center;
 	}
 
 	.tdUser div {
@@ -137,6 +145,10 @@
 	@parent
 		<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 		<script type="text/javascript">
+
+		var currentPage = 0;
+		var currentFilter = '';
+
 		/**
 		 * Load the table from ajax using the data-url attribute on the table-grid	 
 		 */
@@ -144,11 +156,10 @@
 		{
 			if ($.fn.DataTable.isDataTable('#data-table')) {
 				$('#data-table').DataTable().destroy();
-			}
-	
+			}	
 			$.ajax({
 				url: $('#data-table').attr('data-url')
-			}).done(function(dataSet) {	
+			}).done(function(dataSet) {					
 				bindTableData(dataSet);																	
 			});
 		}
@@ -184,14 +195,26 @@
 			    	 	$("#search-table").empty();
 			        	$("#search-table").append($(this));
 		        	});
-			    	
+			    	oTable = $('#data-table').DataTable();
+			    	if (currentFilter != '') {
+			    		oTable.search(currentFilter).draw(false);
+			    	} else {
+			    		oTable.page(currentPage).draw(false);
+			    	}
 			    }
 		    });
 
-		   oTable = $('#data-table').dataTable();
-		   $('#search-table').keyup(function(){
-			      oTable.search($(this).val()).draw() ;
-			})
+		   $('#data-table').on( 'search.dt', function () {
+		   		oTable = $('#data-table').DataTable();
+		   		if (oTable.search() != '') {
+		   			currentFilter = oTable.search();
+		   		}
+			});
+
+		   $('#data-table').on( 'page.dt', function () {
+		   		oTable = $('#data-table').DataTable();
+		   		currentPage = oTable.page();
+			});
 		}	
 
 		function initTableEvents() 

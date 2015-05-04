@@ -44,7 +44,7 @@ class UserController extends Controller {
 		foreach($items as $item) {
 			$item->User = '<img src="/assets/uploads/'.$item->Avatar.'" /> <div>' . $item->User.'</div>';
 			unset($item->Avatar);
-			$item->LastLogin = (new Carbon($item->LastLogin))->diffForHumans();
+			$item->LastLogin = (new Carbon($item->LastLogin))->toDateTimeString();
 			$item->Action = '<button class="btn btn-sm btn-warning btn-edit"><i class="fa fa-edit"></i></button>
 							 <button class="btn btn-sm btn-danger btn-delete"><i class="fa fa-trash"></i>
 							</button>';			
