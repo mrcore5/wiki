@@ -34,7 +34,9 @@ class BadgeController extends Controller {
 	{
 		$items = Badge::select(array('id as ID', 'name as Name', 'image as Image'))->get();
 		foreach($items as $item) {
-			$item->Image =  '<img src="/assets/uploads/'.$item->Image.'" height="24px" />';
+			if (isset($item->Image)) {
+				$item->Image =  '<img src="/assets/uploads/'.$item->Image.'" height="24px" />';
+			}
 			$item->Action = '<button class="btn btn-sm btn-warning btn-edit"><i class="fa fa-edit"></i></button>
 							 <button class="btn btn-sm btn-danger btn-delete"><i class="fa fa-trash"></i>
 							</button>';
