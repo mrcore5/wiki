@@ -20,15 +20,6 @@ use Mrcore\Modules\Wiki\Parser\Html as HtmlParser;
 use Mrcore\Modules\Wiki\Parser\HtmlW as HtmlWParser;
 use Mrcore\Modules\Wiki\Parser\Text as TextParser;
 
-use Mrcore\Modules\Wiki\Models\PostBadge;
-use Mrcore\Modules\Wiki\Models\PostTag;
-use Mrcore\Modules\Wiki\Models\PostIndex;
-use Mrcore\Modules\Wiki\Models\PostLocks;
-use Mrcore\Modules\Wiki\Models\PostPermission;
-#use Mrcore\Modules\Wiki\Models\PostRead;
-#use Mrcore\Modules\Wiki\Models\Revision;
-#use Mrcore\Modules\Wiki\Models\Router;
-
 class Post extends Model
 {
 
