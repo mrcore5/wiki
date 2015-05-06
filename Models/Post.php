@@ -20,6 +20,14 @@ use Mrcore\Modules\Wiki\Parser\Html as HtmlParser;
 use Mrcore\Modules\Wiki\Parser\HtmlW as HtmlWParser;
 use Mrcore\Modules\Wiki\Parser\Text as TextParser;
 
+use Mrcore\Modules\Wiki\Models\PostBadge;
+use Mrcore\Modules\Wiki\Models\PostTag;
+use Mrcore\Modules\Wiki\Models\PostIndex;
+use Mrcore\Modules\Wiki\Models\PostLocks;
+use Mrcore\Modules\Wiki\Models\PostPermission;
+#use Mrcore\Modules\Wiki\Models\PostRead;
+#use Mrcore\Modules\Wiki\Models\Revision;
+#use Mrcore\Modules\Wiki\Models\Router;
 
 class Post extends Model
 {
@@ -750,7 +758,6 @@ class Post extends Model
 
 	/**
 	 * Increment route clicks (views)
-	 *
 	 * @return void
 	 */
 	public function incrementClicks()
@@ -768,6 +775,25 @@ class Post extends Model
 		// If you have cache enabled, the above $this->clicks += 1 does nothing
 		// so the views display does not show you the actual click count, but the database
 		// is accurate.
+	}
+
+	/**
+	 * Delete this post and all foreign key references
+	 * @return void
+	 */
+	public function deletePost()
+	{
+		if (isset($this->id)) {
+			PostBadge::where('post_id', $this->id)->delete();
+			PostTag::where('post_id', $this->id)->delete();
+			PostIndex::where('post_id', $this->id)->delete();
+			PostLock::where('post_id', $this->id)->delete();
+			PostPermission::where('post_id', $this->id)->delete();
+			PostRead::where('post_id', $this->id)->delete();
+			Revision::where('post_id', $this->id)->delete();
+			Router::where('post_id', $this->id)->delete();
+			$this->delete();
+		}
 	}
 
 }

@@ -194,5 +194,81 @@
 	</div>
 </div>
 
+
+
+
+@if (Auth::admin() || $post->created_by == Auth::user()->id)
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header">
+			<h1>Delete Post</h1>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="form-group">
+		{!! Form::label('confirm-mark-delete', 'Confirm', array(
+			'class' => 'col-sm-3 control-label'
+		)) !!}
+
+		<div class="col-sm-6 checkbox">
+		<label>
+			{!! Form::checkbox('confirm-mark-delete', 'confirm-mark-delete', null) !!}
+			Yes, mark this post as deleted
+		</label>
+			<span class="help-block">This type of delete is reversible.  Post is simply "marked" as deleted</span>
+		</div>
+	</div>
+
+
+	<div class="form-group">
+		{!! Form::label('confirm-delete', 'Permanent', array(
+			'class' => 'col-sm-3 control-label'
+		)) !!}
+
+		<div class="col-sm-6 checkbox">
+		<label>
+			{!! Form::checkbox('confirm-delete', 'confirm-delete', null) !!}
+			Yes, I want to permanently delete this post (though files will remain)
+		</label>
+			<span class="help-block">This type of delete is permanent and irreversible.  Files will remain untouched.</span>
+		</div>
+	</div>
+
+
+	<div class=" form-actions">
+		<div class="col-sm-9 col-sm-offset-3">
+			{!! Html::decode(
+				Form::button(
+					'<i class="fa fa-trash"></i> Delete Post',
+					array(
+						'name' => 'btnDeletePost', 'id' => 'btnDeletePost',
+						'class' => 'btn btn-danter',
+						'title' => 'Delete post'
+					)
+				)
+			) !!}
+
+			@if ($post->deleted)
+			{!! Html::decode(
+				Form::button(
+					'<i class="fa fa-save"></i> Undelete Post',
+					array(
+						'name' => 'btnUndeletePost', 'id' => 'btnUndeletePost',
+						'class' => 'btn btn-warning',
+						'title' => 'Undelete post'
+					)
+				)
+			) !!}
+			@endif
+		</div>
+
+	</div>
+</div>
+@endif
+
+
+
 {!! Form::close() !!}
 @stop

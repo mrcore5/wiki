@@ -59,6 +59,14 @@ Route::post('/post/{id}/updatePostOrg', array(
 	'uses' => 'EditController@updatePostOrg',
 	'as' => 'updatePostOrg'
 ));
+Route::post('/post/{id}/deletePost', array(
+	'uses' => 'EditController@deletePost',
+	'as' => 'deletePost'
+));
+Route::post('/post/{id}/undeletePost', array(
+	'uses' => 'EditController@undeletePost',
+	'as' => 'undeletePost'
+));
 Route::post('/post/{id}/updatePostPerms', array(
 	'uses' => 'EditController@updatePostPerms',
 	'as' => 'updatePostPerms'

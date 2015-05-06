@@ -188,6 +188,22 @@ $(function() {
 		);
 	}
 
+	// Delete post
+	function deletePost() {
+		return $.post(
+			"{{ URL::route('deletePost', array('id' => $post->id)) }}",
+			{
+				permanent: $('#confirm-delete').prop('checked'),
+			}
+		);
+	}
+
+	// Undelete post
+	function undeletePost() {
+		return $.post(
+			"{{ URL::route('undeletePost', array('id' => $post->id)) }}"
+		);
+	}
 
 	// Save only post permission settings
 	function updatePostPerms() {
@@ -380,6 +396,32 @@ $(function() {
 				}
 			});
 		}
+	});
+
+	// Delete Post
+	$("#btnDeletePost").click(function() {
+		if ($("#confirm-mark-delete").is(":checked")) {
+			message('deleting...', 'danger');
+			deletePost().done(function(response) {
+				//console.log(response);
+				window.location = "{{ URL::route('home') }}";
+			}).fail(function() {
+				alert('Delete Failed');
+			});
+		} else {
+			alert('Please confirm deletion by checking the confirm checkbox');
+		}
+	});
+
+	// Undelete Post
+	$("#btnUndeletePost").click(function() {
+		message('undeleting...', 'danger');
+		undeletePost().done(function(response) {
+			//console.log(response);
+			window.location = postRoute;
+		}).fail(function() {
+			alert('Undelete Failed');
+		});
 	});
 
 	// Save post permissions event

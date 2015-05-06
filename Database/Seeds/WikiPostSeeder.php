@@ -233,7 +233,7 @@ $private = array ();
 		</ul>
 
 		<? if (Auth::admin()): ?>
-			<h4>Admin Only</h4>	
+			<h4>Admin Only</h4>
 			<ul class="list-unstyled">
 			<? foreach ($admin as $item): ?>
 				<li>
@@ -245,8 +245,8 @@ $private = array ();
 			</ul>
 		<? endif ?>
 	</div>
-	
-	
+
+
 	<div class="col-sm-6">
 		<? if (count($popular) > 0): ?>
 			<h4>Popular Links</h4>
@@ -272,7 +272,6 @@ $private = array ();
 	</div>
 
 </div>'),
-
 			'teaser' => Crypt::encrypt(''),
 			'contains_script' => true,
 			'contains_html' => true,

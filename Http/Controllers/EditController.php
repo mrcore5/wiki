@@ -244,6 +244,74 @@ class EditController extends Controller {
 		return "preferences saved";
 	}
 
+	/**
+	 * Delete post
+	 * Handles via ajax only
+	 */
+	public function deletePost($id)
+	{
+		// Ajax only controller
+		if (!Request::ajax()) return Response::notFound();
+
+		$post = Post::find($id);
+		if (!isset($post)) return Response::notFound();
+		if (!$post->hasPermission('write')) return Response::denied();
+
+		// Only admin or creator can delete post
+		if (Auth::admin() || $post->created_by == Auth::user()->id) {
+
+			$permanent = (Input::get('permanent') == 'true' ? true : false);
+
+			if ($permanent) {
+				// Delete Post and all foreign key references (leave files)
+				$post->deletePost();
+			} else {
+				// Mark post as deleted
+				$post->deleted = true;
+				$post->save();
+			}
+
+			// Clear this posts cache
+			Post::forgetCache($id);		
+			Router::forgetCache($id);
+
+			return "post deleted";
+		
+		} else {
+			return Response::denied();
+		}
+	}
+
+	/**
+	 * Undelete post
+	 * Handles via ajax only
+	 */
+	public function undeletePost($id)
+	{
+		// Ajax only controller
+		if (!Request::ajax()) return Response::notFound();
+
+		$post = Post::find($id);
+		if (!isset($post)) return Response::notFound();
+		if (!$post->hasPermission('write')) return Response::denied();
+
+		// Only admin or creator can undelete post
+		if (Auth::admin() || $post->created_by == Auth::user()->id) {
+
+			// Undelete Post
+			$post->deleted = false;
+			$post->save();
+
+			// Clear this posts cache
+			Post::forgetCache($id);		
+			Router::forgetCache($id);
+
+			return "post undeleted";
+		
+		} else {
+			return Response::denied();
+		}
+	}
 
 	/**
 	 * Update post permission settings only
