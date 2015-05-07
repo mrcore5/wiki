@@ -2,6 +2,7 @@
 
 use Auth;
 use View;
+use File;
 use Cache;
 use Input;
 use Config;
@@ -265,6 +266,10 @@ class EditController extends Controller {
 			if ($permanent) {
 				// Delete Post and all foreign key references (leave files)
 				$post->deletePost();
+
+				// Rename folder
+				File::move(Config::get('mrcore.files')."/index/$id", Config::get('mrcore.files')."/index/$id-deleted");
+
 			} else {
 				// Mark post as deleted
 				$post->deleted = true;
