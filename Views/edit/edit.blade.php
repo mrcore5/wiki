@@ -30,6 +30,11 @@
 				</a>
 			</li>			
 			<li>
+				<a data-toggle="tab" href="#files" title="Post fles">
+					<i class="fa fa-folder"></i>
+				</a>
+			</li>
+			<li>
 				<a data-toggle="tab" href="#organization" title="Post title and organization">
 					<i class="fa fa-tags"></i>
 				</a>
@@ -37,11 +42,6 @@
 			<li>
 				<a data-toggle="tab" href="#permissions" title="Post sharing and security">
 					<i class="fa fa-lock"></i>
-				</a>
-			</li>
-			<li>
-				<a data-toggle="tab" href="#files" title="Post fles">
-					<i class="fa fa-folder"></i>
 				</a>
 			</li>
 			@if (Auth::admin())
