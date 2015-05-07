@@ -444,7 +444,6 @@ class Post extends Model
 			if ($param == 'deleted') $deleted = true;
 		}
 
-
 		// Search for search work in post indexes table
 		if ($query) {
 			$posts = DB::table('post_indexes')
@@ -452,7 +451,6 @@ class Post extends Model
 		} else {
 			$posts = DB::table('posts');
 		}
-
 
 		// Filter posts by read permissions (or user is creator)
 		if (!Auth::admin()) {
@@ -516,7 +514,6 @@ class Post extends Model
 			});
 		}
 
-
 		// Filter by word search query
 		// Must be last becasue of order bys
 		if ($query) {
@@ -532,9 +529,14 @@ class Post extends Model
 			if (!preg_match('/or/i', $query)) {
 				// If using AND we include this having
 				#$posts->having('cnt', '>=', count($words));
-				$posts->select(DB::raw("HAVING count(*) >= ".count($words)));
+				#$posts->select(DB::raw("HAVING count(*) >= ".count($words)));
+				$posts->havingRaw('count(*) >= '.count($words));
 			}
 		}
+		
+		#->havingRaw('count(parent.id) = '.count($this->parents));
+
+
 
 		// Order by
 		if ($sort == 'updatednew') {
@@ -561,29 +563,24 @@ class Post extends Model
 			}
 		}
 	
-
 		// If query, just include group by after order by
 		if ($query) $posts->groupBy('post_indexes.post_id');
 
-		// Return results
+		// TESTING
 		#dd($posts->toSql()); #sql debug
+
 		if ($query) {
-			$posts = $posts
-				->select(DB::raw("posts.*, count(*) as cnt, sum(weight) as weight"))
-				->paginate(Config::get('mrcore.search_pagesize'));
+			// Pagination does NOT work in L5 with having statement, so no paging for queries
+			$posts = $posts->selectRaw("posts.*, sum(weight) as weight")->get();
 		} else {
-			$posts = $posts
-				->select('posts.*')
-				->paginate(Config::get('mrcore.search_pagesize'));
+			$posts = $posts->select('posts.*')->paginate(Config::get('mrcore.search_pagesize'));
+			$posts->setPath(Config::get('app.url') . '/' . Request::path());
 		}
 		
-		// Set paginate baseUrl to whats in app.url, for https vs http issue
-		#dd(Config::get('app.url') . '/' . \Request::path());
-		#$posts->setBaseUrl(Config::get('app.url') . '/' . \Request::path());
-		$posts->setPath(Config::get('app.url') . '/' . Request::path());
-
+		#TESTING
 		#var_dump(DB::getQueryLog()); #sql debug
 		#$posts = Post::take(10)->get();
+		
 		return $posts;
 	}
 

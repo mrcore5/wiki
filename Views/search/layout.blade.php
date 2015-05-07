@@ -217,17 +217,27 @@
 			@yield('results')
 
 			<div class="results-pagination">
-				<? $get = Input::get();	unset($get['page']); ?>
-				{!! $posts->appends($get)->render() !!}
+				@if (!is_array($posts))
+					<?
+					$get = Input::get();	unset($get['page']);
+					$currentPage = $posts->currentPage();
+					$count = $posts->count();
+					$total = $posts->total();
+					?>
+					{!! $posts->appends($get)->render() !!}
+				@else
+					<?
+					$currentPage = 1;
+					$count = count($posts);
+					$total = $count;
+					?>
+				@endif	
 				<div class="results-pagination-info">
-					Showing {{ $posts->currentPage() }} to {{ $posts->count() }} of {{ $posts->total() }} results
+					Showing {{ $currentPage }} to {{ $count }} of {{ $total }} results
 				</div>
 			</div>
+			
 		</div>
-
-
-
-
 
 	</div>
 
