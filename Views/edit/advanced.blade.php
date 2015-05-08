@@ -107,6 +107,7 @@
 		</div>
 	</div>
 
+	<!-- TEMP, bring back or make an artisan command to make new workbenches
 	<div class="form-group">
 		{!! Form::label('install', 'Install', array(
 			'class' => 'col-sm-3 control-label'
@@ -129,6 +130,7 @@
 			</span>
 		</div>
 	</div>
+	-->
 </div>
 
 
