@@ -58,11 +58,7 @@ class BadgeController extends Controller {
 		$badge->save();
 
 		if (Input::hasFile('image')) {
-			$file = Input::file('image');
-			file_put_contents(
-				base_path()."/public/uploads/badge".$badge->id.".png",
-				$file
-			);
+			Input::file('image')->move(base_path()."/public/uploads/", "badge".$badge->id.".png");
 			$badge->image = 'badge'.$badge->id.'.png';		
 			$badge->save();	
 		}
@@ -87,11 +83,7 @@ class BadgeController extends Controller {
 			$badge->name = $name;
 			
 			if (Input::hasFile('image')) {
-				$file = Input::file('image');
-				file_put_contents(
-					base_path()."/public/uploads/badge".$badge->id.".png",
-					$file
-				);
+				Input::file('image')->move(base_path()."/public/uploads/", "badge".$badge->id.".png");
 				$badge->image = 'badge'.$badge->id.'.png';					
 			}
 
