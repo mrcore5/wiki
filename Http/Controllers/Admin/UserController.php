@@ -129,11 +129,7 @@ class UserController extends Controller {
 		$user->id;
 
 		if (Input::hasFile('avatar')) {
-			$file = Input::file('avatar');
-			file_put_contents(
-				base_path()."/public/uploads/avatar_user".$user->id.".png",
-				$file
-			);
+			Input::file('avatar')->move(base_path()."/public/uploads/", "avatar_user".$user->id.".png");
 			$user->avatar = 'avatar_user'.$user->id.'.png';
 			$user->save();
 		}
@@ -195,11 +191,7 @@ class UserController extends Controller {
 			$user->disabled = (isset($disabled)) ?: 0;
 			
 			if (Input::hasFile('avatar')) {
-				$file = Input::file('avatar');
-				file_put_contents(
-					base_path()."/public/uploads/avatar_user".$user->id.".png",
-					$file
-				);
+				Input::file('avatar')->move(base_path()."/public/uploads/", "avatar_user".$user->id.".png");				
 				$user->avatar = 'avatar_user'.$user->id.'.png';			
 			}
 

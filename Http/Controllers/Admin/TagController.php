@@ -56,11 +56,7 @@ class TagController extends Controller {
 		$tag->save();
 
 		if (Input::hasFile('image')) {
-			$file = Input::file('image');
-			file_put_contents(
-				base_path()."/public/uploads/tag".$tag->id.".png",
-				$file
-			);
+			Input::file('image')->move(base_path()."/public/uploads/", "tag".$tag->id.".png");
 			$tag->image = 'tag'.$tag->id.'.png';		
 			$tag->save();	
 		}
@@ -86,11 +82,7 @@ class TagController extends Controller {
 			$tag->image = $image;
 
 			if (Input::hasFile('image')) {
-				$file = Input::file('image');
-				file_put_contents(
-					base_path()."/public/uploads/tag".$tag->id.".png",
-					$file
-				);
+				Input::file('image')->move(base_path()."/public/uploads/", "tag".$tag->id.".png");
 				$tag->image = 'tag'.$tag->id.'.png';
 			}
 
