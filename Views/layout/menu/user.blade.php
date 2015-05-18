@@ -1,14 +1,9 @@
 @section('user-menu')
 
-	@if (Mrcore::user()->isAuthenticated())
+	@if (Auth::check())
 		<li class="dropdown">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				
-				@if (Mrcore::user()->isAuthenticated())
-					<img class="navbar-user" src="{{ asset('uploads/'.Mrcore::user()->avatar()) }}" alt="avatar" />
-				@else
-					Sign In
-				@endif
+				<img class="navbar-user" src="{{ asset('uploads/'.Mrcore::user()->avatar()) }}" alt="avatar" />
 				<b class="caret"></b>
 			</a>
 
@@ -23,7 +18,7 @@
 					<li class="divider"></li>
 				@endif
 
-				@if (Mrcore::user()->isAdmin())
+				@if (Auth::admin())
 					<li class="dropdown-header">Administrator</li>
 					<li>
 						<a href="{{ URL::route('admin.badge.index') }}">

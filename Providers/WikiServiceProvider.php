@@ -86,6 +86,10 @@ class WikiServiceProvider extends ServiceProvider {
 		// Extend both Auth Guard and UserProvider
 		$this->extendAuth();
 
+		// Register Middleware
+		$kernel = $this->app->make('Illuminate\Contracts\Http\Kernel');
+		$kernel->pushMiddleware('Mrcore\Modules\Wiki\Http\Middleware\AnalyzeRoute');
+
 		// Register our Artisan Commands
 		$this->commands('Mrcore\Modules\Wiki\Console\Commands\IndexPosts');
 

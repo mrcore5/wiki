@@ -26,6 +26,13 @@ Route::get('home', function() {
 
 return;*/
 
+// Filters
+Route::filter('auth.admin', function() {
+	if (!Auth::admin()) {
+		return Response::denied();
+	}
+});
+
 
 // Route to Home Page Post (/)
 $homeExists = Route::getRoutes()->hasNamedRoute('home');
@@ -164,7 +171,7 @@ Route::any('/search/{slug?}', array(
 
 
 // Admin Routes
-Route::group(array('prefix' => 'admin'), function() {
+Route::group(array('prefix' => 'admin', 'before' => 'auth.admin'), function() {
 	
 	// Cannot get resource controllers action() to work
 	//<li><a href="{{ action('Mrcore\Modules\Wiki\Http\Controllers\UserController@index') }}">Users</a></li>
@@ -291,16 +298,6 @@ Route::group(array('prefix' => 'admin'), function() {
 
 });
 
-
-
-
-
-
-// User Menu route
-Route::get('/admin/usermenu', array(
-	'uses' => 'AdminController@userMenu',
-	'as' => 'userMenu'
-));
 
 // Login route (these are legacy, use new Mrcore\Modules\Auth now)
 /*Route::get('/login', array(
