@@ -33,8 +33,7 @@ class WikiServiceProvider extends ServiceProvider {
 		$this->definePublishing();
 
 		// Register additional css assets
-		Layout::css('css/dataTables.bootstrap.css');
-		Layout::css('css/wiki.css'); #should be last css
+		Layout::css('css/wiki-bundle.css');
 
 		// Add my own internal configs
 		Config::set('mrcore.reserved_routes', array(

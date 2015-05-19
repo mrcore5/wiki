@@ -1,13 +1,7 @@
 @section('scripts')
 
 	{{-- Standard scripts --}}
-	<script src="{{ asset('js/jquery-2.1.1.min.js') }}"></script>
-	<script src="{{ asset('js/jquery.hotkeys.min.js') }}"></script>
-	<script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('js/jquery.dataTables.bootstrap.js') }}"></script>
-	<script src="{{ asset('js/dataTables.js') }}"></script>
-	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-	<script src="{{ asset('js/wiki.js') }}"></script>
+	<script src="{{ asset('js/wiki-bundle.js') }}"></script>
 
 	{{-- Layout script file array --}}
 	@foreach (Layout::js() as $js)
