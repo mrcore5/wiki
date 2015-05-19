@@ -13,6 +13,9 @@
 
 @section('content')
 
+
+	{!! Form::open(array('id' => 'form', 'method' => 'get')) !!}
+
 	<div class="row search-content">
 
 		<!-- fix later, this should be a view composer or something -->
@@ -20,9 +23,6 @@
 		<!--<form method="post">
 		<div><div><div><div><div><div>{ $postContent }</div></div></div></div></div></div>
 		</form>-->
-
-		{!! Form::open(array('id' => 'form', 'method' => 'get')) !!}
-
 
 		<div class="search-filter col-sm-3">
 			<div class="search-filter-section">
