@@ -24,7 +24,7 @@ elixir(function(mix) {
 	mix.scripts([
 		"jquery-2.1.4.min.js",
 		"jquery.hotkeys.min.js",
-		"jquery.dataTables.min.js",
+		"jquery.dataTables.1.10.7.min.js",
 		"jquery.dataTables.bootstrap.js",
 		"dataTables.js",
 		"bootstrap.min.js",
