@@ -91,6 +91,8 @@ class WikiServiceProvider extends ServiceProvider {
 
 		// Register our Artisan Commands
 		$this->commands('Mrcore\Modules\Wiki\Console\Commands\IndexPosts');
+		$this->commands('Mrcore\Modules\Wiki\Console\Commands\AppGitCommand');
+		$this->commands('Mrcore\Modules\Wiki\Console\Commands\AppMakeCommand');
 
 
 	}

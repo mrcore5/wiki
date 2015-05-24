@@ -113,7 +113,6 @@ class EditController extends Controller {
 		));
 	}
 
-
 	/**
 	 * Update post content only
 	 * Handles ajax $.post autosaves and actual publishing
@@ -162,7 +161,6 @@ class EditController extends Controller {
 
 		return 'saved';
 	}
-
 
 	/**
 	 * Update post organization settings only
@@ -352,7 +350,6 @@ class EditController extends Controller {
 		return "preferences saved";
 	}
 
-
 	/**
 	 * Update post advanced settings only
 	 * Handles via ajax only
@@ -462,96 +459,6 @@ class EditController extends Controller {
 		return $ret;
 	}
 
-
-	public function createApp($id)
-	{
-		// Ajax only controller
-		if (!Request::ajax()) return Response::notFound();
-
-		$post = Post::find($id);
-		if (!isset($post)) return Response::notFound();
-		if (!$post->hasPermission('write')) return Response::denied();
-		if (!isset($post->framework_id)) return "ERROR: No framework selected";
-
-		// Check if static route
-		$route = Router::findDefaultByPost($id);
-		if (!$route->static) return "ERROR: Post must have a static route";
-
-		
-		if ($post->framework->constant == 'workbench') {
-
-			$workbench = strtolower(Input::get('workbench'));
-			if (!$workbench) $workbench = null;
-
-			if (isset($workbench)) {
-				if (substr_count($workbench, '/') != 1) {
-					return "ERROR: workbench must be vendor/package format";
-				}
-
-				// Execute install artisan script
-				/*
-				echo "<pre>";
-				\Artisan::call(
-					"framework:install-".$post->framework->constant,
-					array('workbench' => $workbench, 'postID' => $id),
-					new \Symfony\Component\Console\Output\StreamOutput(
-						fopen('php://output', 'w')
-					)
-				);*/
-				echo "Done!";
-
-
-				# Absolutely NONE of these work :(
-
-				#$workbenchBase = base_path()."/workbench/$workbench";
-				#exec("rm ".base_path()."/workbench/$workbench/vendor/autoload.php");
-				#$this->info($this->console->exec("bash -c 'cd ".$workbenchBase." && composer dump-autoload'"));
-				#$this->info($this->console->exec("bash -c 'cd ".$workbenchBase." && composer dump-autoload'"));
-				#$this->info($this->console->exec("bash -c 'cd ".$workbenchBase." && composer dump-autoload'"));
-				#\Artisan::call('dump-autoload');
-
-				#exec("composer dump-autoload -d $workbenchBase");
-				#echo("/usr/local/bin/composer dump-autoload -d $workbenchBase/");
-				#var_dump(passthru("/usr/local/bin/composer dump-autoload -d $workbenchBase/"));
-				#passthru("/usr/local/bin/composer dumpautoload -d $workbenchBase/");
-
-				#passthru("/usr/local/bin/dump-autoload");
-				#sleep(2);
-				#var_dump(passthru("/usr/local/bin/dump-autoload"));
-
-				#sleep(5);
-				#$x = \App::make('Illuminate\Foundation\Composer');
-				#$x->setWorkingPath($workbenchBase);
-				#$x->dumpAutoloads("-d $workbenchBase/");
-				#echo $x->dumpAutoloads();
-
-
-			} else {
-				// Workbench field empty
-				// We don't exit() here because we still want to update the db below
-				echo "No workbench defined<br />";
-				echo "Unlinking existing workbench";
-
-				// Remove app symlink
-				if (is_link(\Config::get('mrcore.files')."/index/$id/app")) {
-					exec("rm ".\Config::get('mrcore.files')."/index/$id/app");
-				}
-			}
-
-			// Update workbench in posts table
-			if ($workbench != $post->workbench) {
-				$post->workbench = $workbench;
-				$post->save();
-
-				// Clear this posts cache
-				Post::forgetCache($id);
-			}
-		} else {
-			return "ERROR: Framework must be set to workbench";
-		}
-	}
-
-
 	/**
 	 * Show Post Create Form
 	 */
@@ -583,7 +490,6 @@ class EditController extends Controller {
 			'tags' => $tags,
 		));
 	}
-
 
 	/**
 	 * Create new post

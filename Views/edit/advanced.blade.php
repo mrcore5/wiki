@@ -31,16 +31,6 @@
 	</div>
 </div>
 
-<!--<div class="form-group">
-	<div class="col-sm-3"></div>
-	<div class="col-sm-9">
-		{{ Form::checkbox('static', 'static', $route->static, array(
-			'id' => 'static',
-		)) }}
-		<span class="lbl">Enable Static Route Slug Above</span>
-	</div> 
-</div> -->
-
 <div class="row">
 	<div class="form-group">
 		{!! Form::label('symlink', 'Symlink', array(
@@ -65,33 +55,18 @@
 
 
 
-<!--
-<div class="col-lg-12">
-	<div class="page-header">
-		<h1>Additional Routing</h1>
-	</div>
-</div>
-
-<div class="col-sm-12">
-	Under Construction
-</div>
--->
-
-
-
 
 <div class="row">
 	<div class="col-lg-12">
 		<div class="page-header">
-			<h1>Workbench Forge</h1>
+			<h1>Workbench/App Forge</h1>
 		</div>
 	</div>
 </div>
 
-
 <div class="row">
 	<div class="form-group">
-		{!! Form::label('workbench', 'Workbench', array(
+		{!! Form::label('workbench', 'Name', array(
 			'class' => 'col-sm-3 control-label'
 		)) !!}
 		<div class="col-sm-6">
@@ -100,37 +75,14 @@
 				'class' => 'form-control',
 			)) !!}
 			<span class="help-block">
-				Example: <b>app/myapp</b> or <b>myname/myapp</b> or <b>utility/app</b><br />
-				Workbench must be in the format <b>vendor/package</b><br />
-				A static route must be defined in order to create or link a workbench
+				Name must be in laravels vendor/package format (lowercase)<br />
+				Example: <b>mreschke/test</b> or <b>mreschke/test-project</b><br />
+				A static route must be defined in order to create or link a mrcore app<br /><br />
+				To create a new app folder structure using artisan simply run:<br />
+				<b>./artisan mrcore:wiki:app:make mreschke/test-project</b>
 			</span>
 		</div>
 	</div>
-
-	<!-- TEMP, bring back or make an artisan command to make new workbenches
-	<div class="form-group">
-		{!! Form::label('install', 'Install', array(
-			'class' => 'col-sm-3 control-label'
-		)) !!}
-		<div class="col-sm-6">
-			{!! Html::decode(
-				Form::button(
-					'<i class="fa fa-bolt"></i> Install Now',
-					array(
-						'name' => 'btnCreateApp', 'id' => 'btnCreateApp',
-						'class' => 'btn btn-danger',
-						'title' => 'Run app creation script'
-					)
-				)
-			) !!}
-			<span class="help-block">
-				<span class="alert-danger">Post will be broken until you dump-autoload after initial workbench creation</span><br />
-				This will install your workbench from the mRcore workbench template.<br />
-				You must manually run <b>composer dump-autoload</b> from the new new workbench directory before use.
-			</span>
-		</div>
-	</div>
-	-->
 </div>
 
 
@@ -169,6 +121,7 @@
 <!--
 Under construction
 <pre>
+advanced router optiona - multiple routes
 change clicks
 change creator created on
 change updator updated on
