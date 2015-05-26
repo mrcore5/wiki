@@ -1,9 +1,6 @@
 <?php namespace Mrcore\Modules\Wiki\Auth;
 
-// use mrcore support cache!!!!!!!!!!!! ????????
-// though where does that reside? foundation probably?
-// Mrcore\Foundation\Support\Cache
-use Mrcore\Modules\Wiki\Support\Cache;
+use Mrcore\Modules\Foundation\Support\Cache;
 use Illuminate\Auth\EloquentUserProvider;
 
 class WikiUserProvider extends EloquentUserProvider {

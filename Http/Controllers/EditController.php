@@ -178,7 +178,7 @@ class EditController extends Controller {
 		// Update post info
 		$post->format_id = Input::get('format');
 		$post->type_id = Input::get('type');
-		if ($post->type_id == Config::get('mrcore.app_type')) {
+		if ($post->type_id == Config::get('mrcore.wiki.app_type')) {
 			$post->framework_id = Input::get('framework');
 		} else {
 			$post->framework_id = null;
@@ -266,7 +266,7 @@ class EditController extends Controller {
 				$post->deletePost();
 
 				// Rename folder
-				File::move(Config::get('mrcore.files')."/index/$id", Config::get('mrcore.files')."/index/$id-deleted");
+				File::move(Config::get('mrcore.wiki.files')."/index/$id", Config::get('mrcore.wiki.files')."/index/$id-deleted");
 
 			} else {
 				// Mark post as deleted
@@ -427,7 +427,7 @@ class EditController extends Controller {
 				// Don't allow url reserved words
 				if ($valid) {
 					$tmp = explode("/", $defaultSlug);	
-					if (in_array($tmp[0], Config::get('mrcore.reserved_routes'))) {
+					if (in_array($tmp[0], Config::get('mrcore.wiki.reserved_routes'))) {
 						$ret = "ERROR: Static route cannot be '$tmp[0]', this is a reserved word";
 						$valid = false;
 					}
@@ -503,7 +503,7 @@ class EditController extends Controller {
 		$formatID = Input::get('format');
 		$typeID = Input::get('type');
 		$frameworkID = null;
-		if ($typeID == Config::get('mrcore.app_type')) {
+		if ($typeID == Config::get('mrcore.wiki.app_type')) {
 			$frameworkID = Input::get('framework');
 		}
 		$modeID = Mode::where('constant', '=', 'default')->first()->id;
@@ -545,7 +545,7 @@ class EditController extends Controller {
 
 		// Create folder
 		try {
-			mkdir(Config::get('mrcore.files')."/index/$post->id");
+			mkdir(Config::get('mrcore.wiki.files')."/index/$post->id");
 		} catch (\Exception $e) {
 			
 		}

@@ -123,7 +123,7 @@
 		</div>
 	</div>
 
-	@if ($post->type_id == Config::get('mrcore.app_type'))
+	@if ($post->type_id == Config::get('mrcore.wiki.app_type'))
 		<div class="form-group" id="framework-group">
 	@else
 		<div class="form-group" id="framework-group" style='display: none'>

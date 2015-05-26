@@ -182,7 +182,7 @@ Class Wiki
 			function ($matches) {
 				$cmd = preg_replace('"<cmd |>"', '', $matches[0]);
 				if ($cmd != '') {
-					$cmd = preg_replace('"\#"', Config::get('mrcore.files').'/index/'.$this->postID, $cmd); //Wildcards
+					$cmd = preg_replace('"\#"', Config::get('mrcore.wiki.files').'/index/'.$this->postID, $cmd); //Wildcards
 					exec($cmd, $return);
 					$return = implode("\r\n", $return);
 				}
@@ -233,7 +233,7 @@ Class Wiki
 			#echo "Path: $path, Title: $title, View: $view";
 			if ($view == 'inline') {
 				if (substr($path, 0, 1) != '/') $path = 'index/'.$path;
-				$file = Config::get('mrcore.files').'/'.$path;
+				$file = Config::get('mrcore.wiki.files').'/'.$path;
 				if (file_exists($file)) {
 					return file_get_contents($file);	
 				} else {

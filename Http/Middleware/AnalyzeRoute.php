@@ -23,7 +23,7 @@ class AnalyzeRoute {
 	public function handle($request, Closure $next)
 	{
 
-		#$isWebdav = preg_match("|".Config::get('mrcore.webdav_base_url')."|i", Request::url());
+		#$isWebdav = preg_match("|".Config::get('mrcore.wiki.webdav_base_url')."|i", Request::url());
 		#if ($isWebdav) {
 		#	$this->responseCode = 202;
 		#	return;
@@ -45,7 +45,7 @@ class AnalyzeRoute {
 	{
 		// Analyse URL and find matching mrcore router tabel entry
 		$route = app('Mrcore\Modules\Wiki\Support\RouteAnalyzer');
-		$route->analyzeUrl(Config::get('mrcore.reserved_routes'), Config::get('mrcore.legacy_routes'));
+		$route->analyzeUrl(Config::get('mrcore.wiki.reserved_routes'), Config::get('mrcore.wiki.legacy_routes'));
 
 		if ($route->foundRoute()) {
 
@@ -70,7 +70,7 @@ class AnalyzeRoute {
 
 					// Adjust $view for this $this->post
 					Layout::title($post->title);
-					if ($post->mode_id <> Config::get('mrcore.default_mode')) {
+					if ($post->mode_id <> Config::get('mrcore.wiki.default_mode')) {
 						Layout::mode($post->mode->constant);
 					}
 
@@ -97,12 +97,11 @@ class AnalyzeRoute {
 									'controller_namespace' => "$namespace\Http\Controllers",
 									'provider' => "$namespace\Providers\\".studly_case($package)."ServiceProvider",
 									'path' => "../Apps/$path",
-									'routes' => "../Apps/$path/Http/routes.php",
+									'routes' => "Http/routes.php",
 									'route_prefix' => $routePrefix,
-									'views' => "../Apps/$path/Views",
+									'views' => "Views",
 									'view_prefix' => $package,
-									'assets' => "../Apps/$path/Assets",
-									'enabled' => true,
+									'assets' => "Assets",
 								];
 
 								// Dynamically add and register this module!

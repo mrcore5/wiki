@@ -118,8 +118,8 @@ Route::any('/file/{slug?}', array(
 ))->where('slug', '(.*)?');
 
 // Webdav subdomain route
-if (Config::get('mrcore.webdav_base_url')) {
-	Route::group(array('domain' => Config::get('mrcore.webdav_base_url')), function()
+if (Config::get('mrcore.wiki.webdav_base_url')) {
+	Route::group(array('domain' => Config::get('mrcore.wiki.webdav_base_url')), function()
 	{
 		$verbs = array('GET', 'PUT', 'POST', 'DELETE',
 			'PROPFIND', 'PROPPATCH', 'MKCOL','COPY',

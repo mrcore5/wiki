@@ -36,14 +36,14 @@ class WikiServiceProvider extends ServiceProvider {
 		Layout::css('css/wiki-bundle.css');
 
 		// Add my own internal configs
-		Config::set('mrcore.reserved_routes', array(
+		Config::set('mrcore.wiki.reserved_routes', array(
 			'admin', 'router', 'file', 'files', 'search', 'auth', 'password', 'assets'
 		));
-		Config::set('mrcore.legacy_routes', array(
+		Config::set('mrcore.wiki.legacy_routes', array(
 			'topic', 'topics', 'post', 'posts',
 		));
-		Config::set('mrcore.magic_folders', array('.sys', 'app'));
-		Config::set('mrcore.magic_folders_exceptions', array('.sys/public', 'app/public'));
+		Config::set('mrcore.wiki.magic_folders', array('.sys', 'app'));
+		Config::set('mrcore.wiki.magic_folders_exceptions', array('.sys/public', 'app/public'));
 
 		// Login Event Listener
 		Event::listen('auth.login', function($user) {
@@ -94,7 +94,6 @@ class WikiServiceProvider extends ServiceProvider {
 		$this->commands('Mrcore\Modules\Wiki\Console\Commands\AppGitCommand');
 		$this->commands('Mrcore\Modules\Wiki\Console\Commands\AppMakeCommand');
 
-
 	}
 
 	/**
@@ -104,17 +103,30 @@ class WikiServiceProvider extends ServiceProvider {
 	 */
 	private function definePublishing()
 	{
-		// Migration publishing rules
-		// ./artisan vendor:publish --provider="Mrcore\Modules\Wiki\Providers\WikiServiceProvider" --tag="migrations" --force
+		# App base path
+		$path = realpath(__DIR__.'/../');
+
+		// Merge config
+		$this->mergeConfigFrom("$path/Config/wiki.php", 'mrcore.wiki');
+
+		// Config publishing rules
+		// ./artisan vendor:publish --tag="mrcore.wiki.configs"
 		$this->publishes([
-			__DIR__.'/../Database/Migrations' => base_path('/database/migrations'),
-		], 'migrations');
+			"$path/Config" => base_path('/config/mrcore'),
+		], 'mrcore.wiki.configs');
+
+		// Migration publishing rules
+		// ./artisan vendor:publish --tag="mrcore.wiki.migrations"
+		$this->publishes([
+			"$path/Database/Migrations" => base_path('/database/migrations'),
+		], 'mrcore.wiki.migrations');
 
 		// Seed publishing rules
-		// ./artisan vendor:publish --provider="Mrcore\Modules\Wiki\Providers\WikiServiceProvider" --tag="seeds" --force
+		// ./artisan vendor:publish --tag="mrcore.wiki.seeds"
 		$this->publishes([
-			__DIR__.'/../Database/Seeds' => base_path('/database/seeds'),
-		], 'seeds');	
+			"$path/Database/Seeds" => base_path('/database/seeds'),
+		], 'mrcore.wiki.seeds');	
+
 	}
 
 	/**

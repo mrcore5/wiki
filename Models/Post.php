@@ -10,7 +10,7 @@ use Request;
 use Mrcore\Models\User;
 use Mreschke\Helpers\String;
 use Mrcore\Modules\Wiki\Support\Crypt;
-use Mrcore\Modules\Wiki\Support\Cache;
+use Mrcore\Modules\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Mrcore\Modules\Wiki\Support\Indexer;
 use Mrcore\Modules\Wiki\Parser\Wiki as WikiParser;
@@ -300,9 +300,10 @@ class Post extends Model
 			}
 
 			// Add Site Global Content
-			if (Config::get('mrcore.global') > 0) {
-				if ($this->id != Config::get('mrcore.global')) {
-					$global = Post::find(Config::get('mrcore.global'));
+			$globalID = Config::get('mrcore.wiki.global');
+			if ($globalID > 0) {
+				if ($this->id != $globalID) {
+					$global = Post::find($globalID);
 					if (isset($global)) {
 						$global->parse();
 						$this->content = $global->content . $this->content;
@@ -379,7 +380,7 @@ class Post extends Model
 			#$data = preg_replace('"= "', '', $data); //Strip center tags
 			#$data = preg_replace('", ,"', '', $data); //Strip dual comma space comma
 
-			$teaserLength = Config::get('mrcore.teaser_length', 500);
+			$teaserLength = Config::get('mrcore.wiki.teaser_length', 500);
 			if (strlen($data) >= $teaserLength) {
 				$data = trim(substr($data, 0, $teaserLength)).'...';
 			}
@@ -520,7 +521,7 @@ class Post extends Model
 			$words = array_values(Indexer::stemText($query));
 			$posts->where(function($sql) use ($words) {
 				foreach ($words as $word) {
-					if (Config::get('mrcore.use_encryption')) $word = md5($word);
+					if (Config::get('mrcore.wiki.use_encryption')) $word = md5($word);
 					$sql->orWhere(function($sql2) use ($word) {
 						$sql2->where('post_indexes.word', '=', $word);
 					});
@@ -573,7 +574,7 @@ class Post extends Model
 			// Pagination does NOT work in L5 with having statement, so no paging for queries
 			$posts = $posts->selectRaw("posts.*, sum(weight) as weight")->get();
 		} else {
-			$posts = $posts->select('posts.*')->paginate(Config::get('mrcore.search_pagesize'));
+			$posts = $posts->select('posts.*')->paginate(Config::get('mrcore.wiki.search_pagesize'));
 			$posts->setPath(Config::get('app.url') . '/' . Request::path());
 		}
 		

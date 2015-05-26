@@ -484,12 +484,12 @@ $(function() {
 
 	// Help button
 	$('#btnHelp').click(function() {
-		window.open("{{ Config::get('mrcore.help') }}");
+		window.open("{{ Config::get('mrcore.wiki.help') }}");
 	})
 
 	// Cheatsheet button
 	$('#btnCheat').click(function() {
-		window.open("{{ Config::get('mrcore.cheat') }}", "_blank", "width=800, height=600");
+		window.open("{{ Config::get('mrcore.wiki.cheat') }}", "_blank", "width=800, height=600");
 	})
 
 	// Type dropdown changed (if app show framework dropdown)
@@ -497,7 +497,7 @@ $(function() {
 	{
 		var type = $('#type option:selected').val();
 		$('#framework-group').hide();
-		if (type == {{ Config::get('mrcore.app_type') }}) {
+		if (type == {{ Config::get('mrcore.wiki.app_type') }}) {
 			$('#framework-group').show();
 		}
 

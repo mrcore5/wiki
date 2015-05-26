@@ -79,7 +79,7 @@ class IndexPosts extends Command {
 				if (strlen($word) <= 25) {
 					$postIndex = new PostIndex;
 					$postIndex->post_id = $post->id;
-					if (Config::get('mrcore.use_encryption')) {
+					if (Config::get('mrcore.wiki.use_encryption')) {
 						$postIndex->word = md5($word);
 					} else {
 						$postIndex->word = $word;

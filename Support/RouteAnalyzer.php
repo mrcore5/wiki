@@ -73,7 +73,7 @@ class RouteAnalyzer {
 
 		// Url is /
 		if (count($segments) == 0) {
-			$this->route = RouterTable::byPost(Config::get('mrcore.home'));
+			$this->route = RouterTable::byPost(Config::get('mrcore.wiki.home'));
 			if (isset($this->route)) {
 				// NO increment, I will do later after permission check
 				#$this->route->incrementClicks($this->route);

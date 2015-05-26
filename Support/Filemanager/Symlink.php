@@ -18,7 +18,7 @@ class Symlink {
 		$this->post = $post;
 		$this->originalRoute = $originalRoute;
 		$this->route = Router::findDefaultByPost($post->id);
-		$this->files = Config::get('mrcore.files');
+		$this->files = Config::get('mrcore.wiki.files');
 	}
 
 

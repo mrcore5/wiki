@@ -7,7 +7,12 @@ class Config implements ConfigInterface
 
 	public function host()
 	{
-		return ConfigFacade::get('mrcore.host');	
+		// Get hostname, so if server_name is
+		// mrcore5.lindev.mreschke.com, return just mreschke.net
+		$root = $_SERVER['SERVER_NAME'];
+		$tmp = explode(".", $root);
+		$host = $tmp[count($tmp) -2].'.'.$tmp[count($tmp) -1];
+		return $host;
 	}
 
 	public function base()
@@ -17,17 +22,17 @@ class Config implements ConfigInterface
 
 	public function baseUrl()
 	{
-		return ConfigFacade::get('mrcore.base_url');
+		return substr(ConfigFacade::get('app.url'), strpos(ConfigFacade::get('app.url'), '://') +1);
 	}
 
 	public function files()
 	{
-		return ConfigFacade::get('mrcore.files');
+		return ConfigFacade::get('mrcore.wiki.files');
 	}
 
 	public function filesBaseUrl()
 	{
-		return ConfigFacade::get('mrcore.file_base_url');
+		substr(ConfigFacade::get('app.url'), strpos(ConfigFacade::get('app.url'), '://') +3).'/file';
 	}
 
 }

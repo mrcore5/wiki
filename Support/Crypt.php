@@ -13,7 +13,7 @@ class Crypt {
 	 */
 	public static function encrypt($content)
 	{
-		if (Config::get('mrcore.use_encryption')) {
+		if (Config::get('mrcore.wiki.use_encryption')) {
 			return LaravelCrypt::encrypt($content);
 		} else {
 			return $content;
@@ -28,7 +28,7 @@ class Crypt {
 	 */
 	public static function decrypt($content)
 	{
-		if (Config::get('mrcore.use_encryption')) {
+		if (Config::get('mrcore.wiki.use_encryption')) {
 			return LaravelCrypt::decrypt($content);
 		} else {
 			return $content;

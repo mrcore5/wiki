@@ -13,7 +13,7 @@ class UserEventHandler {
 	 */
 	public function onUserLoggedIn($user)
 	{
-		if ($user->id != Config::get('mrcore.anonymous')) {
+		if ($user->id != Config::get('mrcore.wiki.anonymous')) {
 			// Save users permissions into session
 			$perms = $user->getPermissions();
 

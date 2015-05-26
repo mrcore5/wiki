@@ -57,7 +57,8 @@ class Mrcore implements MrcoreInterface
 	 */
 	public function asset($file)
 	{
-		$baseUrl = Config::get('mrcore.base_url');
+		// Baseurl remove the http: or http, just //xys.com
+		$baseUrl = substr(Config::get('app.url'), strpos(Config::get('app.url'), '://') +1);
 		return $baseUrl . '/' . $file;
 	}
 
@@ -68,11 +69,11 @@ class Mrcore implements MrcoreInterface
 	public function file($file)
 	{
 		if (substr($file, 0, 1) == '/') {
-			return Config::get('mrcore.files').$file;
+			return Config::get('mrcore.wiki.files').$file;
 		} elseif (is_numeric(substr($file, 0, 1))) {
-			return Config::get('mrcore.files').'/index/'.$file;
+			return Config::get('mrcore.wiki.files').'/index/'.$file;
 		} else {
-			return Config::get('mrcore.files').'/index/'.$this->post()->id().'/'.$file;
+			return Config::get('mrcore.wiki.files').'/index/'.$this->post()->id().'/'.$file;
 		}
 	}
 

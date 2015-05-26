@@ -161,7 +161,7 @@ $(function() {
 	{
 		var type = $('#type option:selected').val();
 		$('#framework-group').hide();
-		if (type == {{ Config::get('mrcore.app_type') }}) {
+		if (type == {{ Config::get('mrcore.wiki.app_type') }}) {
 			$('#framework-group').show();
 		}
 	});

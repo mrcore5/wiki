@@ -18,7 +18,7 @@ class Guard extends \Illuminate\Auth\Guard {
 		$user = $this->user();
 
 		if (isset($user)) {
-			return ($user->id != Config::get('mrcore.anonymous'));
+			return ($user->id != Config::get('mrcore.wiki.anonymous'));
 		}
 		return false;
 		

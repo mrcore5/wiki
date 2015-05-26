@@ -1,7 +1,7 @@
 <?php namespace Mrcore\Modules\Wiki\Models;
 
 use DB;
-use Mrcore\Modules\Wiki\Support\Cache;
+use Mrcore\Modules\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class Router extends Model

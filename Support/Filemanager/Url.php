@@ -22,11 +22,11 @@ class Url {
 	 */
 	public function __construct($url)
 	{
-		$this->absBase = Config::get('mrcore.files');
+		$this->absBase = Config::get('mrcore.wiki.files');
 		if ($this->getProtocol() == "webdav") {
-			$urlBase = Config::get('mrcore.webdav_base_url');
+			$urlBase = Config::get('mrcore.wiki.webdav_base_url');
 		} else {
-			$urlBase = Config::get('mrcore.base_url').'/'.Route::currentRouteName();
+			$urlBase = substr(Config::get('app.url'), strpos(Config::get('app.url'), '://') +1).'/'.Route::currentRouteName();
 		}
 		if (preg_match("'$urlBase/(.*)'i", $url, $matches)) {
 			$this->path = urldecode($matches[1]);
@@ -220,7 +220,7 @@ class Url {
 				for ($i = count($segments)-1; $i >= 0; $i--) {
 					$abs = $this->getAbsBase(). '/' . $path;
 					#echo "Analyze Symlink $abs</br />";
-					if (preg_match("'".Config::get('mrcore.files')."/index/(\d+)'", $abs, $matches)) {
+					if (preg_match("'".Config::get('mrcore.wiki.files')."/index/(\d+)'", $abs, $matches)) {
 						// Found post ID right in path becuase using /index/42/somefile path (non static)
 						$this->postID = $matches[1];
 						break;
@@ -319,11 +319,11 @@ class Url {
 				if (isset($post)) {
 					// Check if magic folder
 					if (!$post->hasPermission('write')) {
-						foreach (Config::get('mrcore.magic_folders') as $magic) {
+						foreach (Config::get('mrcore.wiki.magic_folders') as $magic) {
 							if (preg_match('"/'.$magic.'($|/)"i', $this->getPath())) {
 								// Found magic folder in url, check if not in magicExceptions
 								$foundException = false;
-								foreach (Config::get('mrcore.magic_folders_exceptions') as $exception) {
+								foreach (Config::get('mrcore.wiki.magic_folders_exceptions') as $exception) {
 									if (preg_match('"/'.$exception.'($|/)"i', $this->getPath())) {
 										$foundException = true;
 										break;
