@@ -9,7 +9,7 @@ use Hash;
 use stdClass;
 use Response;
 use Carbon\Carbon;
-use Mrcore\Models\User;
+use Mrcore\Modules\Wiki\Models\User;
 use Mreschke\Helpers\String;
 use Mrcore\Modules\Wiki\Models\Role;
 use Mrcore\Modules\Wiki\Models\UserRole;

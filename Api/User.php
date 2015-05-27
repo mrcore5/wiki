@@ -107,14 +107,12 @@ class User implements UserInterface
 
 	public function isAuthenticated()
 	{
-		#return $this->model()->isAuthenticated();
-		#return \Mrcore\Models\User::isAuthenticated();
 		return Auth::check();
 	}	
 
 	public static function hasPermission($constant)
 	{
-		return \Mrcore\Models\User::hasPermission($constant);
+		return \Mrcore\Modules\Wiki\Models\User::hasPermission($constant);
 	}
 
 	/**

@@ -26,7 +26,7 @@ class Revision extends Model
 	 */
 	public function post()
 	{
-		return $this->hasOne('Mrcore\Models\User', 'id', 'post_id');
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\User', 'id', 'post_id');
 	}
 
 	/**

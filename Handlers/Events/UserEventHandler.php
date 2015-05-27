@@ -5,6 +5,7 @@ use Config;
 use Session;
 use Carbon\Carbon;
 use Illuminate\Events\Dispatcher;
+use Mrcore\Modules\Wiki\Models\User;
 
 class UserEventHandler {
 
@@ -15,6 +16,9 @@ class UserEventHandler {
 	{
 		if ($user->id != Config::get('mrcore.wiki.anonymous')) {
 			// Save users permissions into session
+
+			// Convert user into wiki user model
+			$user = User::find($user->id);
 			$perms = $user->getPermissions();
 
 			Session::put('user.admin', false);

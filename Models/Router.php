@@ -29,7 +29,7 @@ class Router extends Model
 	 */
 	public function creator()
 	{
-		return $this->hasOne('Mrcore\Models\User', 'id', 'created_by');
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\User', 'id', 'created_by');
 	}
 
 	/**
@@ -38,7 +38,7 @@ class Router extends Model
 	 */
 	public function updater()
 	{
-		return $this->hasOne('Mrcore\Models\User', 'id', 'updated_by');
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\User', 'id', 'updated_by');
 	}	
 
 	/**

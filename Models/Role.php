@@ -27,7 +27,7 @@ class Role extends Model
 	 */
 	public function users()
 	{
-		return $this->belongsToMany('Mrcore\Models\User', 'user_roles');
+		return $this->belongsToMany('Mrcore\Modules\Wiki\Models\User', 'user_roles');
 	}	
 
 	/**

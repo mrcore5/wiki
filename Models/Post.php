@@ -7,7 +7,7 @@ use Input;
 use Config;
 use Session;
 use Request;
-use Mrcore\Models\User;
+use Mrcore\Modules\Wiki\Models\User;
 use Mreschke\Helpers\String;
 use Mrcore\Modules\Wiki\Support\Crypt;
 use Mrcore\Modules\Foundation\Support\Cache;
@@ -102,7 +102,7 @@ class Post extends Model
 	 */
 	public function creator()
 	{
-		return $this->hasOne('Mrcore\Models\User', 'id', 'created_by');
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\User', 'id', 'created_by');
 	}
 
 	/**
@@ -111,7 +111,7 @@ class Post extends Model
 	 */
 	public function updater()
 	{
-		return $this->hasOne('Mrcore\Models\User', 'id', 'updated_by');
+		return $this->hasOne('Mrcore\Modules\Wiki\Models\User', 'id', 'updated_by');
 	}
 
 	/**
