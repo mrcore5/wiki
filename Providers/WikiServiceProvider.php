@@ -6,7 +6,9 @@ use Config;
 use Layout;
 use Mrcore;
 use Module;
+use Illuminate\Routing\Router;
 use Mrcore\Modules\Wiki\Models\Post;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\AliasLoader;
 use Mrcore\Modules\Foundation\Support\ServiceProvider;
 
@@ -24,13 +26,19 @@ class WikiServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function boot()
+	public function boot(Kernel $kernel, Router $router)
 	{
 		// Mrcore Module Tracking
 		Module::trace(get_class(), __function__);
 
 		// Define publishing rules
 		$this->definePublishing();
+
+		// Register Global Middleware
+		$kernel->pushMiddleware('Mrcore\Modules\Wiki\Http\Middleware\AnalyzeRoute');
+
+		// Register Route based Middleware
+		$router->middleware('auth.admin', 'Mrcore\Modules\Wiki\Http\Middleware\AuthenticateAdmin');
 
 		// Register additional css assets
 		Layout::css('css/wiki-bundle.css');
@@ -82,12 +90,11 @@ class WikiServiceProvider extends ServiceProvider {
 		$this->app->alias('Mrcore\Modules\Wiki\Api\Router', 'Mrcore\Modules\Wiki\Api\RouterInterface');
 		$this->app->alias('Mrcore\Modules\Wiki\Api\User',   'Mrcore\Modules\Wiki\Api\UserInterface');		
 
+		// Merge config
+		$this->mergeConfigFrom(__DIR__.'/../Config/wiki.php', 'mrcore.wiki');
+
 		// Extend both Auth Guard and UserProvider
 		$this->extendAuth();
-
-		// Register Middleware
-		$kernel = $this->app->make('Illuminate\Contracts\Http\Kernel');
-		$kernel->pushMiddleware('Mrcore\Modules\Wiki\Http\Middleware\AnalyzeRoute');
 
 		// Register our Artisan Commands
 		$this->commands('Mrcore\Modules\Wiki\Console\Commands\IndexPosts');
@@ -105,9 +112,6 @@ class WikiServiceProvider extends ServiceProvider {
 	{
 		# App base path
 		$path = realpath(__DIR__.'/../');
-
-		// Merge config
-		$this->mergeConfigFrom("$path/Config/wiki.php", 'mrcore.wiki');
 
 		// Config publishing rules
 		// ./artisan vendor:publish --tag="mrcore.wiki.configs"

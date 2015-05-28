@@ -89,7 +89,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public static function find($id, $columns = array('*'))
 	{
 		return Cache::remember(strtolower(get_class())."_$id", function() use($id, $columns) {
-			return parent::query()->find($id, $columns);
+			return static::query()->find($id, $columns);
 		});		
 	}
 

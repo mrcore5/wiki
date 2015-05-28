@@ -40,7 +40,7 @@ class Badge extends Model
 	public static function find($id, $columns = array('*'))
 	{
 		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
-			return parent::query()->find($id, $columns);
+			return static::query()->find($id, $columns);
 		});		
 	}
 
@@ -54,7 +54,7 @@ class Badge extends Model
 	{
 		#for some reason this was getting a partial query without images ??
 		#return Cache::remember(strtolower(get_class()).":all", function() use($columns) {
-			return parent::orderBy('name')->get($columns);
+			return static::orderBy('name')->get($columns);
 		#});
 	}
 

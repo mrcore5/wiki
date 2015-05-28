@@ -11,29 +11,6 @@
 |
 */
 
-/*Route::get('/', function() {
-	#dd(Auth::check());
-
-	#abort(401);
-	return view('welcome-to-mrcore');
-	#dd(\Auth::user());
-	#dd(\Session::all());
-});
-
-Route::get('home', function() {
-	return view('welcome-to-mrcore');
-});
-
-return;*/
-
-// Filters
-Route::filter('auth.admin', function() {
-	if (!Auth::admin()) {
-		return Response::denied();
-	}
-});
-
-
 // Route to Home Page Post (/)
 $homeExists = Route::getRoutes()->hasNamedRoute('home');
 if (!$homeExists) {
@@ -171,7 +148,8 @@ Route::any('/search/{slug?}', array(
 
 
 // Admin Routes
-Route::group(array('prefix' => 'admin', 'before' => 'auth.admin'), function() {
+#Route::group(array('prefix' => 'admin', 'before' => 'auth.admin'), function() {
+Route::group(array('prefix' => 'admin', 'middleware' => 'auth.admin'), function() {
 	
 	// Cannot get resource controllers action() to work
 	//<li><a href="{{ action('Mrcore\Modules\Wiki\Http\Controllers\UserController@index') }}">Users</a></li>
