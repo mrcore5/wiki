@@ -206,7 +206,7 @@ class Post extends Model
 	{
 		return Cache::remember(strtolower(get_class()).'/titles:all', function() 
 		{
-			return Post::where('deleted', false)->get()->lists('id', 'title');
+			return Post::where('deleted', false)->get()->lists('id', 'title')->all();
 		});
 	}
 

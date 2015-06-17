@@ -72,8 +72,8 @@ class IndexPosts extends Command {
 			foreach (Indexer::getWords(
 				$post->title,
 				Crypt::decrypt($post->content),
-				$post->badges->lists('name'),
-				$post->tags->lists('name')
+				$post->badges->lists('name')->all(),
+				$post->tags->lists('name')->all()
 			) as $word => $weight) {
 				// Add word to index
 				if (strlen($word) <= 25) {

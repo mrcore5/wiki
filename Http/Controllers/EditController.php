@@ -54,24 +54,24 @@ class EditController extends Controller {
 		$uncommitted = Revision::where('post_id', '=', $id)->where('revision', '=', 0)->get();
 
 		// Get all formats
-		$formats = Format::all(['name', 'id'])->lists('name', 'id');
+		$formats = Format::all(['name', 'id'])->lists('name', 'id')->all();
 
 		// Get all types
-		$types = Type::all(['name', 'id'])->lists('name', 'id');
+		$types = Type::all(['name', 'id'])->lists('name', 'id')->all();
 
 		// Get all frameworks
-		$frameworks = Framework::all(['name', 'id'])->lists('name', 'id');
+		$frameworks = Framework::all(['name', 'id'])->lists('name', 'id')->all();
 
 		// Get all modes
-		$modes = Mode::all(['name', 'id'])->lists('name', 'id');
+		$modes = Mode::all(['name', 'id'])->lists('name', 'id')->all();
 
 		// Get all badges
-		$badges = Badge::all(['name', 'id'])->lists('name', 'id');
-		$postBadges = $post->badges->lists('id');
+		$badges = Badge::all(['name', 'id'])->lists('name', 'id')->all();
+		$postBadges = $post->badges->lists('id')->all();
 
 		// Get all tags
-		$tags = Tag::all(['name', 'id'])->lists('name', 'id');
-		$postTags = $post->tags->lists('id');
+		$tags = Tag::all(['name', 'id'])->lists('name', 'id')->all();
+		$postTags = $post->tags->lists('id')->all();
 
 		// Get hashtag
 		$hashtag = Hashtag::findByPost($id);
@@ -468,19 +468,19 @@ class EditController extends Controller {
 		if (!User::hasPermission('create')) return Response::denied();
 
 		// Get all formats
-		$formats = Format::all(['name', 'id'])->lists('name', 'id');
+		$formats = Format::all(['name', 'id'])->lists('name', 'id')->all();
 
 		// Get all types
-		$types = Type::all(['name', 'id'])->lists('name', 'id');
+		$types = Type::all(['name', 'id'])->lists('name', 'id')->all();
 
 		// Get all frameworks
-		$frameworks = Framework::all(['name', 'id'])->lists('name', 'id');
+		$frameworks = Framework::all(['name', 'id'])->lists('name', 'id')->all();
 
 		// Get all badges
-		$badges = Badge::all(['name', 'id'])->lists('name', 'id');
+		$badges = Badge::all(['name', 'id'])->lists('name', 'id')->all();
 
 		// Get all tags
-		$tags = Tag::all(['name', 'id'])->lists('name', 'id');
+		$tags = Tag::all(['name', 'id'])->lists('name', 'id')->all();
 
 		return View::make('edit.new', array(
 			'formats' => $formats,
