@@ -135,14 +135,20 @@ Route::match($webdavMethods, '/file/{id?}/{slug?}', function ($id = null, $slug 
 
 
 // Search route
+
+Route::get('/search/ajax', 'SearchController@ajaxSearch');
+
 Route::any('/search/searchbox', array(
 	'uses' => 'SearchController@searchMenu',
 	'as' => 'searchMenu'
 ));
+
 Route::any('/search/{slug?}', array(
 	'uses' => 'SearchController@search',
 	'as' => 'search'
 ))->where('slug', '(.*)?'); #must be last of the searches
+
+
 
 // Net route
 

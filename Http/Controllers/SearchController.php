@@ -104,7 +104,7 @@ class SearchController extends Controller {
 			if (preg_match('/tag(.*)/i', $param, $matches)) $selectedTags[] = $matches[1];
 		}
 
-		$posts = Post::getSearchPosts($query, Input::get());
+		$posts = Post::getSearchPostsNew(urldecode($query), Input::get());
 
 
 		// Get Site and User Globals
@@ -145,7 +145,22 @@ class SearchController extends Controller {
 		// Parse Post Now!
 		$post->parse();
 
-		return $post->content;
+		$postContent = $post->content;
+		return View::make("search.layout-searchbox", compact('postContent'));
+	}
+
+	/**
+	 * Gets search results via ajax
+	 * @return json
+	 */
+	public function ajaxSearch()
+	{
+		$keyword = Input::get('keyword');
+		$posts = Post::getSearchPostsNew($keyword, null);
+		foreach ($posts as $post) {
+			$post->url = Post::route($post->id);
+		}
+		return Response::json($posts);
 	}
 
 }

@@ -1,4 +1,5 @@
 @extends('layout')
+@include('layout._partials.search')
 
 @section('title')
 	Search Results
@@ -9,10 +10,7 @@
 	<link href="{{ asset('css/search.css') }}" rel="stylesheet">
 @stop
 
-
-
 @section('content')
-
 
 	{!! Form::open(array('id' => 'form', 'method' => 'get')) !!}
 
@@ -128,7 +126,26 @@
 
 			<div class="controls">
 				<div class="row">
-					<div class="sort form-horizontal">
+					<div style="float:right;padding-bottom:5px;">
+						<div style="display:table-cell;padding-right:10px;">
+						{!! Form::label('sort', 'Sort By ', array(
+							'class' => 'control-label'
+						)) !!}
+						</div>
+						<div style="display:table-cell;padding-right:10px;">
+						{!! Form::select('sort', $sortOptions, Input::get('sort'), array(
+							'id' => 'sort',
+							'class' => 'form-control',
+						)) !!}
+						</div>
+						<!--
+						<div style="display:table-cell;">
+							<button class="btn btn-primary btn-sm"><i class="fa fa-list"></i> List</button>
+							<button class="btn btn-default btn-sm"><i class="fa fa-th-list"></i> Detail</button>
+						</div>					
+						-->
+					</div>
+					<!--<div class="sort form-horizontal">
 						<div class="form-group">
 							{!! Form::label('sort', 'Sort', array(
 								'class' => 'col-sm-1 control-label'
@@ -173,9 +190,9 @@
 									)
 								) !!}
 							</div>-->
-						</div>
+					<!--	</div>
 					</div>
-
+					-->
 
 					<div class="view">
 						<!--{{ HTML::decode(
@@ -243,17 +260,12 @@
 
 	{!! Form::close() !!}
 
-
 @stop
-
-
-
-
-
 
 @section('script')
 <!--<script src="{{ asset('js/jquery.chosen.min.js') }}"></script>-->
 <script>
+var onSearch = true;
 $(function() {
 	// Start chosen (before validator)
 	//$(".chosen-select").chosen({ width: '100%' });
@@ -276,6 +288,7 @@ $(function() {
 	});
 
 	$(':checkbox').click(function() {
+		console.log('fire');
 		submitForm();
 	});
 
@@ -294,7 +307,6 @@ $(function() {
 $(document).bind('keyup', '/', function() {
 	$('#search').focus();
 });
-
 
 </script>
 @stop

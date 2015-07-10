@@ -585,6 +585,133 @@ class Post extends Model
 		return $posts;
 	}
 
+	/**
+	 * New version of getSearchPosts
+	 * @param  string $keyword
+	 * @return 
+	 */
+	public static function getSearchPostsNew($keyword, $params)
+	{
+		$posts = DB::table('posts');
+
+		// Parse parameters
+		$unread = false;
+		$hidden = false;
+		$deleted = false;
+		$sort = 'relevance';
+
+		if ($params) {
+			foreach ($params as $param => $value) {
+				if ($param == 'sort') $sort = $value;
+				if ($param == 'unread') $unread = true;
+				if ($param == 'hidden') $hidden = true;
+				if ($param == 'deleted') $deleted = true;
+			}
+		}
+
+		// Filter posts by read permissions (or user is creator)
+		if (!Auth::admin()) {
+			$posts = $posts
+			->leftJoin('post_permissions', 'posts.id', '=', 'post_permissions.post_id')
+			->leftJoin('permissions', 'post_permissions.permission_id', '=', 'permissions.id')
+			->leftJoin('user_roles', 'post_permissions.role_id', '=', 'user_roles.role_id')
+			->where(function($query) {
+				$query->where('permissions.constant', '=', 'read')
+					->orWhere('posts.created_by', '=', Auth::user()->id);
+			})
+			->where(function($query) {
+				$query->where('user_roles.user_id', '=', Auth::user()->id)
+					->orWhereNull('user_roles.user_id');
+			});
+		}		
+
+		if (starts_with(strtolower($keyword), 'badge:')) {
+			$item = trim(substr($keyword, 6));
+			$split = explode(" ", $item);
+			$keyword = '';
+			if (sizeOf($split) > 1) {
+				$item = $split[0];
+				array_shift($split);
+				$keyword = implode(" ", $split);
+			}			
+			//search badges
+			$badge = DB::table('badges')->where('name', $item)->first();
+			$badgeID = ($badge) ? $badge->id : 0;
+			$posts = $posts->join('post_badges', 'posts.id', '=', 'post_badges.post_id')
+						->where('post_badges.badge_id', $badgeID);										
+		} else if (starts_with(strtolower($keyword), 'tag:')) {
+			$item = trim(substr($keyword, 4));
+			$split = explode(" ", $item);
+			$keyword = '';
+			if (sizeOf($split) > 1) {
+				$item = $split[0];
+				array_shift($split);
+				$keyword = implode(" ", $split);
+			}
+			//search tags
+			$tag = DB::table('tags')->where('name', $item)->first();
+			$tagID = ($tag) ? $tag->id : 0;
+			$posts = $posts->join('post_tags', 'posts.id', '=', 'post_tags.post_id')
+						->where('post_tags.tag_id', $tagID);	
+		} else if (starts_with(strtolower($keyword), 'type:')) {
+			$item = trim(substr($keyword, 5));
+			$split = explode(" ", $item);
+			$keyword = '';
+			if (sizeOf($split) > 1) {
+				$item = $split[0];
+				array_shift($split);
+				$keyword = implode(" ", $split);
+			}			
+			//search types
+			$type = DB::table('types')->where('name', $item)->first();
+			$typeID = ($type) ? $type->id : 0;
+			$posts = $posts->where('posts.type_id', $typeID);	
+		} else if (starts_with(strtolower($keyword), 'format:')) {
+			$item = trim(substr($keyword, 7));
+			$split = explode(" ", $item);
+			$keyword = '';
+			if (sizeOf($split) > 1) {
+				$item = $split[0];
+				array_shift($split);
+				$keyword = implode(" ", $split);
+			}
+			//search formats
+			$format = DB::table('formats')->where('name', $item)->first();
+			$formatID = ($format) ? $format->id : 0;
+			$posts = $posts->where('posts.format_id', $formatID);	
+		}
+
+		if ($keyword != '') {
+			$posts->where('title', 'LIKE', '%'.$keyword.'%');
+		}
+
+		// Filter deleted and hidden
+		//fix unread
+		$posts->where('deleted', $deleted);
+		$posts->where('hidden', $hidden);
+
+		// Order by
+		if ($sort == 'updatednew') {
+			$posts->orderBy('posts.updated_at', 'desc');
+		} elseif ($sort == 'updatedold') {
+			$posts->orderBy('posts.updated_at', 'asc');
+		} elseif ($sort == 'creatednew') {
+			$posts->orderBy('posts.created_at', 'desc');
+		} elseif ($sort == 'createdold') {
+			$posts->orderBy('posts.created_at', 'asc');
+		} elseif ($sort == 'titleaz') {
+			$posts->orderBy('posts.title', 'asc');
+		} elseif ($sort == 'titleza') {
+			$posts->orderBy('posts.title', 'desc');
+		} elseif ($sort == 'mostviews') {
+			$posts->orderBy('posts.clicks', 'desc');
+		} else {
+			$posts->orderBy('posts.updated_at', 'desc');
+		}
+
+		return $posts->take(10)->get();		
+	}
+
 
 	/**
 	 * Get post permissions (read/write/comment) for current user

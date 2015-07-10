@@ -7,5 +7,4 @@
 			<a href="{{ Mrcore\Modules\Wiki\Models\Post::route($result->id) }}">{{ $result->title }}</a>
 		</div>
 	@endforeach
-
 @stop
