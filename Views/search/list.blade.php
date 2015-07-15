@@ -19,7 +19,7 @@
 			<div class="search-post-title">
 				<span class="search-post-badges">
 					@foreach ($postBadges as $badge)
-						<a href="{{ URL::route('search').'?badge'.$badge->id.'=1' }}">
+						<a href="{{ URL::route('search').'?badge='.$badge->name }}">
 							<img src="{{ asset('uploads/'.$badge->image) }}">
 						</a>
 					@endforeach
@@ -37,15 +37,15 @@
 			</div>
 			<div class="search-post-url">
 				@if ($result->type_id == 2)
-					<a href="{{ URL::route('search').'?type2=1' }}">
+					<a href="{{ URL::route('search').'?type=page' }}">
 						<i class="fa fa-globe text-success" style="margin-left: 3px"></i>
 					</a>
 				@elseif ($result->type_id == 3) 
-					<a href="{{ URL::route('search').'?type3=1' }}">
+					<a href="{{ URL::route('search').'?type=app' }}">
 						<i class="fa fa-sun-o text-danger" style="margin-left: 2px"></i>
 					</a>
 				@else
-					<a href="{{ URL::route('search').'?type1=1' }}">
+					<a href="{{ URL::route('search').'?type=document' }}">
 						<i class="fa fa-file-text-o text-primary" style="margin-left: 3px"></i>
 					</a>
 				@endif
@@ -54,7 +54,7 @@
 			<div class="search-post-tags">
 				<i class="fa fa-tags"></i>
 				@foreach ($postTags as $tag)
-					<a href="{{ URL::route('search').'?tag'.$tag->id.'=1' }}" class="search-post-tag">{{ $tag->name }}</a>
+					<a href="{{ URL::route('search').'?tag='.$tag->name }}" class="search-post-tag">{{ $tag->name }}</a>
 				@endforeach
 			</div>
 

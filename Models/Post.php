@@ -659,7 +659,7 @@ class Post extends Model
 			$posts = $posts->join('types', 'types.id', '=', 'type_id');
 			$posts->where(function($sql) use ($types) {
 				foreach ($types as $type) {
-					$sql->where('types.name', $type);
+					$sql->orWhere('types.name', $type);
 				}
 
 			});
@@ -670,7 +670,7 @@ class Post extends Model
 			$posts = $posts->join('formats', 'formats.id', '=', 'format_id');
 			$posts->where(function($sql) use ($formats) {
 				foreach ($formats as $format) {
-					$sql->where('formats.name', $format);
+					$sql->orWhere('formats.name', $format);
 				}
 
 			});
@@ -746,6 +746,7 @@ class Post extends Model
 		}
 
 		$posts->setPath(Config::get('app.url') . '/' . Request::path());
+
 		return $posts;			
 	}
 

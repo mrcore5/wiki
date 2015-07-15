@@ -271,31 +271,39 @@
 @stop
 
 @section('script')
-<!--<script src="{{ asset('js/jquery.chosen.min.js') }}"></script>-->
 <script>
 var onSearch = true;
 $(function() {
-	// Start chosen (before validator)
-	//$(".chosen-select").chosen({ width: '100%' });
 
 	$('#sort').change(function() {
-		submitForm();
+		buildSearchQuery();
 	});
 	
 	$('#list').click(function() {
 		$('#view').val("list");
-		submitForm();
+		buildSearchQuery();
 	});
 	$('#detail').click(function() {
 		$('#view').val("detail");
-		submitForm();
+		buildSearchQuery();
 	});
 	$('#sitemap').click(function() {
 		$('#view').val("sitemap");
-		submitForm();
+		buildSearchQuery();
 	});
 
 	$(':checkbox').click(function() {
+		if ($(this).attr('name') == 'badge') {
+			$("input[name='badge']").prop('checked', false);
+			$(this).prop('checked', true);			
+		}
+
+		if ($(this).attr('name') == 'hidden') {
+			$("input[name='deleted']").prop('checked', false);
+		} else if ($(this).attr('name') == 'deleted') {
+			$("input[name='hidden']").prop('checked', false);
+		}
+
 		buildSearchQuery();
 	});
 
@@ -319,9 +327,14 @@ $(function() {
 		if ($("input[name='deleted']").is(':checked')) {
 			params.push('deleted=true');
 		}
-		if ($('#search').val() != '') {
-			params.push('key='+$('#search').val());
+		if ('{{ Input::get('key') }}' != '') {
+			params.push('key={{ Input::get('key')}}');
 		}
+
+		if ($('#sort option:selected').val() != 'relevance') {
+			params.push('sort=' + $('#sort option:selected').val());
+		}
+
 		var query = params.join('&');
 		window.location = "{{ URL::to('/search')}}" + "?" + query;		
 	}
@@ -336,18 +349,6 @@ $(function() {
 			query = key +'='+items.join(',');
 		}
 		return query;		
-	}
-
-	function submitForm() {
-		// Don't send view= if view is blank, mucks up url
-		if (!$('#view').val()) $('#view').removeAttr('name');
-
-		// Dont send sort=relevance, assume default
-		if ($('#sort option:selected').val() == 'relevance') $('#sort').removeAttr('name');
-		
-		// Submit Form
-		//this.form.submit();
-		buildSearchQuery();
 	}
 
 	function setCheckboxes() {

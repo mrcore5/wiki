@@ -16,7 +16,7 @@
 	<div id="search-container">
 		<input type="text" name="search" id="search" class="form-control" style="width:500px;" value="{{ $searchQuery or '' }}" /> 
 		<button id="search-go-btn" class="btn btn-success btn-sm" style="margin-left:15px;margin-bottom:8px;">Go <i class="fa fa-arrow-right"></i></button>
-		<div id="search-results-box">
+		<div id="search-results-box" style="display:none;">
 		</div>	
 	</div>
 @stop
@@ -71,14 +71,16 @@
 					method: 'GET',
 					url: '/search/ajax' + query,
 				}).done(function(data) {
-					$('#search-results-box').empty();
+					$('#search-results-box').empty();					
+					$('#search-results-box').show();
 					$.each(data.data, function(key, item) {
+
 						if (item.id) {			
 							$('#search-results-box').append(buildSearchResultItem(item, keyword));				
 						}
 					});	
 				});
-			    }.bind(this), 500);	    		
+			    }.bind(this), 250);	    		
 	    	} else {
 	    		$('#search-results-box').empty();
 	    	}
@@ -143,45 +145,48 @@
 			var params = [];
 			var pieces = query.split(' ');
 			for (var i = 0; i < pieces.length; i++) {
-				if (pieces[i].indexOf('badge:') >= 0) {
-					// is badge
-					if (pieces[i] == 'badge:') {
-						// has space
-						badges = 'badge=' + pieces[i+1];	
-						i++;
+				if (pieces[i].length > 0) {
+					console.log('a:'+pieces[i]);
+					if (pieces[i].indexOf('badge:') >= 0) {
+						// is badge
+						if (pieces[i] == 'badge:') {
+							// has space
+							badges = 'badge=' + pieces[i+1];	
+							i++;
+						} else {
+							// no space
+							var split = pieces[i].split(':');
+							badges = 'badge=' + split[1];
+						}
+						params.push(badges);									
+					} else if (pieces[i].indexOf('type:') >= 0) {
+						// is type
+						if (pieces[i] == 'type:') {
+							// has space
+							types = 'type=' + pieces[i+1];
+							i++;
+						} else {
+							// no space
+							var split = pieces[i].split(':');
+							types = 'type=' + split[1];	
+						}					
+						params.push(types);					
+					} else if (pieces[i].indexOf('format:') >= 0) {
+						// is format
+						if (pieces[i] == 'format:') {
+							// has space
+							formats = 'format=' + pieces[i+1];
+							i++;
+						} else {
+							// no space
+							var split = pieces[i].split(':');
+							formats = 'format=' + split[1];	
+						}					
+						params.push(formats);					
 					} else {
-						// no space
-						var split = pieces[i].split(':');
-						badges = 'badge=' + split[1];
+						// keyword
+						keywords.push(pieces[i]);
 					}
-					params.push(badges);									
-				} else if (pieces[i].indexOf('type:') >= 0) {
-					// is type
-					if (pieces[i] == 'type:') {
-						// has space
-						types = 'type=' + pieces[i+1];
-						i++;
-					} else {
-						// no space
-						var split = pieces[i].split(':');
-						types = 'type=' + split[1];	
-					}					
-					params.push(types);					
-				} else if (pieces[i].indexOf('format:') >= 0) {
-					// is format
-					if (pieces[i] == 'format:') {
-						// has space
-						formats = 'format=' + pieces[i+1];
-						i++;
-					} else {
-						// no space
-						var split = pieces[i].split(':');
-						formats = 'format=' + split[1];	
-					}					
-					params.push(formats);					
-				} else {
-					// keyword
-					keywords.push(pieces[i]);
 				}
 			}
 			url += '?' + params.join('&');

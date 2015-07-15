@@ -19,3 +19,38 @@
 </li>
 
 @stop
+
+@section('scripts')
+	@parent
+	<script type="text/javascript">
+		// Search
+		var searchLoaded = false;
+		$('#search-button').click(function() {
+			setTimeout(function() { $('input[name="search"]').focus() }, 100);
+			if (!searchLoaded) {
+				searchLoaded = true;        	
+				$.get(
+					"{{ URL::route('searchMenu') }}"
+				).done(function(response) {
+					$('#searchbox').html(response);
+				});
+			}
+		});
+
+		//Hotkey / click search button
+		$(document).bind('keyup', '/', function() {
+			if (typeof onSearch === 'undefined') {
+				$('#search-button').click();
+			}
+			$("#search").focus();
+		});
+
+
+		// Hotkey ESCAPE closes main search menu
+		$(document).bind('keyup', 'esc', function() {
+			if ($('#search-menu').is(":visible")) {
+				$('#search-button').click();
+			}
+		});
+	</script>
+@stop

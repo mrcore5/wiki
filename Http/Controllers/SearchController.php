@@ -116,10 +116,18 @@ class SearchController extends Controller {
 		#$post->prepare();
 		#$postContent = $post->content;
 
+		$searchQuery = '';
+		foreach (Input::all() as $key => $value) {
+			if ($key == 'key') {
+				$searchQuery .= $value.' ';	
+			} else if($key == 'badge' || $key == 'format' || $key == 'type' || $key == 'tag') {
+				$searchQuery .= $key.':'.$value.' ';
+			}
+		}
 
 		return View::make("search.$view", array(
 			'posts' => $posts,
-			'searchQuery' => urldecode(Input::get('key')),
+			'searchQuery' => urldecode($searchQuery),
 			'badges' => $badges,
 			'tags' => $tags,
 			'selectedTags' => $selectedTags,
@@ -156,10 +164,16 @@ class SearchController extends Controller {
 	public function ajaxSearch()
 	{
 		$posts = Post::getSearchPostsNew(Input::get());
+		$ajaxPosts = new \stdClass();
 		foreach ($posts as $post) {
-			$post->url = Post::route($post->id);
+			$ajaxPost = new \stdClass();
+			$ajaxPost->id = $post->id;
+			$ajaxPost->url = Post::route($post->id);			
+			$ajaxPost->title = $post->title;
+			$ajaxPosts->data[] = $ajaxPost;
 		}
-		return Response::json($posts);
+
+		return Response::json($ajaxPosts);
 	}
 
 }
