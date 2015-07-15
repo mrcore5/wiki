@@ -389,7 +389,9 @@ class Post extends Model
 		return $data;
 	}
 
-
+	/**
+	 * OLD
+	 */
 	/**
 	 * Get accessible posts based on search criteria
 	 * Main search/browser post function
@@ -587,26 +589,43 @@ class Post extends Model
 
 	/**
 	 * New version of getSearchPosts
-	 * @param  string $keyword
+	 * @param  array $params
 	 * @return 
 	 */
-	public static function getSearchPostsNew($keyword, $params)
+	public static function getSearchPostsNew($params)
 	{
-		$posts = DB::table('posts');
-
 		// Parse parameters
+		$badges = array();
+		$tags = array();
+		$types = array();
+		$formats = array();
 		$unread = false;
 		$hidden = false;
 		$deleted = false;
 		$sort = 'relevance';
+		$keyword = '';
 
 		if ($params) {
 			foreach ($params as $param => $value) {
+				if ($param == 'badge') $badges = explode(',', $value);
+				if ($param == 'type') $types = explode(',', $value);
+				if ($param == 'format') $formats = explode(',', $value);
+				if ($param == 'tag') $tags = explode(',', $value);
+				if ($param == 'key') $keyword = $value;
+				
 				if ($param == 'sort') $sort = $value;
 				if ($param == 'unread') $unread = true;
 				if ($param == 'hidden') $hidden = true;
-				if ($param == 'deleted') $deleted = true;
+				if ($param == 'deleted') $deleted = true;				
 			}
+		}
+
+		// Search for search work in post indexes table
+		if ($keyword != '') {
+			$posts = DB::table('post_indexes')
+				->join('posts', 'post_indexes.post_id', '=', 'posts.id');
+		} else {
+			$posts = DB::table('posts');
 		}
 
 		// Filter posts by read permissions (or user is creator)
@@ -623,66 +642,68 @@ class Post extends Model
 				$query->where('user_roles.user_id', '=', Auth::user()->id)
 					->orWhereNull('user_roles.user_id');
 			});
-		}		
+		}	
 
-		if (starts_with(strtolower($keyword), 'badge:')) {
-			$item = trim(substr($keyword, 6));
-			$split = explode(" ", $item);
-			$keyword = '';
-			if (sizeOf($split) > 1) {
-				$item = $split[0];
-				array_shift($split);
-				$keyword = implode(" ", $split);
-			}			
-			//search badges
-			$badge = DB::table('badges')->where('name', $item)->first();
-			$badgeID = ($badge) ? $badge->id : 0;
-			$posts = $posts->join('post_badges', 'posts.id', '=', 'post_badges.post_id')
-						->where('post_badges.badge_id', $badgeID);										
-		} else if (starts_with(strtolower($keyword), 'tag:')) {
-			$item = trim(substr($keyword, 4));
-			$split = explode(" ", $item);
-			$keyword = '';
-			if (sizeOf($split) > 1) {
-				$item = $split[0];
-				array_shift($split);
-				$keyword = implode(" ", $split);
-			}
-			//search tags
-			$tag = DB::table('tags')->where('name', $item)->first();
-			$tagID = ($tag) ? $tag->id : 0;
-			$posts = $posts->join('post_tags', 'posts.id', '=', 'post_tags.post_id')
-						->where('post_tags.tag_id', $tagID);	
-		} else if (starts_with(strtolower($keyword), 'type:')) {
-			$item = trim(substr($keyword, 5));
-			$split = explode(" ", $item);
-			$keyword = '';
-			if (sizeOf($split) > 1) {
-				$item = $split[0];
-				array_shift($split);
-				$keyword = implode(" ", $split);
-			}			
-			//search types
-			$type = DB::table('types')->where('name', $item)->first();
-			$typeID = ($type) ? $type->id : 0;
-			$posts = $posts->where('posts.type_id', $typeID);	
-		} else if (starts_with(strtolower($keyword), 'format:')) {
-			$item = trim(substr($keyword, 7));
-			$split = explode(" ", $item);
-			$keyword = '';
-			if (sizeOf($split) > 1) {
-				$item = $split[0];
-				array_shift($split);
-				$keyword = implode(" ", $split);
-			}
-			//search formats
-			$format = DB::table('formats')->where('name', $item)->first();
-			$formatID = ($format) ? $format->id : 0;
-			$posts = $posts->where('posts.format_id', $formatID);	
+		// Filter by Badges
+		if (sizeOf($badges) > 0) {
+			$posts = $posts->join('post_badges', 'posts.id', '=', 'post_badges.post_id')->join('badges', 'badges.id', '=', 'post_badges.badge_id');
+			$posts->where(function($sql) use ($badges) {
+				foreach ($badges as $badge) {
+					$sql->where('badges.name', $badge);
+				}
+			});
+		}	
+		
+		// Filter by Types
+		if (sizeOf($types) > 0) {
+			$posts = $posts->join('types', 'types.id', '=', 'type_id');
+			$posts->where(function($sql) use ($types) {
+				foreach ($types as $type) {
+					$sql->where('types.name', $type);
+				}
+
+			});
 		}
 
+		// Filter by Formats
+		if (sizeOf($formats) > 0) {
+			$posts = $posts->join('formats', 'formats.id', '=', 'format_id');
+			$posts->where(function($sql) use ($formats) {
+				foreach ($formats as $format) {
+					$sql->where('formats.name', $format);
+				}
+
+			});
+		}
+
+		// Filter by Tags
+		if (sizeOf($tags)> 0) {
+			$posts = $posts->join('post_tags', 'posts.id', '=', 'post_tags.post_id')->join('tags', 'tags.id', '=', 'post_tags.tag_id');
+			$posts->where(function($sql) use ($tags) {
+				foreach ($tags as $tag) {
+					$sql->where('tags.name', $tag);
+				}
+			});
+		}
+
+		// Filter by word search query
+		// Must be last becasue of order bys
 		if ($keyword != '') {
-			$posts->where('title', 'LIKE', '%'.$keyword.'%');
+			$words = array_values(Indexer::stemText($keyword));
+			$posts->where(function($sql) use ($words) {
+				foreach ($words as $word) {
+					if (Config::get('mrcore.wiki.use_encryption')) $word = md5($word);
+					$sql->orWhere(function($sql2) use ($word) {
+						$sql2->where('post_indexes.word', '=', $word);
+					});
+				};
+			});
+			if (!preg_match('/or/i', $keyword)) {
+				// If using AND we include this having
+				#$posts->having('cnt', '>=', count($words));
+				#$posts->select(DB::raw("HAVING count(*) >= ".count($words)));
+				$posts->havingRaw('count(*) >= '.count($words));
+			}
 		}
 
 		// Filter deleted and hidden
@@ -706,10 +727,26 @@ class Post extends Model
 		} elseif ($sort == 'mostviews') {
 			$posts->orderBy('posts.clicks', 'desc');
 		} else {
-			$posts->orderBy('posts.updated_at', 'desc');
+			if ($keyword != '') {
+				// Relevance
+				$posts->orderBy('weight', 'desc');
+			} else {
+				// NO query, so relevance is updated_at
+				$posts->orderBy('posts.updated_at', 'desc');
+			}
 		}
 
-		return $posts->take(10)->get();		
+		// If query, just include group by after order by
+		if ($keyword != '') $posts->groupBy('post_indexes.post_id');
+
+		if ($keyword != '') {
+			$posts = $posts->selectRaw("posts.*, sum(weight) as weight")->paginate(Config::get('mrcore.wiki.search_pagesize'));
+		} else {
+			$posts = $posts->select('posts.*')->paginate(Config::get('mrcore.wiki.search_pagesize'));			
+		}
+
+		$posts->setPath(Config::get('app.url') . '/' . Request::path());
+		return $posts;			
 	}
 
 

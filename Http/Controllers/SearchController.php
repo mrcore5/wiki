@@ -104,7 +104,7 @@ class SearchController extends Controller {
 			if (preg_match('/tag(.*)/i', $param, $matches)) $selectedTags[] = $matches[1];
 		}
 
-		$posts = Post::getSearchPostsNew(urldecode($query), Input::get());
+		$posts = Post::getSearchPostsNew(Input::get());
 
 
 		// Get Site and User Globals
@@ -119,7 +119,7 @@ class SearchController extends Controller {
 
 		return View::make("search.$view", array(
 			'posts' => $posts,
-			'searchQuery' => urldecode($query),
+			'searchQuery' => urldecode(Input::get('key')),
 			'badges' => $badges,
 			'tags' => $tags,
 			'selectedTags' => $selectedTags,
@@ -155,8 +155,7 @@ class SearchController extends Controller {
 	 */
 	public function ajaxSearch()
 	{
-		$keyword = Input::get('keyword');
-		$posts = Post::getSearchPostsNew($keyword, null);
+		$posts = Post::getSearchPostsNew(Input::get());
 		foreach ($posts as $post) {
 			$post->url = Post::route($post->id);
 		}

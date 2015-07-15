@@ -28,7 +28,7 @@
 				@foreach ($badges as $badge)
 					<div class="checkbox">
 						<label>
-							<input name="badge" type="checkbox" value="{{ $badge->name }}" id="chk-badge-{{ strtolower($badge->name) }}">
+							<input name="badge{{ $badge->id }}" type="checkbox" value="1" {{ Input::has('badge'.$badge->id) ? 'checked="checked"' : '' }}>
 							<span class="lbl">
 								<img src="{{ asset('uploads/'.$badge->image) }}" style="width: 16px">
 								{{ $badge->name }}
@@ -54,7 +54,7 @@
 				@foreach ($types as $type)
 					<div class="checkbox">
 						<label>
-							<input name="type" type="checkbox" value="{{ $type->name }}" id="chk-type-{{ strtolower($type->name) }}">
+							<input name="type{{ $type->id }}" type="checkbox" value="1" {{ Input::has('type'.$type->id) ? 'checked="checked"' : '' }}>
 							<span class="lbl">
 								{{ $type->name }}
 							</span>
@@ -68,7 +68,7 @@
 				@foreach ($formats as $format)
 					<div class="checkbox">
 						<label>
-							<input name="format" type="checkbox" value="{{ $format->name }}" id="chk-format-{{ strtolower($format->name) }}">
+							<input name="format{{ $format->id }}" type="checkbox" value="1" {{ Input::has('format'.$format->id) ? 'checked="checked"' : '' }}>
 							<span class="lbl">
 								{{ $format->name }}
 							</span>
@@ -89,7 +89,7 @@
 				</div>-->
 				<div class="checkbox">
 					<label>
-						<input name="hidden" type="checkbox" value="1" id="chk-hidden-true">
+						<input name="hidden" type="checkbox" value="1" {{ Input::has('hidden') ? 'checked="checked"' : '' }}>
 						<span class="lbl">
 							Hidden
 						</span>
@@ -97,7 +97,7 @@
 				</div>
 				<div class="checkbox">
 					<label>
-						<input name="deleted" type="checkbox" value="1" id="chk-deleted-true">
+						<input name="deleted" type="checkbox" value="1" {{ Input::has('deleted') ? 'checked="deleted"' : '' }}>
 						<span class="lbl">
 							Deleted
 						</span>
@@ -238,27 +238,19 @@
 					<?
 					$get = Input::get();	unset($get['page']);
 					$currentPage = $posts->currentPage();
-					$perPage = $posts->perPage();
-					$starting = 1 + ($perPage * ($currentPage - 1));
-					$ending = ($perPage * $currentPage);
 					$count = $posts->count();
 					$total = $posts->total();
-
-					if ($ending > $total) $ending = $total;
 					?>
 					{!! $posts->appends($get)->render() !!}
 				@else
 					<?
 					$currentPage = 1;
-					$perPage = 10;
 					$count = count($posts);
 					$total = $count;
-					$starting = 1 + ($perPage * ($currentPage - 1));
-					$ending = ($perPage * $currentPage);
 					?>
 				@endif	
-				<div class="results-pagination-info">					
-					Showing {{ $starting }} to {{ $ending }} of {{ $total }} results
+				<div class="results-pagination-info">
+					Showing {{ $currentPage }} to {{ $count }} of {{ $total }} results
 				</div>
 			</div>
 			
@@ -296,47 +288,9 @@ $(function() {
 	});
 
 	$(':checkbox').click(function() {
-		buildSearchQuery();
+		console.log('fire');
+		submitForm();
 	});
-
-	function buildSearchQuery() {
-		var params = [];
-		var badges = buildQueryItems('badge'); 
-		if (badges.length > 0) {
-			params.push(buildQueryItems('badge'));	
-		}
-		var types = buildQueryItems('type'); 
-		if (types.length > 0) {
-			params.push(buildQueryItems('type'));	
-		}
-		var formats = buildQueryItems('format'); 
-		if (formats.length > 0) {
-			params.push(buildQueryItems('format'));	
-		}
-		if ($("input[name='hidden']").is(':checked')) {
-			params.push('hidden=true');
-		}
-		if ($("input[name='deleted']").is(':checked')) {
-			params.push('deleted=true');
-		}
-		if ($('#search').val() != '') {
-			params.push('key='+$('#search').val());
-		}
-		var query = params.join('&');
-		window.location = "{{ URL::to('/search')}}" + "?" + query;		
-	}
-
-	function buildQueryItems(key) {
-		var items = [];
-		var query = '';
-		$("input[name='" + key + "']:checked").each(function() {
-			items.push($(this).val());			
-		});
-		if (items.length > 0) {
-			query = key +'='+items.join(',');
-		}
-		return query;		
-	}
 
 	function submitForm() {
 		// Don't send view= if view is blank, mucks up url
@@ -346,26 +300,8 @@ $(function() {
 		if ($('#sort option:selected').val() == 'relevance') $('#sort').removeAttr('name');
 		
 		// Submit Form
-		//this.form.submit();
-		buildSearchQuery();
+		this.form.submit();
 	}
-
-	function setCheckboxes() {
-		selectCheckboxes('{{ Input::get("badge") }}', 'badge');
-		selectCheckboxes('{{ Input::get("type") }}', 'type');
-		selectCheckboxes('{{ Input::get("format") }}', 'format');
-		selectCheckboxes('{{ Input::get("hidden") }}', 'hidden');
-		selectCheckboxes('{{ Input::get("deleted") }}', 'deleted');
-	}
-
-	function selectCheckboxes(collection, key) {
-		var items = collection.split(',');
-		for(i = 0; i < items.length; i++) {			
-			$('#chk-'+key+'-'+items[i].toLowerCase()).attr('checked', 'checked');
-		}
-	}
-
-	setCheckboxes();
 });
 
 $(document).bind('keyup', '/', function() {
