@@ -293,11 +293,14 @@ $(function() {
 	});
 
 	$(':checkbox').click(function() {
+		var checked = $(this).prop('checked');
 		if ($(this).attr('name') == 'badge') {
 			$("input[name='badge']").prop('checked', false);
-			$(this).prop('checked', true);			
+			if (checked) {
+				$(this).prop('checked', true);			
+			}
 		}
-
+		
 		if ($(this).attr('name') == 'hidden') {
 			$("input[name='deleted']").prop('checked', false);
 		} else if ($(this).attr('name') == 'deleted') {
