@@ -127,7 +127,7 @@ class SearchController extends Controller {
 
 		return View::make("search.$view", array(
 			'posts' => $posts,
-			'searchQuery' => urldecode($searchQuery),
+			'searchQuery' => trim(urldecode($searchQuery)),
 			'badges' => $badges,
 			'tags' => $tags,
 			'selectedTags' => $selectedTags,
