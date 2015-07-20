@@ -138,16 +138,45 @@
 @section('scripts')
 @parent
     <script type="text/javascript">
-        $('#app-navigation-uncollapsed').click(function() {
+        var templateData = JSON.parse(sessionStorage.getItem("template"));
+
+        if (templateData != null && templateData['navigationCollapsed'] != null && templateData['navigationCollapsed'] == true) {
+            collapseNavigation();
+        }
+        
+        function collapseNavigation()
+        {
             $('#app-layout-navigation').hide();
             $('#app-layout-content').removeClass('col-md-10').addClass('col-md-12').attr('style', 'padding-left:20px');
-            $('#app-navigation-collapsed').css('display', 'inline');           
+            $('#app-navigation-collapsed').css('display', 'inline');  
+
+            if (templateData == null) {
+                var templateData = {};
+            }
+            templateData['navigationCollapsed'] = true;
+            sessionStorage.setItem("template", JSON.stringify(templateData));
+        }
+
+        function unCollapseNavigation()
+        {
+            $('#app-layout-navigation').show();
+            $('#app-layout-content').removeClass('col-md-12').addClass('col-md-10');
+            $('#app-navigation-collapsed').hide();   
+
+            if (templateData == null) {
+                var templateData = {};
+            }
+
+            templateData['navigationCollapsed'] = false;
+            sessionStorage.setItem("template", JSON.stringify(templateData));
+        }
+
+        $('#app-navigation-uncollapsed').click(function() {            
+            collapseNavigation();             
         });
 
         $('#app-navigation-collapsed').click(function() {           
-            $('#app-layout-navigation').show();
-            $('#app-layout-content').removeClass('col-md-12').addClass('col-md-10');
-            $('#app-navigation-collapsed').hide();           
+           unCollapseNavigation();        
         });
     </script>    
 @stop
