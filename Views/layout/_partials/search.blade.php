@@ -14,10 +14,10 @@
 
 @section('subheader-content')
 	<div id="search-container">
-		<input type="text" name="search" id="search" class="form-control" style="width:500px;" value="{{ $searchQuery or '' }}" /> 
+		<input type="text" name="search" id="search" class="form-control" style="width:500px;" value="{{ $searchQuery or '' }}" />
 		<button id="search-go-btn" class="btn btn-success btn-sm" style="margin-left:15px;margin-bottom:8px;">Go <i class="fa fa-arrow-right"></i></button>
 		<div id="search-results-box" style="display:none;">
-		</div>	
+		</div>
 	</div>
 @stop
 
@@ -46,15 +46,15 @@
 	        $('#search-results-box a').removeClass('selected');
 	        if (position != -1) {
 	        	$('#search-results-box a:eq(' + position + ')').addClass('selected');
-	        }	        
+	        }
 	    } else if (key == 13 ) {
-	    	// Enter key 
+	    	// Enter key
 	    	if (position > -1) {
 	    		// go to direct link
 	    		window.location = $('#search-results-box a:eq(' + position + ')').attr('href');
 	    	} else {
 	    		// go to search page
-	    		//window.location = '/search/' + keyword;	    		
+	    		//window.location = '/search/' + keyword;
 	    		submitSearch();
 	    	}
 	    } else {
@@ -65,29 +65,29 @@
 
 			    timeout = setTimeout(function() {
 			   	var query = getSearchQuery();
-			   	
+
 		        // ajax
 				$.ajax({
 					method: 'GET',
 					url: '/search/ajax' + query,
 				}).done(function(data) {
-					$('#search-results-box').empty();					
+					$('#search-results-box').empty();
 					$('#search-results-box').show();
 					$.each(data.data, function(key, item) {
 
-						if (item.id) {			
-							$('#search-results-box').append(buildSearchResultItem(item, keyword));				
+						if (item.id) {
+							$('#search-results-box').append(buildSearchResultItem(item, keyword));
 						}
-					});	
+					});
 				});
-			    }.bind(this), 250);	    		
+			    }.bind(this), 250);
 	    	} else {
 	    		$('#search-results-box').empty();
 	    	}
 	    }
 	});
 
-	function buildSearchResultItem(item, keyword) {		
+	function buildSearchResultItem(item, keyword) {
 		var str = '<a class="item" href="' + item.url + '">';
 		str += '<span class="item-title">' + highlightKeyword(item.title, keyword) + '</span><br />';
 		str += '<span class="item-url">' + highlightKeyword(item.url, keyword) + '</span>';
@@ -95,7 +95,7 @@
 		return str;
 	}
 
-	function highlightKeyword(text, keyword) {	
+	function highlightKeyword(text, keyword) {
 		if (keyword.indexOf('badge:') == 0) {
 			keyword = getTrueKeyword(keyword, 6);
 		} else if (keyword.indexOf('tag:') == 0) {
@@ -106,7 +106,7 @@
 			keyword = getTrueKeyword(keyword, 6);
 		}
 		if (text) {
-			text = text.toLowerCase().replace(new RegExp(keyword.toLowerCase(), 'g'), '<span class="item-highlight">' + keyword.toLowerCase() + '</span>');			
+			text = text.toLowerCase().replace(new RegExp(keyword.toLowerCase(), 'g'), '<span class="item-highlight">' + keyword.toLowerCase() + '</span>');
 		}
 		return text;
 	}
@@ -137,7 +137,7 @@
 		var query = $('#search').val();
 		var keyword = '';
 		var url = '';
-		
+
 		if (query.indexOf('badge:') >= 0 || query.indexOf('type:') >= 0 || query.indexOf('format:') >= 0) {
 			// contains badge, type or format
 			var badges, types, formats;
@@ -151,14 +151,14 @@
 						// is badge
 						if (pieces[i] == 'badge:') {
 							// has space
-							badges = 'badge=' + pieces[i+1];	
+							badges = 'badge=' + pieces[i+1];
 							i++;
 						} else {
 							// no space
 							var split = pieces[i].split(':');
 							badges = 'badge=' + split[1];
 						}
-						params.push(badges);									
+						params.push(badges);
 					} else if (pieces[i].indexOf('type:') >= 0) {
 						// is type
 						if (pieces[i] == 'type:') {
@@ -168,9 +168,9 @@
 						} else {
 							// no space
 							var split = pieces[i].split(':');
-							types = 'type=' + split[1];	
-						}					
-						params.push(types);					
+							types = 'type=' + split[1];
+						}
+						params.push(types);
 					} else if (pieces[i].indexOf('format:') >= 0) {
 						// is format
 						if (pieces[i] == 'format:') {
@@ -180,9 +180,9 @@
 						} else {
 							// no space
 							var split = pieces[i].split(':');
-							formats = 'format=' + split[1];	
-						}					
-						params.push(formats);					
+							formats = 'format=' + split[1];
+						}
+						params.push(formats);
 					} else {
 						// keyword
 						keywords.push(pieces[i]);
@@ -190,7 +190,7 @@
 				}
 			}
 			url += '?' + params.join('&');
-			keyword = keywords.join(' ');			
+			keyword = keywords.join(' ');
 		} else {
 			keyword = query;
 		}
@@ -201,6 +201,7 @@
 			.replace(/%23/g, '#')
 			.replace(/%2C/g, ',')
 			.replace(/%2F/g, '/');
+		keyword = keyword.replace('#', 'hashtag:');
 
 		if (url.indexOf('?') >= 0) {
 			url += '&';
@@ -215,7 +216,7 @@
 	// Submit Search
 	function submitSearch() {
 		var url = "{{ URL::route('search') }}" + getSearchQuery();
-		window.location = url;		
+		window.location = url;
 	}
 
 	</script>

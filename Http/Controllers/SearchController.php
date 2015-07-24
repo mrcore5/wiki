@@ -13,6 +13,7 @@ use Mrcore\Modules\Wiki\Models\Type;
 use Mrcore\Modules\Wiki\Models\Post;
 use Mrcore\Modules\Wiki\Models\Badge;
 use Mrcore\Modules\Wiki\Models\Format;
+use Mrcore\Modules\Wiki\Models\Hashtag;
 
 class SearchController extends Controller {
 
@@ -35,14 +36,14 @@ class SearchController extends Controller {
 		#array_shift($query); #don't use
 		#$query = implode("/", $query);
 		# I want to keep the / because I use them in queries
-		$query = substr(Request::path(), 7); #removes to leading search/
-
+		#$query = substr(Request::path(), 7); #removes to leading search/
+		$query = Input::get('key');
 
 		// Custom queries
 		if (is_numeric($query)) {
 			// Query is an integer, redirect to that post id
 			return Redirect::route('permalink', array($query));
-		
+
 		} elseif (starts_with($query, "/")) {
 			// Query begins with /, so redirect to that given url
 			return Redirect::route('url', $query);
@@ -69,7 +70,7 @@ class SearchController extends Controller {
 
 		// Get all badges
 		$badges = Badge::all();
-		
+
 		// Get all tags
 		$tags = Tag::all();
 
@@ -119,7 +120,7 @@ class SearchController extends Controller {
 		$searchQuery = '';
 		foreach (Input::all() as $key => $value) {
 			if ($key == 'key') {
-				$searchQuery .= $value.' ';	
+				$searchQuery .= $value.' ';
 			} else if($key == 'badge' || $key == 'format' || $key == 'type' || $key == 'tag') {
 				$searchQuery .= $key.':'.$value.' ';
 			}
@@ -168,7 +169,7 @@ class SearchController extends Controller {
 		foreach ($posts as $post) {
 			$ajaxPost = new \stdClass();
 			$ajaxPost->id = $post->id;
-			$ajaxPost->url = Post::route($post->id);			
+			$ajaxPost->url = Post::route($post->id);
 			$ajaxPost->title = $post->title;
 			$ajaxPosts->data[] = $ajaxPost;
 		}
