@@ -26,21 +26,40 @@
 		</tr>
 		</thead>
 		<tbody>
-		@foreach ($roles as $role)
-			<tr>
-			<td>{{ $role->name }}</td>
+		<?
+			foreach ($roles as $role) {
+				echo "<tr><td>$role->name</td>";
 
-			@foreach ($perms as $perm)
-				<? $found = false; ?>
-				@foreach ($postPerms as $postPerm)
-					@if ($postPerm->permission_id == $perm->id && $postPerm->role_id == $role->id)
-						<? $found = true; break; ?>
-					@endif
-				@endforeach
-				<td>{!! Form::checkbox('perm', 'role_'.$role->id.'_perm_'.$perm->id, $found, array()) !!}</td>
-			@endforeach
-			</tr>
-		@endforeach
+				// Check if user has access to this role
+				if (!Auth::admin()) {
+					$hasRole = false;
+					foreach ($userRoles as $userRole) {
+						if ($userRole->role_id == $role->id) {
+							$hasRole = true;
+							break;
+						}
+					}
+				} else {
+					$hasRole = true;
+				}
+
+				// Print all roles permissions, even if no access...but disable checkbox if need
+				foreach ($perms as $perm) {
+					$found = false;
+					foreach ($postPerms as $postPerm) {
+						if ($postPerm->permission_id == $perm->id && $postPerm->role_id == $role->id) {
+							$found = true;
+							break;
+						}
+					}
+					$checked = ''; $disabled = '';
+					if ($found) $checked = 'checked';
+					if (!$hasRole) $disabled = 'disabled';
+					echo "<td><input type='checkbox' name='perm' value='role_".$role->id."_perm_".$perm->id."' $checked $disabled></td>";
+				}
+
+			}
+		?>
 		</tbody>
 	</table>
 	</div>
