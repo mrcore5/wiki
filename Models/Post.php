@@ -41,9 +41,9 @@ class Post extends Model
 	 * Flag weather or not the current $this->content has been decrypted yet
 	 */
 	private $decrypted;
-  
+
 	/**
-	 * Many-to-many badges relationship 
+	 * Many-to-many badges relationship
 	 * Usage: foreach ($post->badges as $badge) $badge->name
 	 */
 	public function badges()
@@ -52,7 +52,7 @@ class Post extends Model
 	}
 
 	/**
-	 * Many-to-many badges relationship 
+	 * Many-to-many badges relationship
 	 * Usage: foreach ($post->tags as $tag) $tag->name
 	 */
 	public function tags()
@@ -125,7 +125,7 @@ class Post extends Model
 	{
 		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
 			return static::query()->find($id, $columns);
-		});		
+		});
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Post extends Model
 		return Cache::remember(strtolower(get_class()).":all", function()  {
 			return static::orderBy('constant')->get($columns);
 		});
-	}	
+	}
 
 	/*
 	 * Clear all cache
@@ -151,7 +151,7 @@ class Post extends Model
 		Cache::forget(strtolower(get_class()).':all');
 		Cache::forget(strtolower(get_class()).'/titles:all');
 		if (isset($id)) Cache::forget(strtolower(get_class()).":$id");
-	}	
+	}
 
 	/**
 	 * Decrypt $this->content
@@ -161,7 +161,7 @@ class Post extends Model
 		$this->content = Crypt::decrypt($this->content);
 		$this->decrypted = true;
 	}
-	
+
 	/**
 	 * Encrypt $this->content
 	 */
@@ -186,7 +186,7 @@ class Post extends Model
 		if (isset($route)) {
 			if ($route->static) {
 				//Static route enabled, this is a static named route
-				return URL::route('url', array('slug' => $route->slug));	
+				return URL::route('url', array('slug' => $route->slug));
 			} else {
 				//Default route disabled means use permalink /42/actual-slug
 				return URL::route('permalink', array('id' => $postID, 'slug' => $route->slug));
@@ -204,7 +204,7 @@ class Post extends Model
 	 */
 	public static function allTitles()
 	{
-		return Cache::remember(strtolower(get_class()).'/titles:all', function() 
+		return Cache::remember(strtolower(get_class()).'/titles:all', function()
 		{
 			return Post::where('deleted', false)->get()->lists('id', 'title')->all();
 		});
@@ -230,7 +230,7 @@ class Post extends Model
 			$parser->postCreator = $this->created_by;
 			$parser->isAuthenticated = Auth::check();
 			$parser->isAdmin = Auth::admin();
-		
+
 		} elseif ($format == 'php') {
 			$parser = new PhpParser();
 
@@ -309,7 +309,7 @@ class Post extends Model
 						$this->content = $global->content . $this->content;
 					}
 				}
-			}		
+			}
 		}
 		return $this;
 	}
@@ -351,7 +351,7 @@ class Post extends Model
 			$data = preg_replace('"\[(.|\n)*?\]"', '', $data); //Strip [xxxx]
 			$data = preg_replace('"\(\((.|\n)*?\)\)"', '', $data); //Strip ((xxxx))
 			$data = preg_replace('"\+(.|\n)*?\n"', '', $data); //Strip +xxx
-			
+
 			#$data = preg_replace('"\#\#(.|)*?\|"', '', $data); //Strip ##xxxx|
 			#$data = preg_replace('"\|\|\~"', '', $data); //Strip ||~
 			#$data = preg_replace('"\|\|"', '', $data); //Strip ||
@@ -359,15 +359,15 @@ class Post extends Model
 			#$data = preg_replace('"\*\*"', '', $data); //Strip **
 			#$data = preg_replace('"\'\'\'"', '', $data); //Strip '''
 			#$data = preg_replace('"\_\_"', '', $data); //Strip __
-			
+
 			#$preg = array(
 			#    '"\*\*|"',
-				
+
 			$data = preg_replace('"\*\*|\'\'\'|\_\_|\/\/|\|\|\~|\|\||\#\#(.|)*?\|"', '', $data);
-			
+
 			$data = preg_replace('"\* "', '', $data); //Strip *space
 			$data = preg_replace('"\#\#"', '', $data); //Strip ##
-			$data = preg_replace('"\# "', '', $data); //Strip #space 
+			$data = preg_replace('"\# "', '', $data); //Strip #space
 			$data = preg_replace('"\`\`"', '', $data); //Strip ``
 			$data = preg_replace('"\{\{"', '', $data); //Strip {{
 			$data = preg_replace('"\}\}"', '', $data); //Strip }}
@@ -536,7 +536,7 @@ class Post extends Model
 				$posts->havingRaw('count(*) >= '.count($words));
 			}
 		}
-		
+
 		#->havingRaw('count(parent.id) = '.count($this->parents));
 
 
@@ -565,7 +565,7 @@ class Post extends Model
 				$posts->orderBy('posts.updated_at', 'desc');
 			}
 		}
-	
+
 		// If query, just include group by after order by
 		if ($query) $posts->groupBy('post_indexes.post_id');
 
@@ -579,18 +579,18 @@ class Post extends Model
 			$posts = $posts->select('posts.*')->paginate(Config::get('mrcore.wiki.search_pagesize'));
 			$posts->setPath(Config::get('app.url') . '/' . Request::path());
 		}
-		
+
 		#TESTING
 		#var_dump(DB::getQueryLog()); #sql debug
 		#$posts = Post::take(10)->get();
-		
+
 		return $posts;
 	}
 
 	/**
 	 * New version of getSearchPosts
 	 * @param  array $params
-	 * @return 
+	 * @return
 	 */
 	public static function getSearchPostsNew($params)
 	{
@@ -612,11 +612,11 @@ class Post extends Model
 				if ($param == 'format') $formats = explode(',', $value);
 				if ($param == 'tag') $tags = explode(',', $value);
 				if ($param == 'key') $keyword = $value;
-				
+
 				if ($param == 'sort') $sort = $value;
 				if ($param == 'unread') $unread = true;
 				if ($param == 'hidden') $hidden = true;
-				if ($param == 'deleted') $deleted = true;				
+				if ($param == 'deleted') $deleted = true;
 			}
 		}
 
@@ -641,8 +641,9 @@ class Post extends Model
 			->where(function($query) {
 				$query->where('user_roles.user_id', '=', Auth::user()->id)
 					->orWhereNull('user_roles.user_id');
-			});
-		}	
+			})
+			->select('posts.*')->distinct();
+		}
 
 		// Filter by Badges
 		if (sizeOf($badges) > 0) {
@@ -652,8 +653,8 @@ class Post extends Model
 					$sql->where('badges.name', $badge);
 				}
 			});
-		}	
-		
+		}
+
 		// Filter by Types
 		if (sizeOf($types) > 0) {
 			$posts = $posts->join('types', 'types.id', '=', 'type_id');
@@ -742,12 +743,12 @@ class Post extends Model
 		if ($keyword != '') {
 			$posts = $posts->selectRaw("posts.*, sum(weight) as weight")->paginate(Config::get('mrcore.wiki.search_pagesize'));
 		} else {
-			$posts = $posts->select('posts.*')->paginate(Config::get('mrcore.wiki.search_pagesize'));			
+			$posts = $posts->select('posts.*')->paginate(Config::get('mrcore.wiki.search_pagesize'));
 		}
 
 		$posts->setPath(Config::get('app.url') . '/' . Request::path());
 
-		return $posts;			
+		return $posts;
 	}
 
 
@@ -761,7 +762,7 @@ class Post extends Model
 		if (Auth::admin()) {
 			$this->permissions = array();
 		} else {
-			
+
 			// OH crap, problems with this idea and unit testing
 			// because in the web, requests run in issolation, so all classes are new
 			// but in a unit test classes are in the same memory space, so this $post class
@@ -805,7 +806,7 @@ class Post extends Model
 					->distinct()
 					->get();
 
-				
+
 				#If post has 0 perms, but post owner=user then it fakes one READ entry
 				#shouldn't if fake a READ, WRITE, COMMENT...etc?
 				#I thinks this is not the best place for this, I think it should be in hasPermission() below
@@ -920,7 +921,7 @@ class Post extends Model
 		// because if cache is enabled, then $this is a cahced copy, so incrementing
 		// a cached copy does nothing.  So to increment we need to run a separate query.
 		DB::table('posts')->where('id', $this->id)->increment('clicks', 1);
-		
+
 		// If we are not using cache, the above will update our table
 		// and this will update our current object, for display
 		// just don't run a $this->save() if you will increment twice

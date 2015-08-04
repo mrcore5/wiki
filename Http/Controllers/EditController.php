@@ -24,6 +24,7 @@ use Mrcore\Modules\Wiki\Models\Router;
 use Mrcore\Modules\Wiki\Support\Crypt;
 use Mrcore\Modules\Wiki\Models\Hashtag;
 use Mrcore\Modules\Wiki\Models\PostTag;
+use Mrcore\Modules\Wiki\Models\UserRole;
 use Mrcore\Modules\Wiki\Models\Revision;
 use Mrcore\Modules\Wiki\Models\Framework;
 use Mrcore\Modules\Wiki\Models\PostBadge;
@@ -76,14 +77,19 @@ class EditController extends Controller {
 		// Get hashtag
 		$hashtag = Hashtag::findByPost($id);
 
-		// Get Roles
+		// Get All Possible Roles
 		$roles = Role::orderBy('name')->get();
+
+		// Get User Assigned Roles
+		$userRoles = UserRole::where('user_id', Auth::user()->id)->get();
 
 		// Get Permissions
 		$perms = Permission::where('user_permission', '=', false)->get();
 
 		// Get Post Permissions
 		$postPerms = PostPermission::where('post_id', '=', $id)->get();
+
+
 
 		// Get Post Routes
 		$route = Router::findDefaultByPost($id);
@@ -106,6 +112,7 @@ class EditController extends Controller {
 			'postTags' => $postTags,
 			'hashtag' => $hashtag,
 			'roles' => $roles,
+			'userRoles' => $userRoles,
 			'perms' => $perms,
 			'postPerms' => $postPerms,
 			'route' => $route,
@@ -186,8 +193,8 @@ class EditController extends Controller {
 		$post->mode_id = Input::get('mode');
 		if ($post->title != Input::get('title')) {
 			// Title Changed
-			$post->title = Input::get('title');	
-			
+			$post->title = Input::get('title');
+
 			// Update router if not a static route
 			$route = Router::findDefaultByPost($id);
 			if (!$route->static) {
@@ -195,7 +202,7 @@ class EditController extends Controller {
 				$route->save();
 			}
 		}
-		
+
 		$post->slug = Input::get('slug');
 		$post->hidden = (Input::get('hidden') == 'true' ? true : false);
 		$post->save();
@@ -275,11 +282,11 @@ class EditController extends Controller {
 			}
 
 			// Clear this posts cache
-			Post::forgetCache($id);		
+			Post::forgetCache($id);
 			Router::forgetCache($id);
 
 			return "post deleted";
-		
+
 		} else {
 			return Response::denied();
 		}
@@ -306,11 +313,11 @@ class EditController extends Controller {
 			$post->save();
 
 			// Clear this posts cache
-			Post::forgetCache($id);		
+			Post::forgetCache($id);
 			Router::forgetCache($id);
 
 			return "post undeleted";
-		
+
 		} else {
 			return Response::denied();
 		}
@@ -338,6 +345,7 @@ class EditController extends Controller {
 
 		// Update post permissions
 		$perms = json_decode(Input::get('perms'));
+
 		PostPermission::where('post_id', '=', $id)->delete();
 		foreach ($perms as $perm) {
 			$postPermission = new PostPermission;
@@ -375,8 +383,8 @@ class EditController extends Controller {
 			}
 			$symlink = (Input::get('symlink') == 'true' ? true : false);
 			if ($static == false) {
-				$symlink = false;	
-			} 
+				$symlink = false;
+			}
 			$workbench = strtolower(Input::get('workbench'));
 			if (!$workbench) $workbench = null;
 			if (isset($workbench)) {
@@ -384,7 +392,7 @@ class EditController extends Controller {
 					return "ERROR: workbench must be vendor/package format";
 				}
 			}
-			
+
 			if (substr($defaultSlug, 0, 1) == '/') $defaultSlug = substr($defaultSlug, 1);
 			if (substr($defaultSlug, -1) == '/') $defaultSlug = substr($defaultSlug, 0, -1);
 
@@ -426,7 +434,7 @@ class EditController extends Controller {
 
 				// Don't allow url reserved words
 				if ($valid) {
-					$tmp = explode("/", $defaultSlug);	
+					$tmp = explode("/", $defaultSlug);
 					if (in_array($tmp[0], Config::get('mrcore.wiki.reserved_routes'))) {
 						$ret = "ERROR: Static route cannot be '$tmp[0]', this is a reserved word";
 						$valid = false;
@@ -547,7 +555,7 @@ class EditController extends Controller {
 		try {
 			mkdir(Config::get('mrcore.wiki.files')."/index/$post->id");
 		} catch (\Exception $e) {
-			
+
 		}
 
 		// Redirect to full edit page

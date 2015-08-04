@@ -30,7 +30,7 @@ class UserController extends Controller {
 		$data->name = 'User';
 		$data->partial = '_users';
 		$data->dataUrl = 'user/data';
-		
+
 		return View::make('admin.content', compact('data'));
 	}
 
@@ -47,7 +47,7 @@ class UserController extends Controller {
 			$item->LastLogin = (new Carbon($item->LastLogin))->toDateTimeString();
 			$item->Action = '<button class="btn btn-sm btn-warning btn-edit"><i class="fa fa-edit"></i></button>
 							 <button class="btn btn-sm btn-danger btn-delete"><i class="fa fa-trash"></i>
-							</button>';			
+							</button>';
 		}
 
 		return $items;
@@ -61,7 +61,7 @@ class UserController extends Controller {
 	{
 		$roles = Role::all();
 		$permissions = Permission::where('user_permission', 1)->get();
-		
+
 		$userRoles = UserRole::where('user_id', $userID)->get();
 		foreach ($roles as $role) {
 			$role->set = false;
@@ -85,7 +85,7 @@ class UserController extends Controller {
 			'email',
 			'disabled',
 			'global_post_id',
-			'home_post_id',				
+			'home_post_id',
 		];
 
 		$user = User::select($columns)->find($userID);
@@ -114,7 +114,7 @@ class UserController extends Controller {
 		$disabled = Input::get('disabled');
 
 		$user = new User;
-		
+
 		$user->password = Hash::make($password);
 		$user->email = $email;
 		$user->alias = $alias;
@@ -124,15 +124,16 @@ class UserController extends Controller {
 		$user->global_post_id = ($global_post_id) ?: null;
 		$user->home_post_id = ($home_post_id) ?: null;
 		$user->disabled = (isset($disabled)) ?: 0;
-		
 		$user->save();
 		$user->id;
 
 		if (Input::hasFile('avatar')) {
 			Input::file('avatar')->move(base_path()."/public/uploads/", "avatar_user".$user->id.".png");
 			$user->avatar = 'avatar_user'.$user->id.'.png';
-			$user->save();
+		} else {
+			$user->avatar = 'avatar_user1.png'; // Default anonymous avatar
 		}
+		$user->save();
 
 		// Add Roles
 		if (Input::get('roles')) {
@@ -174,14 +175,14 @@ class UserController extends Controller {
 		$global_post_id = Input::get('global_post_id');
 		$home_post_id = Input::get('home_post_id');
 		$disabled = Input::get('disabled');
-		
+
 		if ($id != 0) {
-			$user = User::find($id);	
+			$user = User::find($id);
 
 			if (isset($password) && sizeOf($password > 0) && $password != '') {
 				$user->password = Hash::make($password);
 			}
-			
+
 			$user->email = $email;
 			$user->alias = $alias;
 			$user->first = $first;
@@ -189,10 +190,10 @@ class UserController extends Controller {
 			$user->global_post_id = ($global_post_id) ?: null;
 			$user->home_post_id = ($home_post_id) ?: null;
 			$user->disabled = (isset($disabled)) ?: 0;
-			
+
 			if (Input::hasFile('avatar')) {
-				Input::file('avatar')->move(base_path()."/public/uploads/", "avatar_user".$user->id.".png");				
-				$user->avatar = 'avatar_user'.$user->id.'.png';			
+				Input::file('avatar')->move(base_path()."/public/uploads/", "avatar_user".$user->id.".png");
+				$user->avatar = 'avatar_user'.$user->id.'.png';
 			}
 
 			$user->save();
@@ -236,7 +237,7 @@ class UserController extends Controller {
 	public function destroy()
 	{
 		$id = Input::get('id');
-		
+
 		if ($id != 0) {
 			UserRole::where('user_id', $id)->delete();
 			UserPermission::where('user_id', $id)->delete();
