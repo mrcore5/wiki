@@ -13,7 +13,6 @@
     #nav-list {
         list-style:none;
         padding:0px;
-        height:100vh;
         background-color:#fcfcfc;
         border-right:2px solid #eeeeee;
         border-bottom:2px solid #eeeeee;
@@ -22,7 +21,7 @@
 
     #nav-list .nav-item {
         color:#444444;
-        padding:10px;                
+        padding:10px;
         cursor: pointer;
     }
 
@@ -38,12 +37,12 @@
         border-bottom-left-radius:7px;
     }
 
-    #nav-list a:hover {        
+    #nav-list a:hover {
         text-decoration:none;
     }
 
     .subnav-container {
-        padding:5px;    
+        padding:5px;
     }
 
     .subnav-list {
@@ -60,12 +59,12 @@
         margin-bottom:5px;
         margin-left:4px;
         border:0px;
-        padding:5px; 
-        cursor: pointer;          
+        padding:5px;
+        cursor: pointer;
     }
 
     .subnav-list li:hover {
-        border-left:4px solid #336699;        
+        border-left:4px solid #336699;
         background-color:#eeeeee;
         margin-left:0px;
         border-top-right-radius:7px;
@@ -73,9 +72,9 @@
     }
 
      .subnav-list li.active {
-        border-left:4px solid #336699;   
-        background-color:#eeeeee;     
-        margin-left:0px;   
+        border-left:4px solid #336699;
+        background-color:#eeeeee;
+        margin-left:0px;
         border-top-right-radius:7px;
         border-bottom-right-radius:7px;
      }
@@ -107,7 +106,7 @@
     <div id="navigation">
         <h1 id="nav-title">
             {{ $navTitle }}
-            <div id="app-navigation-uncollapsed"><i class="fa fa-bars"></i></div>            
+            <div id="app-navigation-uncollapsed"><i class="fa fa-bars"></i></div>
         </h1>
         <ul id="nav-list">
             @foreach ($navItems as $item)
@@ -123,11 +122,11 @@
                         @foreach ($item['subnav'] as $subnav)
                             <li @if (isset($page->subkey) && $page->subkey == $subnav['key']) class="active" @endif>
                                 <a href="{{ URL::to($subnav['url']) }}">{{ $subnav['display'] }}</a>
-                            </li>                            
+                            </li>
                         @endforeach
                         </ul>
                     </div>
-                    @endif                    
+                    @endif
                 </li>
             @endforeach
         </ul>
@@ -143,12 +142,12 @@
         if (templateData != null && templateData['navigationCollapsed'] != null && templateData['navigationCollapsed'] == true) {
             collapseNavigation();
         }
-        
+
         function collapseNavigation()
         {
             $('#app-layout-navigation').hide();
             $('#app-layout-content').removeClass('col-md-10').addClass('col-md-12').attr('style', 'padding-left:20px');
-            $('#app-navigation-collapsed').css('display', 'inline');  
+            $('#app-navigation-collapsed').css('display', 'inline');
 
             if (templateData == null) {
                 var templateData = {};
@@ -161,7 +160,7 @@
         {
             $('#app-layout-navigation').show();
             $('#app-layout-content').removeClass('col-md-12').addClass('col-md-10');
-            $('#app-navigation-collapsed').hide();   
+            $('#app-navigation-collapsed').hide();
 
             if (templateData == null) {
                 var templateData = {};
@@ -171,12 +170,12 @@
             sessionStorage.setItem("template", JSON.stringify(templateData));
         }
 
-        $('#app-navigation-uncollapsed').click(function() {            
-            collapseNavigation();             
+        $('#app-navigation-uncollapsed').click(function() {
+            collapseNavigation();
         });
 
-        $('#app-navigation-collapsed').click(function() {           
-           unCollapseNavigation();        
+        $('#app-navigation-collapsed').click(function() {
+           unCollapseNavigation();
         });
-    </script>    
+    </script>
 @stop
