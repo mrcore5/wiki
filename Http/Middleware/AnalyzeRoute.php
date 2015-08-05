@@ -85,10 +85,14 @@ class AnalyzeRoute {
 							$vendor = $segments[0];
 							$package = $segments[1];
 							$namespace = studly_case($vendor) ."\\". studly_case($package);
-							$path = str_replace("\\", "/", $namespace);
-							#$namespace = "Mrcore\Apps\\$namespace";
+							$namespacePath = str_replace("\\", "/", $namespace);
 
-							if (realpath(base_path()."/../Apps/$path")) {
+							// Check for app in ../Apps first for dev override, then vendor
+							if (!$path = realpath(base_path("../Apps/$namespacePath"))) {
+								// App not in vendor, check ../App
+								$path = realpath(base_path("vendor/$vendor/$package"));
+							}
+							if ($path) {
                                 // Define app (as module array)
                                 $routePrefix = $route->currentRoute()->slug == 'home' ? '' : $route->currentRoute()->slug;
 								$app = [
@@ -96,7 +100,7 @@ class AnalyzeRoute {
 									'namespace' => "$namespace",
 									'controller_namespace' => "$namespace\Http\Controllers",
 									'provider' => "$namespace\Providers\\".studly_case($package)."ServiceProvider",
-									'path' => "../Apps/$path",
+									'path' => $path,
 									'routes' => "Http/routes.php",
 									'route_prefix' => $routePrefix,
 									'views' => "Views",

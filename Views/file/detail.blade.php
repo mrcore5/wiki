@@ -1,10 +1,8 @@
 @include('file.menubar')
 @include('file.navbar')
 
-
-
 <div class="fm-content">
-		@if(!$params['nomenu'])
+	@if(!$params['nomenu'])
 		@yield('menubar')
 	@endif
 
