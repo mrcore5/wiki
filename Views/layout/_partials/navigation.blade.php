@@ -99,6 +99,34 @@
         color:#888888;
      }
 
+     .nav-hover {
+        position:absolute;
+        z-index:10000;
+        display:block !important;
+        background-color:#ffffff;
+       -webkit-box-shadow: 0px 6px 31px -5px rgba(51,51,51,1);
+        -moz-box-shadow: 0px 6px 31px -5px rgba(51,51,51,1);
+        box-shadow: 0px 6px 31px -5px rgba(51,51,51,1);
+        padding-right:0px;
+        padding-left:0px;
+        border-top-right-radius:10px;
+        border-bottom-right-radius:10px;
+     }
+
+     .nav-hover ul {
+        margin-bottom:0px;
+     }
+
+     .nav-hover #nav-title {
+        height:35px;
+        padding-left:10px;
+        padding-top:5px;
+     }
+
+     .nav-hover #app-navigation-uncollapsed {
+        display:none;
+     }
+
     </style>
 @stop
 
@@ -177,5 +205,35 @@
         $('#app-navigation-collapsed').click(function() {
            unCollapseNavigation();
         });
+
+        var menu = $('#app-layout-navigation');
+        var menuTimeout;
+
+        $(window).on('mousemove', mouseMoveHandler);
+
+        function mouseMoveHandler(e) {
+            if ((e.pageX < 30 && e.pageY > 200) || menu.is(':hover')) {
+                if (!menu.is(':visible')) {
+                    // Show the menu if mouse is within 20 pixels
+                    // from the left or we are hovering over it
+                    clearTimeout(menuTimeout);
+                    menuTimeout = null;
+                    showNav();
+                }
+            } else if (!menuTimeout) {
+                // Hide the menu if the mouse is further than 20 pixels
+                // from the left and it is not hovering over the menu
+                // and we aren't already scheduled to hide it
+                menuTimeout = setTimeout(hideNav, 1000);
+            }
+        }
+
+        function showNav() {
+            menu.addClass('nav-hover');
+        }
+
+        function hideNav() {
+            menu.removeClass('nav-hover');
+        }
     </script>
 @stop

@@ -4,21 +4,9 @@
 	<div class="search-results listview">
 	@foreach ($posts as $result)
 		<div class="search-post">
-			<?
-			$postBadges = DB::table('badges')
-				->join('post_badges', 'badges.id', '=', 'post_badges.badge_id')
-				->where('post_badges.post_id', $result->id)
-				->select('badges.*')->get();
-
-			$postTags = DB::table('tags')
-				->join('post_tags', 'tags.id', '=', 'post_tags.tag_id')
-				->where('post_tags.post_id', $result->id)
-				->select('tags.*')->get();
-			?>
-
 			<div class="search-post-title">
 				<span class="search-post-badges">
-					@foreach ($postBadges as $badge)
+					@foreach ($result->badges as $badge)
 						<a href="{{ URL::route('search').'?badge='.$badge->name }}">
 							<img src="{{ asset('uploads/'.$badge->image) }}">
 						</a>
@@ -40,7 +28,7 @@
 					<a href="{{ URL::route('search').'?type=page' }}">
 						<i class="fa fa-globe text-success" style="margin-left: 3px"></i>
 					</a>
-				@elseif ($result->type_id == 3) 
+				@elseif ($result->type_id == 3)
 					<a href="{{ URL::route('search').'?type=app' }}">
 						<i class="fa fa-sun-o text-danger" style="margin-left: 2px"></i>
 					</a>
@@ -53,7 +41,7 @@
 			</div>
 			<div class="search-post-tags">
 				<i class="fa fa-tags"></i>
-				@foreach ($postTags as $tag)
+				@foreach ($result->tags as $tag)
 					<a href="{{ URL::route('search').'?tag='.$tag->name }}" class="search-post-tag">{{ $tag->name }}</a>
 				@endforeach
 			</div>

@@ -138,12 +138,20 @@
 							'class' => 'form-control',
 						)) !!}
 						</div>
-						<!--
 						<div style="display:table-cell;">
-							<button class="btn btn-primary btn-sm"><i class="fa fa-list"></i> List</button>
-							<button class="btn btn-default btn-sm"><i class="fa fa-th-list"></i> Detail</button>
-						</div>					
-						-->
+						@if (Session::has('search.view'))
+							@if (Session::get('search.view') == 'list')
+								<button class="btn btn-primary btn-sm" id="list"><i class="fa fa-bars"></i> List</button>
+							@else
+								<button class="btn btn-default btn-sm" id="list"><i class="fa fa-bars"></i> List</button>
+							@endif
+							@if (Session::get('search.view') == 'detail')
+								<button class="btn btn-primary btn-sm" id="detail"><i class="fa fa-th-large"></i> Detail</button>
+							@else
+								<button class="btn btn-default btn-sm" id="detail"><i class="fa fa-th-large"></i> Detail</button>
+							@endif
+						@endif
+						</div>
 					</div>
 					<!--<div class="sort form-horizontal">
 						<div class="form-group">
@@ -181,7 +189,7 @@
 								) !!}
 
 								{!! Html::decode(
-									Form::button( 
+									Form::button(
 										'<i class="fa fa-sitemap"></i> SiteMap',
 										array(
 											'name' => 'sitemap', 'id' => 'sitemap',
@@ -228,42 +236,38 @@
 
 					</div>
 				</div>
-
 			</div>
 
 			@yield('results')
-
-			<div class="results-pagination">
-				@if (!is_array($posts))
-					<?
-					$get = Input::get();	unset($get['page']);
-					$currentPage = $posts->currentPage();
-					$perPage = $posts->perPage();
-					$starting = 1 + ($perPage * ($currentPage - 1));
-					$ending = ($perPage * $currentPage);
-					$count = $posts->count();
-					$total = $posts->total();
-
-					if ($ending > $total) $ending = $total;
-					?>
-					{!! $posts->appends($get)->render() !!}
-				@else
-					<?
-					$currentPage = 1;
-					$perPage = 10;
-					$count = count($posts);
-					$total = $count;
-					$starting = 1 + ($perPage * ($currentPage - 1));
-					$ending = ($perPage * $currentPage);
-					?>
-				@endif	
-				<div class="results-pagination-info">					
-					Showing {{ $starting }} to {{ $ending }} of {{ $total }} results
-				</div>
-			</div>
-			
 		</div>
+	</div>
+	<div class="results-pagination" align="center">
+		@if (!is_array($posts))
+			<?
+			$get = Input::get();	unset($get['page']);
+			$currentPage = $posts->currentPage();
+			$perPage = $posts->perPage();
+			$starting = 1 + ($perPage * ($currentPage - 1));
+			$ending = ($perPage * $currentPage);
+			$count = $posts->count();
+			$total = $posts->total();
 
+			if ($ending > $total) $ending = $total;
+			?>
+			{!! $posts->appends($get)->render() !!}
+		@else
+			<?
+			$currentPage = 1;
+			$perPage = 10;
+			$count = count($posts);
+			$total = $count;
+			$starting = 1 + ($perPage * ($currentPage - 1));
+			$ending = ($perPage * $currentPage);
+			?>
+		@endif
+		<div class="results-pagination-info">
+			Showing {{ $starting }} to {{ $ending }} of {{ $total }} results
+		</div>
 	</div>
 
 	{!! Form::close() !!}
@@ -274,19 +278,20 @@
 <script>
 var onSearch = true;
 $(function() {
-
 	$('#sort').change(function() {
 		buildSearchQuery();
 	});
-	
+
 	$('#list').click(function() {
 		$('#view').val("list");
 		buildSearchQuery();
 	});
+
 	$('#detail').click(function() {
 		$('#view').val("detail");
 		buildSearchQuery();
 	});
+
 	$('#sitemap').click(function() {
 		$('#view').val("sitemap");
 		buildSearchQuery();
@@ -297,10 +302,10 @@ $(function() {
 		if ($(this).attr('name') == 'badge') {
 			$("input[name='badge']").prop('checked', false);
 			if (checked) {
-				$(this).prop('checked', true);			
+				$(this).prop('checked', true);
 			}
 		}
-		
+
 		if ($(this).attr('name') == 'hidden') {
 			$("input[name='deleted']").prop('checked', false);
 		} else if ($(this).attr('name') == 'deleted') {
@@ -312,17 +317,17 @@ $(function() {
 
 	function buildSearchQuery() {
 		var params = [];
-		var badges = buildQueryItems('badge'); 
+		var badges = buildQueryItems('badge');
 		if (badges.length > 0) {
-			params.push(buildQueryItems('badge'));	
+			params.push(buildQueryItems('badge'));
 		}
-		var types = buildQueryItems('type'); 
+		var types = buildQueryItems('type');
 		if (types.length > 0) {
-			params.push(buildQueryItems('type'));	
+			params.push(buildQueryItems('type'));
 		}
-		var formats = buildQueryItems('format'); 
+		var formats = buildQueryItems('format');
 		if (formats.length > 0) {
-			params.push(buildQueryItems('format'));	
+			params.push(buildQueryItems('format'));
 		}
 		if ($("input[name='hidden']").is(':checked')) {
 			params.push('hidden=true');
@@ -333,25 +338,27 @@ $(function() {
 		if ('{{ Input::get('key') }}' != '') {
 			params.push('key={{ Input::get('key')}}');
 		}
-
 		if ($('#sort option:selected').val() != 'relevance') {
 			params.push('sort=' + $('#sort option:selected').val());
 		}
+		if ($('#view').val() != '') {
+			params.push('view=' + $('#view').val());
+		}
 
 		var query = params.join('&');
-		window.location = "{{ URL::to('/search')}}" + "?" + query;		
+		window.location = "{{ URL::to('/search')}}" + "?" + query;
 	}
 
 	function buildQueryItems(key) {
 		var items = [];
 		var query = '';
 		$("input[name='" + key + "']:checked").each(function() {
-			items.push($(this).val());			
+			items.push($(this).val());
 		});
 		if (items.length > 0) {
 			query = key +'='+items.join(',');
 		}
-		return query;		
+		return query;
 	}
 
 	function setCheckboxes() {
@@ -364,7 +371,7 @@ $(function() {
 
 	function selectCheckboxes(collection, key) {
 		var items = collection.split(',');
-		for(i = 0; i < items.length; i++) {			
+		for(i = 0; i < items.length; i++) {
 			$('#chk-'+key+'-'+items[i].toLowerCase()).attr('checked', 'checked');
 		}
 	}

@@ -590,9 +590,10 @@ class Post extends Model
 	/**
 	 * New version of getSearchPosts
 	 * @param  array $params
+	 * @param  boolean $titleOnly (optional)
 	 * @return
 	 */
-	public static function getSearchPostsNew($params)
+	public static function getSearchPostsNew($params, $titleOnly = false)
 	{
 		// Parse parameters
 		$badges = array();
@@ -687,23 +688,27 @@ class Post extends Model
 			});
 		}
 
-		// Filter by word search query
-		// Must be last becasue of order bys
-		if ($keyword != '') {
-			$words = array_values(Indexer::stemText($keyword));
-			$posts->where(function($sql) use ($words) {
-				foreach ($words as $word) {
-					if (Config::get('mrcore.wiki.use_encryption')) $word = md5($word);
-					$sql->orWhere(function($sql2) use ($word) {
-						$sql2->where('post_indexes.word', '=', $word);
-					});
-				};
-			});
-			if (!preg_match('/or/i', $keyword)) {
-				// If using AND we include this having
-				#$posts->having('cnt', '>=', count($words));
-				#$posts->select(DB::raw("HAVING count(*) >= ".count($words)));
-				$posts->havingRaw('count(*) >= '.count($words));
+		if ($titleOnly) {
+			$posts->where('title', 'like', '%'.$keyword.'%');
+		} else  {
+			// Filter by word search query
+			// Must be last becasue of order bys
+			if ($keyword != '') {
+				$words = array_values(Indexer::stemText($keyword));
+				$posts->where(function($sql) use ($words) {
+					foreach ($words as $word) {
+						if (Config::get('mrcore.wiki.use_encryption')) $word = md5($word);
+						$sql->orWhere(function($sql2) use ($word) {
+							$sql2->where('post_indexes.word', '=', $word);
+						});
+					};
+				});
+				if (!preg_match('/or/i', $keyword)) {
+					// If using AND we include this having
+					#$posts->having('cnt', '>=', count($words));
+					#$posts->select(DB::raw("HAVING count(*) >= ".count($words)));
+					$posts->havingRaw('count(*) >= '.count($words));
+				}
 			}
 		}
 
@@ -747,6 +752,11 @@ class Post extends Model
 		}
 
 		$posts->setPath(Config::get('app.url') . '/' . Request::path());
+
+		if (!$titleOnly) {
+			// only do this if we're searching entire post
+			$posts = self::getPostData($posts);
+		}
 
 		return $posts;
 	}
@@ -949,6 +959,79 @@ class Post extends Model
 			Router::where('post_id', $this->id)->delete();
 			$this->delete();
 		}
+	}
+
+	/**
+	 * Adds Badge, Tag and Permissions data to each post
+	 * @param  collection $posts
+	 * @return collection
+	 */
+	public static function getPostData($posts)
+	{
+		$postIDs = [];
+		foreach ($posts as $post) {
+			$postIDs[] = $post->id;
+		}
+
+		$badges = DB::table('post_badges')
+					->select('post_badges.post_id', 'badges.name', 'badges.image')
+					->join('badges', 'post_badges.badge_id', '=', 'badges.id')
+					->whereIn('post_badges.post_id', $postIDs)
+					->get();
+
+		$tags = DB::table('post_tags')
+					->select('post_tags.post_id', 'tags.name')
+					->join('tags', 'post_tags.tag_id', '=', 'tags.id')
+					->whereIn('post_tags.post_id', $postIDs)
+					->get();
+
+		$permissions = DB::table('post_permissions')
+					->select('post_permissions.post_id', 'permissions.constant as permissionConstant', 'roles.name as roleName')
+					->join('roles', 'post_permissions.role_id', '=', 'roles.id')
+					->join('permissions', 'post_permissions.permission_id', '=', 'permissions.id')
+					->whereIn('post_permissions.post_id', $postIDs)
+					->get();
+
+		foreach ($posts as $post) {
+			$postBadges = [];
+			$postTags = [];
+			$postPermissions = [];
+
+			// badges
+			foreach ($badges as $badge) {
+				if ($badge->post_id == $post->id) {
+					$postBadges[] = $badge;
+				}
+			}
+
+			// tags
+			foreach ($tags as $tag) {
+				if ($tag->post_id == $post->id) {
+					$postTags[] = $tag;
+				}
+			}
+
+			// permisssions
+			foreach ($permissions as $permission) {
+				if ($permission->post_id == $post->id) {
+					if (!isset($postPermissions[$permission->roleName])) {
+						$postPermissions[$permission->roleName] = [];
+					}
+					if ($permission->permissionConstant == 'read') {
+						$permissionKey = 'R';
+						$postPermissions[$permission->roleName][] = $permissionKey;
+					} else if($permission->permissionConstant == 'write') {
+						$permissionKey = 'W';
+						$postPermissions[$permission->roleName][] = $permissionKey;
+					}
+				}
+			}
+			$post->badges = $postBadges;
+			$post->tags = $postTags;
+			$post->permissions = $postPermissions;
+		}
+
+		return $posts;
 	}
 
 }
