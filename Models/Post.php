@@ -1029,6 +1029,9 @@ class Post extends Model
 			$post->badges = $postBadges;
 			$post->tags = $postTags;
 			$post->permissions = $postPermissions;
+
+			// decrypt teaser
+			$post->teaser = Crypt::decrypt($post->teaser);
 		}
 
 		return $posts;

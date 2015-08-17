@@ -29,6 +29,7 @@
 						<div style="font-size:10px;padding:5px;">{{ $result->teaser }}</div>
 					</div>
 					<div class="search-detail-permissions">
+					@if (sizeOf($result->permissions) > 0)
 						@foreach ($result->permissions as $key => $permission)
 							@if ($key == 'Private')
 								<span class="text-danger">
@@ -38,8 +39,10 @@
 								<span>
 							@endif
 								{{ $key }}</span>: {{ implode($permission, ',') }}<br />
-
 						@endforeach
+					@else
+						Private
+					@endif
 					</div>
 				</div>
 				<div class="search-detail-bottom">
