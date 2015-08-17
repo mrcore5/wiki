@@ -282,12 +282,14 @@ $(function() {
 		buildSearchQuery();
 	});
 
-	$('#list').click(function() {
+	$('#list').click(function(e) {
+		e.preventDefault();
 		$('#view').val("list");
 		buildSearchQuery();
 	});
 
-	$('#detail').click(function() {
+	$('#detail').click(function(e) {
+		e.preventDefault();
 		$('#view').val("detail");
 		buildSearchQuery();
 	});
