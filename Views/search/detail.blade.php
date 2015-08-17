@@ -31,17 +31,15 @@
 					<div class="search-detail-permissions">
 					@if (sizeOf($result->permissions) > 0)
 						@foreach ($result->permissions as $key => $permission)
-							@if ($key == 'Private')
-								<span class="text-danger">
-							@elseif ($key == 'Public')
+							@if ($key == 'Public')
 								<span class="text-success">
 							@else
-								<span>
+								<span class="text-primary">
 							@endif
 								{{ $key }}</span>: {{ implode($permission, ',') }}<br />
 						@endforeach
 					@else
-						Private
+						<span class="text-danger">Private</span>
 					@endif
 					</div>
 				</div>
