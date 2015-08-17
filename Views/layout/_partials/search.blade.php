@@ -74,7 +74,6 @@
 					$('#search-results-box').empty();
 					$('#search-results-box').show();
 					$.each(data.data, function(key, item) {
-
 						if (item.id) {
 							$('#search-results-box').append(buildSearchResultItem(item, keyword));
 						}
@@ -138,7 +137,7 @@
 		var keyword = '';
 		var url = '';
 
-		if (query.indexOf('badge:') >= 0 || query.indexOf('type:') >= 0 || query.indexOf('format:') >= 0) {
+		if (query.indexOf('badge:') >= 0 || query.indexOf('type:') >= 0 || query.indexOf('format:') >= 0 || query.indexOf('view:') >= 0) {
 			// contains badge, type or format
 			var badges, types, formats;
 			var keywords = [];
@@ -146,7 +145,6 @@
 			var pieces = query.split(' ');
 			for (var i = 0; i < pieces.length; i++) {
 				if (pieces[i].length > 0) {
-					console.log('a:'+pieces[i]);
 					if (pieces[i].indexOf('badge:') >= 0) {
 						// is badge
 						if (pieces[i] == 'badge:') {
@@ -183,6 +181,18 @@
 							formats = 'format=' + split[1];
 						}
 						params.push(formats);
+					} else if (pieces[i].indexOf('view:') >= 0) {
+						// is view
+						if (pieces[i] == 'view:') {
+							// has space
+							views = 'view=' + pieces[i+1];
+							i++;
+						} else {
+							// no space
+							var split = pieces[i].split(':');
+							views = 'view=' + split[1];
+						}
+						params.push(views);
 					} else {
 						// keyword
 						keywords.push(pieces[i]);

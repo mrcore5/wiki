@@ -61,7 +61,6 @@ class SearchController extends Controller {
 			return Response::notFound();
 		}
 
-
 		// Get all types
 		$types = Type::all();
 
@@ -96,6 +95,7 @@ class SearchController extends Controller {
 			$view = Session::get('search.view');
 		} else {
 			$view = $defaultView;
+			Session::put('search.view', $view);
 		}
 		$view = strtolower($view);
 		if (!in_array($view, $validViews)) $view = $defaultView;
@@ -164,7 +164,7 @@ class SearchController extends Controller {
 	 */
 	public function ajaxSearch()
 	{
-		$posts = Post::getSearchPostsNew(Input::get());
+		$posts = Post::getSearchPostsNew(Input::get(), true);
 		$ajaxPosts = new \stdClass();
 		foreach ($posts as $post) {
 			$ajaxPost = new \stdClass();
