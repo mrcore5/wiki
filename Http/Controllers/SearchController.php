@@ -87,7 +87,7 @@ class SearchController extends Controller {
 
 		// Manage view with a session
 		$validViews = array('list', 'detail', 'sitemap');
-		$defaultView = 'list';
+		$defaultView = 'detail';
 		if (Input::has('view')) {
 			$view = Input::get('view');
 			Session::put('search.view', $view);
