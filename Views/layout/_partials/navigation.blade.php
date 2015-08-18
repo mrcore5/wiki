@@ -17,7 +17,6 @@
         border-right-style: solid;
         border-bottom-width:2px;
         border-bottom-style: solid;
-        border-bottom-right-radius:10px;
     }
 
     #nav-list .nav-item {
@@ -31,8 +30,6 @@
 
     #nav-list .nav-item:hover, #nav-list .nav-item.active {
         font-weight:bold;
-        border-top-left-radius:7px;
-        border-bottom-left-radius:7px;
     }
 
     #nav-list a:hover {
@@ -50,7 +47,6 @@
         margin:0px;
         border-width:1px;
         border-style: solid;
-        border-radius:5px;
     }
 
     .subnav-list li {
@@ -63,14 +59,10 @@
 
     .subnav-list li:hover {
         margin-left:0px;
-        border-top-right-radius:7px;
-        border-bottom-right-radius:7px;
     }
 
      .subnav-list li.active {
         margin-left:0px;
-        border-top-right-radius:7px;
-        border-bottom-right-radius:7px;
     }
 
      #app-navigation-uncollapsed, #app-navigation-collapsed {
@@ -99,8 +91,6 @@
         box-shadow: 0px 6px 31px -5px rgba(51,51,51,1);
         padding-right:0px;
         padding-left:0px;
-        border-top-right-radius:10px;
-        border-bottom-right-radius:10px;
     }
 
      .nav-hover ul {
