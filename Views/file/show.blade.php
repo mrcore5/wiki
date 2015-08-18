@@ -21,6 +21,6 @@
 @section('content')
 	<div class="fm" data-path="{{ $url->getPath() }}">
 		<i class="icon-spinner icon-spin blue"></i>
-		Loading File Manager ...
+		Loading File Manager x...
 	</div>
 @stop

@@ -268,8 +268,11 @@ table.dataTable {
 }
 
 
+/* Files */
 
-
+.fm-table {
+	white-space: nowrap;
+}
 
 
 

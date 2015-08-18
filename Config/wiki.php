@@ -21,7 +21,7 @@ return [
 	| post ID integer directories reside.  No / at end
 	|
 	*/
-	
+
 	'files' => env('MRCORE_WIKI_FILE_PATH', realpath(base_path('../Files'))),
 
 	/*

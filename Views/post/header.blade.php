@@ -19,7 +19,7 @@
 					<i class="fa fa-tags"></i>
 					@foreach ($post->tags as $tag)
 						<span class="post-tag">
-							<a href="{{ URL::route('search').'?tag'.$tag->id.'=1' }}">{{ $tag->name }}</a>
+							<a href="{{ URL::route('search').'?tag='.$tag->name }}">{{ $tag->name }}</a>
 						</span>
 					@endforeach
 				</div>
@@ -29,10 +29,10 @@
 		<div class="col-sm-1">
 			@if (count($post->badges) > 1)
 				@foreach ($post->badges as $badge)
-					<a href="{{ URL::route('search').'?badge'.$badge->id.'=1' }}"><img class="post-badge" src="{{ asset('uploads/'.$badge->image) }}" border="0" alt="{{ $badge->name }}"></a>
+					<a href="{{ URL::route('search').'?badge='.$badge->name }}"><img class="post-badge" src="{{ asset('uploads/'.$badge->image) }}" border="0" alt="{{ $badge->name }}"></a>
 				@endforeach
 			@else
-				<a href="{{ URL::route('search').'?badge'.$post->badges[0]->id.'=1' }}"><img class="post-badge" src="{{ asset('uploads/'.$post->badges[0]->image) }}" border="0" alt="{{ $post->badges[0]->name }}"></a>
+				<a href="{{ URL::route('search').'?badge='.$post->badges[0]->name }}"><img class="post-badge" src="{{ asset('uploads/'.$post->badges[0]->image) }}" border="0" alt="{{ $post->badges[0]->name }}"></a>
 			@endif
 		</div>
 		<div class="col-sm-2 post-permissions theme-bg-color-1 theme-border-color-1">
