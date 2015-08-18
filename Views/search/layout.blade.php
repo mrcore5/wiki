@@ -237,8 +237,9 @@
 					</div>
 				</div>
 			</div>
-
-			@yield('results')
+			<div style="padding-top:10px">
+				@yield('results')
+			</div>
 		</div>
 	</div>
 	<div class="results-pagination" align="center">

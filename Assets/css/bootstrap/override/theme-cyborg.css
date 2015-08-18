@@ -18,6 +18,11 @@
 	display:inline;
 }
 
+.wb-subheader input,
+.wb-subheader select {
+	height:34px;
+}
+
 .text-primary-alt {
 	color: #ffffff;
 }

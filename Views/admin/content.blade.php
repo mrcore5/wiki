@@ -11,12 +11,12 @@
 			  <div class="panel-heading">
 			    <h3 class="panel-title" style="display:inline;">{{ $data->name }}s</h3>
 			    <div id="panel-right">
-			    	<button id="btn-add" class="btn btn-primary">Add</button>
-			    	<div id="search-table" style="display:inline;float:right"></div>			    	
+			    	<button id="btn-add" class="btn btn-primary btn-sm">Add</button>
+			    	<div id="search-table" style="display:inline;float:right"></div>
 			    </div>
 			  </div>
 			  <div class="panel-body" style="padding:0px;">
-			  	<table class="table table-striped table-condensed" id="data-table" data-url="{{ $data->dataUrl }}">											
+			  	<table class="table table-striped table-condensed" id="data-table" data-url="{{ $data->dataUrl }}">
 				</table>
 			  </div>
 			</div>
@@ -33,7 +33,7 @@
 	      		</div>
       			<div class="modal-body">
       				<div id="delete-msg" class="alert alert-danger" style="display:none;">Are you sure you want to delete this {{ $data->name }}?</div>
-      				@include('admin/partials/'.$data->partial)      				      			
+      				@include('admin/partials/'.$data->partial)
 	      		</div>
 	      		<div class="modal-footer">
 	      			{!! Form::hidden('id', 0, array('id' => 'form-ID')) !!}
