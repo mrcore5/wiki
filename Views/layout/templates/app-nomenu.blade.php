@@ -1,4 +1,4 @@
-@include('_partials.show-help')
+@include('layout._partials.show-help')
 
 @section('css')
     @parent
