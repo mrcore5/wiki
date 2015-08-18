@@ -64,7 +64,6 @@
 
 .search-filter-section .checkbox:hover {
 	font-weight:bold;
-	border-radius: 5px;
 }
 
 .controls {
@@ -121,7 +120,6 @@
 	width:100%;
 	border-width:1px;
 	border-style: solid;
-	border-radius:4px;
 }
 
 .search-detail-image {

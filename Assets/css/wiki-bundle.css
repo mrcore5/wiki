@@ -1,4 +1,3 @@
-
 /* jQuery Growl
  * Copyright 2015 Kevin Sylvestre
  * 1.2.5
@@ -269,7 +268,7 @@ ul.DTTT_dropdown.dropdown-menu li:hover a {
 }
 
 div.DTTT_collection_background {
-	z-index: 2002;
+	z-index: 2002;	
 }
 
 /* TableTools information display */
@@ -289,7 +288,7 @@ div.DTTT_print_info {
 	background-color: white;
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 6px;
-
+	
 	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
 	        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
 }
@@ -339,7 +338,7 @@ table.DTFC_Cloned tr.even {
     background-color: white;
     margin-bottom: 0;
 }
-
+ 
 div.DTFC_RightHeadWrapper table ,
 div.DTFC_LeftHeadWrapper table {
     margin-bottom: 0 !important;
@@ -347,7 +346,7 @@ div.DTFC_LeftHeadWrapper table {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
-
+ 
 div.DTFC_RightHeadWrapper table thead tr:last-child th:first-child,
 div.DTFC_RightHeadWrapper table thead tr:last-child td:first-child,
 div.DTFC_LeftHeadWrapper table thead tr:last-child th:first-child,
@@ -355,20 +354,20 @@ div.DTFC_LeftHeadWrapper table thead tr:last-child td:first-child {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
-
+ 
 div.DTFC_RightBodyWrapper table,
 div.DTFC_LeftBodyWrapper table {
     border-top: none;
     margin: 0 !important;
 }
-
+ 
 div.DTFC_RightBodyWrapper tbody tr:first-child th,
 div.DTFC_RightBodyWrapper tbody tr:first-child td,
 div.DTFC_LeftBodyWrapper tbody tr:first-child th,
 div.DTFC_LeftBodyWrapper tbody tr:first-child td {
     border-top: none;
 }
-
+ 
 div.DTFC_RightFootWrapper table,
 div.DTFC_LeftFootWrapper table {
     border-top: none;
@@ -434,12 +433,9 @@ priv
 }
 
 .post-permissions {
-	border-width: 1px;
-	border-style: solid;
-	border-radius: 4px;
 	font-size: 12px;
-	margin-left: -18px;
 	padding :5px;
+	margin-right:0px;
 }
 
 /* toc */
@@ -653,8 +649,11 @@ table.dataTable {
 }
 
 
+/* Files */
 
-
+.fm-table {
+	white-space: nowrap;
+}
 
 
 

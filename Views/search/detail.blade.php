@@ -2,8 +2,8 @@
 
 @section('results')
 	@foreach ($posts as $result)
-		<div class="search-post" style="padding-top:10px;">
-			<div class="search-detail-container hvr-glow theme-border-color-1">
+		<div class="search-post">
+			<div class="search-detail-container hvr-glow theme-border-color-1 panel">
 				<div class="search-detail-image theme-bg-color-4 theme-border-color-1">
 					<img src="{{ asset('uploads/'.Mrcore\Modules\Wiki\Models\User::find($result->created_by)->avatar) }}" class="theme-border-color-2"  />
 				</div>
