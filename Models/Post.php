@@ -1037,4 +1037,35 @@ class Post extends Model
 		return $posts;
 	}
 
+	/**
+	 * Get a individual Post Permissions
+	 */
+	public function permissions()
+	{
+		$permissions = DB::table('post_permissions')
+					->select('post_permissions.post_id', 'permissions.constant as permissionConstant', 'roles.name as roleName')
+					->join('roles', 'post_permissions.role_id', '=', 'roles.id')
+					->join('permissions', 'post_permissions.permission_id', '=', 'permissions.id')
+					->where('post_permissions.post_id', $this->id)
+					->get();
+
+		$postPermissions = [];
+		// permisssions
+		foreach ($permissions as $permission) {
+			if ($permission->post_id == $this->id) {
+				if (!isset($postPermissions[$permission->roleName])) {
+					$postPermissions[$permission->roleName] = [];
+				}
+				if ($permission->permissionConstant == 'read') {
+					$permissionKey = 'R';
+					$postPermissions[$permission->roleName][] = $permissionKey;
+				} else if($permission->permissionConstant == 'write') {
+					$permissionKey = 'W';
+					$postPermissions[$permission->roleName][] = $permissionKey;
+				}
+			}
+		}
+		return $postPermissions;
+	}
+
 }

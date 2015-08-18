@@ -24,7 +24,7 @@
 
 		<div class="search-filter col-sm-3">
 			<div class="search-filter-section">
-				<h4>Badges</h4>
+				<h4 class="theme-border-color-3">Badges</h4>
 				@foreach ($badges as $badge)
 					<div class="checkbox">
 						<label>
@@ -50,7 +50,7 @@
 			-->
 
 			<div class="search-filter-section">
-				<h4>Types</h4>
+				<h4 class="theme-border-color-3">Types</h4>
 				@foreach ($types as $type)
 					<div class="checkbox">
 						<label>
@@ -64,7 +64,7 @@
 			</div>
 
 			<div class="search-filter-section">
-				<h4>Formats</h4>
+				<h4 class="theme-border-color-3">Formats</h4>
 				@foreach ($formats as $format)
 					<div class="checkbox">
 						<label>
@@ -78,7 +78,7 @@
 			</div>
 
 			<div class="search-filter-section">
-				<h4>Show Only</h4>
+				<h4 class="theme-border-color-3">Show Only</h4>
 				<!--<div class="checkbox">
 					<label>
 						<input name="unread" type="checkbox" value="1" {{ Input::has('unread') ? 'checked="checked"' : '' }}>
@@ -124,7 +124,7 @@
 
 		<div class="col-sm-9">
 
-			<div class="controls">
+			<div class="controls theme-border-color-3">
 				<div class="row">
 					<div style="float:right;padding-bottom:5px;">
 						<div style="display:table-cell;padding-right:10px;">
@@ -339,6 +339,9 @@ $(function() {
 		}
 		if ('{{ Input::get('key') }}' != '') {
 			params.push('key={{ Input::get('key')}}');
+		}
+		if ('{{ Input::get('tag') }}' != '') {
+			params.push('tag={{ Input::get('tag')}}');
 		}
 		if ($('#sort option:selected').val() != 'relevance') {
 			params.push('sort=' + $('#sort option:selected').val());

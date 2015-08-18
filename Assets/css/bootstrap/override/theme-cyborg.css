@@ -1,0 +1,102 @@
+/*subtheme specific overrides*/
+
+.navbar-default {
+	background-color:#666666;
+}
+
+/*box icon*/
+.box-form-header .fa {
+	color: #2a9fd6;
+	border: 3px solid #666666;
+}
+
+/*some subthemes add extra padding/height to their inputs */
+.wb-subheader select,
+.wb-subheader input,
+.wb-subheader button {
+	margin-top:4px;
+	display:inline;
+}
+
+.text-primary-alt {
+	color: #ffffff;
+}
+
+
+/** new */
+.theme-navbar {
+	background-color:#222222;
+}
+
+.theme-background-body {
+	background-image:url('../../../images/redox_01.png');
+	background-repeat:repeat;
+}
+
+.theme-bg-color-1 {
+	background-color:#666666;
+}
+
+.theme-bg-color-2 {
+	background-color:#3c3c3c;
+}
+
+.theme-bg-color-3 {
+	background-color:#222222;
+}
+
+.theme-bg-color-4 {
+	background-color:#333333;
+}
+
+.theme-accent-border {
+	border-bottom:1px solid #2a9fd6;
+}
+
+.theme-border-primary {
+	border-color: #2a9fd6;
+}
+
+.theme-border-color-1 {
+	border-color:#999999;
+}
+
+.theme-border-color-2 {
+	border-color:#666666;
+}
+
+.theme-border-color-3 {
+	border-color:#666666;
+}
+
+.theme-text-color-1 {
+	color:#bbbbbb;
+}
+
+/*app template navigation*/
+#nav-list .nav-item:hover, #nav-list .nav-item.active {
+    border-right:4px solid #2a9fd6;
+    background-color:#222222;
+}
+
+.subnav-list li:hover {
+    border-left:4px solid #2a9fd6;
+    background-color:#666666;
+}
+
+.subnav-list li.active {
+    border-left:4px solid #2a9fd6;
+    background-color:#666666;
+}
+
+.nav-hover {
+	background-color:#666666;
+}
+
+#interior-nav-list a:hover, #interior-nav-list a.active {
+    border-bottom:2px solid #2a9fd6;
+}
+
+#interior-nav-list a:hover li, #interior-nav-list a.active li {
+    color: #2a9fd6;
+}

@@ -6,9 +6,8 @@
     <style>
     #page-title {
         font-size:24px;
-        color:#666666;
-        border-bottom:1px solid #dddddd;
-        color:#336699;
+        border-bottom-width:1px;
+        border-bottom-style: solid;
         margin-bottom:0px;
         margin-top:0px;
         font-weight:bold;
@@ -18,16 +17,14 @@
         margin:0px;
         font-size:18px;
         padding:10px;
-        color:#666666;
-        background-color:#fdfdfd;
-        border-bottom:1px solid #eeeeee;
+        border-bottom-width:1px;
+        border-bottom-style: solid;
         margin-bottom:10px;
     }
 
     #page-title-text {
         display:inline;
         float:right;
-        color:#666666;
         font-size:14px;
     }
 
@@ -39,7 +36,6 @@
     }
 
     #page-content {
-        border-top:1px solid #dddddd;
         padding-top:10px;
     }
 
@@ -47,7 +43,8 @@
 
     .action-bar {
         text-align:right;
-        border-bottom:1px solid #eeeeee;
+        border-bottom-width:1px;
+        border-bottom-style: solid;
     }
 
     .action-bar-items {
@@ -65,12 +62,10 @@
 
     .section-bar {
         margin:0px;
-        border-left:4px solid #336699;
-        background-color:#fbfbfb;
+        border-left-width:4px;
+        border-left-style: solid;
         padding:7px;
-        border-bottom:1px solid #dddddd;
         margin-bottom:15px;
-        color:#555555;
     }
     </style>
 @stop
@@ -88,12 +83,12 @@
         <div id="app-layout-content" class="col-md-10">
             <!-- Page Content -->
             <div id="main-content">
-                <h1 id="page-title">
-                    <div id="app-navigation-collapsed"><i class="fa fa-bars"></i></div>
+                <h1 id="page-title" class="text-primary theme-border-color-1">
+                    <div id="app-navigation-collapsed" class="text-primary"><i class="fa fa-bars"></i></div>
                     {{ $page->title }} <div id="page-title-text">{{ $page->displayText or '' }}</div>
                 </h1>
                 @if (isset($page->subtitle))
-                    <h4 id="page-subtitle">{{ $page->subtitle }}</h4>
+                    <h4 id="page-subtitle" class="theme-bg-color-4 theme-border-color-3">{{ $page->subtitle }}</h4>
                 @endif
                 <!-- Content -->
                 @yield('wb-content')

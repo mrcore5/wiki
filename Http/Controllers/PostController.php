@@ -32,11 +32,10 @@ class PostController extends Controller {
 				return Redirect::to($url);
 			}
 		}
-	
+
 		// Gets post, parse + globals
 		// If ajax, do NOT include globals
 		$post = Mrcore::post()->prepare(!Request::ajax());
-
 
 		// If post is a workbench and we get to this point then
 		// The custom workbench route was not found, meaning we

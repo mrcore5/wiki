@@ -19,6 +19,7 @@
 	border-bottom:2px solid #f7f7f7;
 	padding:10px;
 	cursor:pointer;
+	color:#333333 !important;
 }
 
 #search-results-box .item:hover, #search-results-box .item.selected {
@@ -52,7 +53,8 @@
 .search-filter-section h4 {
 	padding:5px;
 	font-weight:bold;
-	border-bottom:1px solid #eeeeee;
+	border-bottom-width:1px;
+	border-bottom-style: solid;
 }
 
 .search-filter-section .checkbox {
@@ -62,12 +64,12 @@
 
 .search-filter-section .checkbox:hover {
 	font-weight:bold;
-	background-color:#f7f7f7;
 	border-radius: 5px;
 }
 
 .controls {
-	border-bottom:1px solid #eeeeee;
+	border-bottom-width:1px;
+	border-bottom-style: solid;
 }
 
 .controls .form-group {
@@ -117,16 +119,17 @@
 /* Search Detail View */
 .search-detail-container {
 	width:100%;
-	border:1px solid #dddddd;
+	border-width:1px;
+	border-style: solid;
 	border-radius:4px;
 }
 
 .search-detail-image {
-	border-right:1px solid #dddddd;
+	border-right-width:1px;
+	border-right-style: solid;
 	width:75px;
 	padding:10px;
 	display:table-cell;
-	background-color:#fdfdfd;
 	vertical-align:top;
 }
 
@@ -134,7 +137,8 @@
 	width:60px;
 	height:60px;
 	border-radius:30px;
-	border:2px solid #bbbbbb;
+	border-width:2px;
+	border-style:solid;
 }
 
 .search-detail-content {
@@ -146,7 +150,6 @@
 }
 
 .search-detail-permissions {
-	background-color:#f2f2f2;
 	display:table-cell;
 	width:90px;
 	vertical-align:top;
@@ -156,12 +159,13 @@
 	right:0px;
 	top:0px;
 	height:100%;
-	border-left:1px solid #dddddd;
+	border-left-width:1px;
+	border-left-style: solid;
 }
 
 .search-detail-bottom {
-	background-color:#fafafa;
-	border-top:1px solid #dddddd;
+	border-top-width:1px;
+	border-top-style: solid;
 	padding:5px;
 }
 

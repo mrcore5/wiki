@@ -3,7 +3,7 @@
 @if (isset($post))
 <div class="post-header">
 	<div class="row">
-		<div class="col-sm-11">
+		<div class="col-sm-9">
 			@if ($post->deleted)
 				<h1 class="post-title post-deleted">{{ $post->title }} (DELETED)</h1>
 			@else
@@ -35,8 +35,20 @@
 				<a href="{{ URL::route('search').'?badge='.$post->badges[0]->name }}"><img class="post-badge" src="{{ asset('uploads/'.$post->badges[0]->image) }}" border="0" alt="{{ $post->badges[0]->name }}"></a>
 			@endif
 		</div>
-
-
+		<div class="col-sm-2 post-permissions theme-bg-color-1 theme-border-color-1">
+			@if (sizeOf($post->permissions()) > 0)
+				@foreach ($post->permissions() as $key => $permission)
+					@if ($key == 'Public')
+						<span class="text-success">
+					@else
+						<span class="text-primary">
+					@endif
+						{{ $key }}</span>: {{ implode($permission, ',') }}<br />
+				@endforeach
+			@else
+				<span class="text-danger">Private</span>
+			@endif
+		</div>
 	</div>
 </div>
 @endif

@@ -1,0 +1,88 @@
+/*subtheme specific overrides*/
+
+/*box icon*/
+.box-form-header .fa {
+	color: #7a8288;
+	border: 3px solid #7a8288;
+}
+
+/*some subthemes add extra padding/height to their inputs */
+.wb-subheader select,
+.wb-subheader input,
+.wb-subheader button {
+	margin-top:2px;
+	display:inline;
+}
+
+.wb-subheader select,
+.wb-subheader input {
+	height:36px;
+}
+
+.theme-bg-color-1 {
+	background-color:#3e444c;
+}
+
+.theme-bg-color-2 {
+	background-color:#2e3338;
+}
+
+.theme-bg-color-3 {
+	background-color:#51575E;
+}
+
+.theme-bg-color-4 {
+	background-color:#656970;
+}
+
+.theme-accent-border {
+	border-bottom:1px solid #7a8288;
+}
+
+.theme-border-primary {
+	border-color: #7a8288;
+}
+
+.theme-border-color-1 {
+	border-color:#3e444c;
+}
+
+.theme-border-color-2 {
+	border-color:#2e3338;
+}
+
+.theme-border-color-3 {
+	border-color:#343434;
+}
+
+.theme-text-color-1 {
+	color:#bbbbbb;
+}
+
+/*app template navigation*/
+#nav-list .nav-item:hover, #nav-list .nav-item.active {
+    border-right:4px solid #7a8288;
+    background-color:#2e3338;
+}
+
+.subnav-list li:hover {
+    border-left:4px solid #7a8288;
+    background-color:#3e444c;
+}
+
+.subnav-list li.active {
+    border-left:4px solid #7a8288;
+    background-color:#3e444c;
+}
+
+.nav-hover {
+	background-color:#656970;
+}
+
+#interior-nav-list a:hover, #interior-nav-list a.active {
+    border-bottom:2px solid #7a8288;
+}
+
+#interior-nav-list a:hover li, #interior-nav-list a.active li {
+    color: #7a8288;
+}
