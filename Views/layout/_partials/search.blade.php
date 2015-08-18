@@ -137,7 +137,7 @@
 		var keyword = '';
 		var url = '';
 
-		if (query.indexOf('badge:') >= 0 || query.indexOf('type:') >= 0 || query.indexOf('format:') >= 0 || query.indexOf('view:') >= 0) {
+		if (query.indexOf('badge:') >= 0 || query.indexOf('type:') >= 0 || query.indexOf('format:') >= 0 || query.indexOf('view:') >= 0 || query.indexOf('tag:') >= 0) {
 			// contains badge, type or format
 			var badges, types, formats;
 			var keywords = [];
@@ -181,6 +181,18 @@
 							formats = 'format=' + split[1];
 						}
 						params.push(formats);
+					} else if (pieces[i].indexOf('tag:') >= 0) {
+						// is tag
+						if (pieces[i] == 'tag:') {
+							// has space
+							tags = 'tag=' + pieces[i+1];
+							i++;
+						} else {
+							// no space
+							var split = pieces[i].split(':');
+							tags = 'tag=' + split[1];
+						}
+						params.push(tags);
 					} else if (pieces[i].indexOf('view:') >= 0) {
 						// is view
 						if (pieces[i] == 'view:') {

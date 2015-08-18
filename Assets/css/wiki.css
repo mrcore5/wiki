@@ -48,6 +48,14 @@ priv
 	margin-right: 5px;
 }
 
+.post-permissions {
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 4px;
+	font-size: 12px;
+	margin-left: -18px;
+	padding :5px;
+}
 
 /* toc */
 .toc {
@@ -123,7 +131,7 @@ priv
 	width: 100%;
 }
 .info .box ul {
-	padding-left: 15px;	
+	padding-left: 15px;
 }
 
 
@@ -170,7 +178,7 @@ priv
 .header_toggle a:hover, .header_expand a:hover, .header_collapse a:hover {
 	text-decoration: none;
 }
-.header1_content, .header2_content, .header3_content, 
+.header1_content, .header2_content, .header3_content,
 .header4_content, .header5_content, .header6_content  {
 	padding: 5px 15px 5px 15px;
 	margin-bottom: 5px;
@@ -178,7 +186,7 @@ priv
 .header1_content .header2_content, .header2_content .header3_content,
 .header3_content .header4_content, .header4_content .header5_content,
 .header5_content .header6_content {
-	margin-right: -15px;	
+	margin-right: -15px;
 }
 
 .heading1, h1 {
@@ -352,7 +360,7 @@ table.dataTable {
 .header_expand a:hover, .header_collapse a:hover {
 	text-decoration: none;
 }
-.header1_content, .header2_content, .header3_content, 
+.header1_content, .header2_content, .header3_content,
 .header4_content, .header5_content, .header6_content  {
 	padding: 5px 0px 5px 15px;
 	border: 1px solid #eee;
@@ -448,7 +456,7 @@ table.dataTable {
 	padding-left: 26px;
 	white-space: wrap;
 	background: url('../images/smileys/icon_exclaim_h.png') 3px center no-repeat;
-	
+
 	color: #000000;
 	color: #c09853;
 	background-color: #fcf8e3;
@@ -536,7 +544,7 @@ iframe {
 }
 .private {
 	margin-left: -2px;
-	padding-left: 2px;    
+	padding-left: 2px;
 	border-left: 1px solid #FF0000;
 }
 .private_inline {

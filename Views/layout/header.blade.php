@@ -18,7 +18,7 @@
 		}
 		.navbar {
 			border-radius: 0px;
-			margin-bottom: 5px;
+			margin-bottom: 0px;
 		}
 		.yamm .yamm-content {
 			padding: 15px 15px 0px 15px;
@@ -58,7 +58,7 @@
 				</div>
 			</div>
 		</header>
-	
+
 		@yield('subheader')
 	</div>
 

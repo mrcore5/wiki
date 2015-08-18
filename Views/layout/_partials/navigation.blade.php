@@ -3,8 +3,8 @@
    <style>
     #nav-title {
         font-size:24px;
-        border-bottom:1px solid #dddddd;
-        color:#336699;
+        border-bottom-width:1px;
+        border-bottom-style: solid;
         margin-bottom:5px;
         margin-top:0px;
         font-weight:bold;
@@ -13,14 +13,14 @@
     #nav-list {
         list-style:none;
         padding:0px;
-        background-color:#fcfcfc;
-        border-right:2px solid #eeeeee;
-        border-bottom:2px solid #eeeeee;
+        border-right-width:2px;
+        border-right-style: solid;
+        border-bottom-width:2px;
+        border-bottom-style: solid;
         border-bottom-right-radius:10px;
     }
 
     #nav-list .nav-item {
-        color:#444444;
         padding:10px;
         cursor: pointer;
     }
@@ -30,8 +30,6 @@
     }
 
     #nav-list .nav-item:hover, #nav-list .nav-item.active {
-        border-right:4px solid #336699;
-        background-color:#f7f7f7;
         font-weight:bold;
         border-top-left-radius:7px;
         border-bottom-left-radius:7px;
@@ -50,8 +48,8 @@
         list-style:none;
         padding:0px;
         margin:0px;
-        border:1px solid #f4f4f4;
-        background-color:#f7f7f7;
+        border-width:1px;
+        border-style: solid;
         border-radius:5px;
     }
 
@@ -64,24 +62,19 @@
     }
 
     .subnav-list li:hover {
-        border-left:4px solid #336699;
-        background-color:#eeeeee;
         margin-left:0px;
         border-top-right-radius:7px;
         border-bottom-right-radius:7px;
     }
 
      .subnav-list li.active {
-        border-left:4px solid #336699;
-        background-color:#eeeeee;
         margin-left:0px;
         border-top-right-radius:7px;
         border-bottom-right-radius:7px;
-     }
+    }
 
      #app-navigation-uncollapsed, #app-navigation-collapsed {
         font-size:20px;
-        color:#336699;
         font-weight:bold;
         z-index:1000;
         cursor:pointer;
@@ -90,20 +83,17 @@
      #app-navigation-uncollapsed {
         display:inline;
         float:right;
-        color:#cccccc;
      }
 
      #app-navigation-collapsed {
         display:none;
         padding-right:5px;
-        color:#888888;
      }
 
-     .nav-hover {
+    .nav-hover {
         position:absolute;
         z-index:10000;
         display:block !important;
-        background-color:#ffffff;
        -webkit-box-shadow: 0px 6px 31px -5px rgba(51,51,51,1);
         -moz-box-shadow: 0px 6px 31px -5px rgba(51,51,51,1);
         box-shadow: 0px 6px 31px -5px rgba(51,51,51,1);
@@ -111,7 +101,7 @@
         padding-left:0px;
         border-top-right-radius:10px;
         border-bottom-right-radius:10px;
-     }
+    }
 
      .nav-hover ul {
         margin-bottom:0px;
@@ -132,11 +122,11 @@
 
 @section('navigation')
     <div id="navigation">
-        <h1 id="nav-title">
+        <h1 id="nav-title" class="text-primary theme-border-color-1">
             {{ $navTitle }}
-            <div id="app-navigation-uncollapsed"><i class="fa fa-bars"></i></div>
+            <div id="app-navigation-uncollapsed" class="theme-text-color-1"><i class="fa fa-bars"></i></div>
         </h1>
-        <ul id="nav-list">
+        <ul id="nav-list" class="theme-bg-color-4 theme-border-color-3">
             @foreach ($navItems as $item)
                 <li>
                     <div class="nav-item @if ($page->key == $item['key']) active @endif">
@@ -146,7 +136,7 @@
                     </div>
                     @if (isset($item['subnav']))
                     <div class="subnav-container collapse @if ($page->key == $item['key']) in @endif" id="toggleNav-{{$item['key']}}">
-                        <ul class="subnav-list">
+                        <ul class="subnav-list theme-border-color-3 theme-bg-color-1">
                         @foreach ($item['subnav'] as $subnav)
                             <li @if (isset($page->subkey) && $page->subkey == $subnav['key']) class="active" @endif>
                                 <a href="{{ URL::to($subnav['url']) }}">{{ $subnav['display'] }}</a>
