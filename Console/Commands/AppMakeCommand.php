@@ -57,8 +57,8 @@ class AppMakeCommand extends Command {
 		exec("mkdir -p $path");
 		$path = realpath($path);
 
-		// Git clone
-		exec("cd $path && git clone https://github.com/mreschke/mrcore-appstub .");
+		// Git clone (and remove .git)
+		exec("cd $path && git clone https://github.com/mreschke/mrcore-appstub . && rm -rf .git");
 
 		// Replace file contents
 		$files = File::allFiles($path);
@@ -71,7 +71,10 @@ class AppMakeCommand extends Command {
 		exec("mv $path/Database/Seeds/AppstubSeeder.php $path/Database/Seeds/".studly_case($this->package)."Seeder.php");
 		exec("mv $path/Database/Seeds/AppstubTestSeeder.php $path/Database/Seeds/".studly_case($this->package)."TestSeeder.php");
 		exec("mv $path/Http/Controllers/AppstubController.php $path/Http/Controllers/".studly_case($this->package)."Controller.php");
-		
+		exec("mv $path/Facades/Appstub.php $path/Facades/".studly_case($this->package).".php");
+		exec("mv $path/Config/appstub.php $path/Config/$this->package.php");
+		exec("mv $path/appstub $path/$this->package");
+
 		// Composer update
 		exec("cd $path && composer update");
 		exec("cd $path && composer dump-autoload -o");
@@ -95,6 +98,7 @@ class AppMakeCommand extends Command {
 		$this->sed('Mrcore\\\\\\\\Appstub', $doubleNamespace, $file);
 		$this->sed('Mrcore\\\\Appstub', $namespace, $file);
 		$this->sed('mrcore:appstub', "$vendor:$package", $file);
+		$this->sed('mrcore\.appstub', "$vendor.$package", $file);
 		$this->sed('appstub::', "$package::", $file);
 		$this->sed('AppstubController', studly_case($package).'Controller', $file);
 		$this->sed('AppstubServiceProvider', studly_case($package).'ServiceProvider', $file);
@@ -102,8 +106,8 @@ class AppMakeCommand extends Command {
 		$this->sed('database appstub', "database ".str_replace('-', '_', $package), $file);
 		$this->sed('database=appstub', "database=".str_replace('-', '_', $package), $file);
 		$this->sed('AppstubTestSeeder', studly_case($package)."TestSeeder", $file);
+		$this->sed('Appstub', studly_case($package), $file);
 		$this->sed("appstub", $package, $file);
-
 	}
 
 	protected function sed($search, $replace, $file)
@@ -122,5 +126,5 @@ class AppMakeCommand extends Command {
 			array('app', InputArgument::REQUIRED, 'App name in laravel vendor/package format'),
 		);
 	}
-	
+
 }

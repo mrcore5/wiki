@@ -334,6 +334,8 @@ class Post extends Model
 		$data = preg_replace('"<html>.*?</html>"sim', '', $data); //Beautiful multi line strip
 		$data = preg_replace('"<php>.*?</php>"sim', '', $data); //Beautiful multi line strip
 		$data = preg_replace('"<phpw>.*?</phpw>"sim', '', $data); //Beautiful multi line strip
+		$data = preg_replace('"<info>.*?</info>"sim', '', $data); //Beautiful multi line strip
+		$data = preg_replace('"<infol>.*?</infol>"sim', '', $data); //Beautiful multi line strip
 
 		$start = stripos($data, "<teaser>");
 		$end = stripos($data, "</teaser>");
