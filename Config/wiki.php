@@ -64,7 +64,7 @@ return [
 	|
 	*/
 
-	'search_pagesize' => env('MRCORE_WIKI_SEARCH_PAGESIZE', 10),
+	'search_pagesize' => env('MRCORE_WIKI_SEARCH_PAGESIZE', 50),
 
 	/*
 	|--------------------------------------------------------------------------
