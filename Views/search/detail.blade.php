@@ -28,20 +28,23 @@
 						</div>
 						<div style="font-size:10px;padding:5px;">{{ $result->teaser }}</div>
 					</div>
-					<div class="search-detail-permissions theme-bg-color-1 theme-border-color-1 ">
-					@if (sizeOf($result->permissions) > 0)
-						@foreach ($result->permissions as $key => $permission)
-							@if ($key == 'Public')
-								<span class="text-success">
-							@else
-								<span class="text-primary">
-							@endif
-								{{ $key }}</span>: {{ implode($permission, ',') }}<br />
-						@endforeach
-					@else
-						<span class="text-danger">Private</span>
+
+					@if (Auth::check())
+						<div class="search-detail-permissions theme-bg-color-1 theme-border-color-1 ">
+						@if (sizeOf($result->permissions) > 0)
+							@foreach ($result->permissions as $key => $permission)
+								@if ($key == 'Public')
+									<span class="text-success">
+								@else
+									<span class="text-primary">
+								@endif
+									{{ $key }}</span>: {{ implode($permission, ',') }}<br />
+							@endforeach
+						@else
+							<span class="text-danger">Private</span>
+						@endif
+						</div>
 					@endif
-					</div>
 				</div>
 				<div class="search-detail-bottom theme-bg-color-3 theme-border-color-1">
 					<span class="search-post-badges">
