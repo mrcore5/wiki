@@ -35,6 +35,8 @@
 				<a href="{{ URL::route('search').'?badge='.$post->badges[0]->name }}"><img class="post-badge" src="{{ asset('uploads/'.$post->badges[0]->image) }}" border="0" alt="{{ $post->badges[0]->name }}"></a>
 			@endif
 		</div>
+
+		@if (Auth::check())
 		<div class="col-sm-2">
 			<div class="post-permissions well">
 			@if (sizeOf($post->permissions()) > 0)
@@ -51,6 +53,7 @@
 			@endif
 			</div>
 		</div>
+		@endif
 	</div>
 </div>
 @endif
