@@ -17,7 +17,8 @@
 	],
 	"autoload": {
 		"classmap": [
-			"Libraries"
+			"Libraries",
+			"Database"
 		],		
 		"psr-4": {
 			"Mrcore\\Modules\\Wiki\\": ""
