@@ -119,7 +119,7 @@ class DbCommand extends Command
 		// Laravel DB cannot connect without a valid database, so this is a chicken egg problem
 		// Use raw mysql to create the database
 		$conn = $this->connection;
-
+dd($conn);
 		// Create connection
 		$handle = new \mysqli($conn['host'], $conn['username'], $conn['password']);
 		if ($handle->connect_error) {
