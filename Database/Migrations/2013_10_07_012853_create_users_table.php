@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateUsersTable extends Migration
+class CreateUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,22 +12,19 @@ class UpdateUsersTable extends Migration
      */
     public function up()
     {
-        // This is actually an update to the existing stock laravel 5.1 table
-        // I have to maintain legacy mrcore5 migrations
-
-        // Add columns to users table
-        Schema::table('users', function($table)
+        Schema::create('users', function($table)
         {
-            // Larave id here
-            $table->dropColumn('name');
+            // MySQL InnoDB Engine
+            $table->engine = 'InnoDB';
 
-            // Drop here because legacy mrcore5 has another update migration to add this
-            $table->dropColumn('remember_token');
+            // User id, increments=auto_increment+primary key
+            $table->increments('id');
 
             // Users uuid
-            $table->string('uuid', 36)->unique()->after('id');
+            $table->string('uuid', 36)->unique();
 
-            // Laravel password here
+            // Password
+            $table->string('password', 60);
 
             // User first name
             $table->string('first', 25);
@@ -60,9 +57,15 @@ class UpdateUsersTable extends Migration
             $table->integer('created_by');
 
             // Updated By (user_id)
-            $table->integer('updated_by');
+			$table->integer('updated_by');
 
-        });
+            // Created_at and updated_at timestamps
+            $table->timestamps();
+
+            // This was before laravel introduced remember_token
+            // So that is added later in 2014_04_16_161519_update_users_table
+
+		});
     }
 
     /**
@@ -72,22 +75,7 @@ class UpdateUsersTable extends Migration
      */
     public function down()
     {
-        Schame::table('users', function($table))
-        {
-            $table->string('name')->after('id');
-
-            $table->dropColumn('uuid');
-            $table->dropColumn('first');
-            $table->dropColumn('last');
-            $table->dropColumn('alias');
-            $table->dropColumn('avatar');
-            $table->dropColumn('login_at');
-            $table->dropColumn('global_post_id');
-            $table->dropColumn('home_post_id');
-            $table->dropColumn('disabled');
-            $table->dropColumn('created_by');
-            $table->dropColumn('updated_by');
-        }
+        Schema::drop('users');
     }
 }
 
