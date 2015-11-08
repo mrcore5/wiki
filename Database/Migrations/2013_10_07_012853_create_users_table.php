@@ -12,11 +12,17 @@ class UpdateUsersTable extends Migration
      */
     public function up()
     {
+        // This is actually an update to the existing stock laravel 5.1 table
+        // I have to maintain legacy mrcore5 migrations
+
         // Add columns to users table
         Schema::table('users', function($table)
         {
             // Larave id here
             $table->dropColumn('name');
+
+            // Drop here because legacy mrcore5 has another update migration to add this
+            $table->dropColumn('remember_token');
 
             // Users uuid
             $table->string('uuid', 36)->unique()->after('id');
@@ -66,19 +72,23 @@ class UpdateUsersTable extends Migration
      */
     public function down()
     {
-        $table->string('name')->after('id');
+        Schame::table('users', function($table))
+        {
+            $table->string('name')->after('id');
 
-        $table->drop('uuid');
-        $table->drop('first');
-        $table->drop('last');
-        $table->drop('alias');
-        $table->drop('avatar');
-        $table->drop('login_at');
-        $table->drop('global_post_id');
-        $table->drop('home_post_id');
-        $table->drop('disabled');
-        $table->drop('created_by');
-        $table->drop('updated_by');
+            $table->dropColumn('uuid');
+            $table->dropColumn('first');
+            $table->dropColumn('last');
+            $table->dropColumn('alias');
+            $table->dropColumn('avatar');
+            $table->dropColumn('login_at');
+            $table->dropColumn('global_post_id');
+            $table->dropColumn('home_post_id');
+            $table->dropColumn('disabled');
+            $table->dropColumn('created_by');
+            $table->dropColumn('updated_by');
+        }
     }
 }
+
 
