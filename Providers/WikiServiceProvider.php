@@ -1,15 +1,14 @@
 <?php namespace Mrcore\Modules\Wiki\Providers;
 
 use Auth;
+use Gate;
 use Event;
-use Config;
-use Layout;
 use Mrcore;
+use Layout;
 use Module;
 use Illuminate\Routing\Router;
 use Mrcore\Modules\Wiki\Models\Post;
 use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Foundation\AliasLoader;
 use Mrcore\Modules\Foundation\Support\ServiceProvider;
 
 class WikiServiceProvider extends ServiceProvider {
@@ -31,40 +30,20 @@ class WikiServiceProvider extends ServiceProvider {
 		// Mrcore Module Tracking
 		Module::trace(get_class(), __function__);
 
-		// Define publishing rules
-		$this->definePublishing();
+		// Register resources
+		$this->registerResources();
 
-		// Register Global Middleware
-		$kernel->pushMiddleware('Mrcore\Modules\Wiki\Http\Middleware\AnalyzeRoute');
+		// Register Policies
+		$this->registerPolicies();
 
-		// Register Route based Middleware
-		$router->middleware('auth.admin', 'Mrcore\Modules\Wiki\Http\Middleware\AuthenticateAdmin');
+		// Register global and route based middleware
+		$this->registerMiddleware($kernel, $router);
 
-		// Register additional css assets
-		Layout::css('css/wiki-bundle.css');
+		// Register event listeners and subscriptions
+		$this->registerListeners();
 
-		// Add my own internal configs
-		Config::set('mrcore.wiki.reserved_routes', array(
-			'admin', 'router', 'file', 'files', 'search', 'auth', 'password', 'assets'
-		));
-		Config::set('mrcore.wiki.legacy_routes', array(
-			'topic', 'topics', 'post', 'posts',
-		));
-		Config::set('mrcore.wiki.magic_folders', array('.sys', 'app'));
-		Config::set('mrcore.wiki.magic_folders_exceptions', array('.sys/public', 'app/public'));
-
-		// Login Event Listener
-		Event::listen('auth.login', function($user) {
-			$handler = app('Mrcore\Modules\Wiki\Handlers\Events\UserEventHandler');
-			$handler->onUserLoggedIn($user);
-		});
-
-		// Logout Event Listener
-		Event::listen('auth.logout', function($user) {
-			$handler = app('Mrcore\Modules\Wiki\Handlers\Events\UserEventHandler');
-			$handler->onUserLoggedOut($user);
-		});
-		
+		// Register mrcore layout overrides
+		$this->registerLayout();
 	}
 
 	/**
@@ -74,43 +53,43 @@ class WikiServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		// Mrcore Module Tracking
+		// Mrcore module tracking
 		Module::trace(get_class(), __function__);
 
-		// Register Facades
-		$facade = AliasLoader::getInstance();
-		$facade->alias('Mrcore', 'Mrcore\Modules\Wiki\Facades\Mrcore');
+		// Register facades
+		class_alias('Mrcore\Modules\Wiki\Facades\Mrcore', 'Mrcore');
 
-		// Mrcore Api Interface Aliases
-		#$this->app->alias('Mrcore\Modules\Wiki\Api\Mrcore', 'mrcore'); #never used I believe, don't want it
-		$this->app->alias('Mrcore\Modules\Wiki\Api\Mrcore', 'Mrcore\Modules\Wiki\Api\MrcoreInterface');
-		$this->app->alias('Mrcore\Modules\Wiki\Api\Config', 'Mrcore\Modules\Wiki\Api\ConfigInterface');
-		$this->app->alias('Mrcore\Modules\Wiki\Api\Layout', 'Mrcore\Modules\Wiki\Api\LayoutInterface');
-		$this->app->alias('Mrcore\Modules\Wiki\Api\Post',   'Mrcore\Modules\Wiki\Api\PostInterface');
-		$this->app->alias('Mrcore\Modules\Wiki\Api\Router', 'Mrcore\Modules\Wiki\Api\RouterInterface');
-		$this->app->alias('Mrcore\Modules\Wiki\Api\User',   'Mrcore\Modules\Wiki\Api\UserInterface');		
+		// Register configs
+		$this->registerConfigs();
 
-		// Merge config
-		$this->mergeConfigFrom(__DIR__.'/../Config/wiki.php', 'mrcore.wiki');
+		// Register IoC bind aliases
+		$this->app->alias(Mrcore\Modules\Wiki\Api\Mrcore::class, Mrcore\Modules\Wiki\Api\MrcoreInterface::class);
+		$this->app->alias(Mrcore\Modules\Wiki\Api\Config::class, Mrcore\Modules\Wiki\Api\ConfigInterface::class);
+		$this->app->alias(Mrcore\Modules\Wiki\Api\Layout::class, Mrcore\Modules\Wiki\Api\LayoutInterface::class);
+		$this->app->alias(Mrcore\Modules\Wiki\Api\Post::class, Mrcore\Modules\Wiki\Api\PostInterface::class);
+		$this->app->alias(Mrcore\Modules\Wiki\Api\Router::class, Mrcore\Modules\Wiki\Api\RouterInterface::class);
+		$this->app->alias(Mrcore\Modules\Wiki\Api\User::class, Mrcore\Modules\Wiki\Api\UserInterface::class);
 
-		// Extend both Auth Guard and UserProvider
+		// Extend both auth guard and UserProvider
 		$this->extendAuth();
 
-		// Register our Artisan Commands
-		$this->commands('Mrcore\Modules\Wiki\Console\Commands\IndexPosts');
-		$this->commands('Mrcore\Modules\Wiki\Console\Commands\AppGitCommand');
-		$this->commands('Mrcore\Modules\Wiki\Console\Commands\AppMakeCommand');
+		// Register artisan commands
+		$this->registerCommands();
 
+		// Register testing environment
+		$this->registerTestingEnvironment();
 	}
 
 	/**
-	 * Define publishing rules
-	 * 
+	 * Define the resources used by mrcore.
+	 *
 	 * @return void
 	 */
-	private function definePublishing()
+	protected function registerResources()
 	{
-		# App base path
+		if (!$this->app->runningInConsole()) return;
+
+		// App base path
 		$path = realpath(__DIR__.'/../');
 
 		// Config publishing rules
@@ -129,30 +108,133 @@ class WikiServiceProvider extends ServiceProvider {
 		// ./artisan vendor:publish --tag="mrcore.wiki.seeds"
 		$this->publishes([
 			"$path/Database/Seeds" => base_path('/database/seeds'),
-		], 'mrcore.wiki.seeds');	
-
+		], 'mrcore.wiki.seeds');
 	}
 
 	/**
-	 * Extend both Auth Guard and UserProvider
-	 * 
+	 * Register permission policies.
+	 *
+	 * @return void
+	 */
+	public function registerPolicies()
+	{
+		//
+	}
+
+	/**
+	 * Register global and route based middleware.
+	 *
+	 * @param Illuminate\Contracts\Http\Kernel $kernel
+	 * @param \Illuminate\Routing\Router $router
+	 * @return  void
+	 */
+	protected function registerMiddleware(Kernel $kernel, Router $router)
+	{
+		// Register global middleware
+		$kernel->pushMiddleware('Mrcore\Modules\Wiki\Http\Middleware\AnalyzeRoute');
+
+		// Register route based middleware
+		$router->middleware('auth.admin', 'Mrcore\Modules\Wiki\Http\Middleware\AuthenticateAdmin');
+	}
+
+	/**
+	 * Register event listeners and subscriptions.
+	 *
+	 * @return void
+	 */
+	protected function registerListeners()
+	{
+		// Login event listener
+		Event::listen('auth.login', function($user) {
+			$handler = app('Mrcore\Modules\Wiki\Handlers\Events\UserEventHandler');
+			$handler->onUserLoggedIn($user);
+		});
+
+		// Logout event listener
+		Event::listen('auth.logout', function($user) {
+			$handler = app('Mrcore\Modules\Wiki\Handlers\Events\UserEventHandler');
+			$handler->onUserLoggedOut($user);
+		});
+	}
+
+	/**
+	 * Register mrcore layout overrides.
+	 *
+	 * @return void
+	 */
+	protected function registerLayout()
+	{
+		if ($this->app->runningInConsole()) return;
+
+		// Register additional css assets with mrcore Layout
+		Layout::css('css/wiki-bundle.css');
+	}
+
+	/**
+	 * Register additional configs and merges.
+	 *
+	 * @return void
+	 */
+	protected function registerConfigs()
+	{
+		// Append or overwrite configs
+		config(['mrcore.wiki.reserved_routes' => ['admin', 'router', 'file', 'files', 'search', 'auth', 'password', 'assets']]);
+		config(['mrcore.wiki.legacy_routes' => ['topic', 'topics', 'post', 'posts']]);
+		config(['mrcore.wiki.magic_folders' => ['.sys', 'app']]);
+		config(['mrcore.wiki.magic_folders_exceptions' => ['.sys/public', 'app/public']]);
+
+		// Merge configs
+		$this->mergeConfigFrom(__DIR__.'/../Config/wiki.php', 'mrcore.wiki');
+	}
+
+	/**
+	 * Register artisan commands.
+	 * @return void
+	 */
+	protected function registerCommands()
+	{
+		if (!$this->app->runningInConsole()) return;
+        $this->commands([
+            Mrcore\Modules\Wiki\Console\Commands\DbCommand::class,
+			Mrcore\Modules\Wiki\Console\Commands\IndexPosts::class,
+			Mrcore\Modules\Wiki\Console\Commands\AppGitCommand::class,
+			Mrcore\Modules\Wiki\Console\Commands\AppMakeCommand::class
+		]);
+	}
+
+	/**
+	 * Register test environment overrides
+	 *
+	 * @return void
+	 */
+	public function registerTestingEnvironment()
+	{
+		// Register testing environment overrides
+		if ($this->app->environment('testing')) {
+			//
+		}
+	}
+
+	/**
+	 * Extend both auth guard and UserProvider
+	 *
 	 * @return void
 	 */
 	private function extendAuth()
 	{
 		// Extend both Guard and EloquentUserProvider
-		// This makes my own 'mrcore' auth provider in config/app.php which 
+		// This makes my own 'mrcore' auth provider in config/app.php which
 		// enabled custom Auth::funtions() and caching on the user provider!
 		Auth::extend('mrcore', function() {
 			// Guard extension found at https://laracasts.com/forum/?p=910-how-to-extend-auth/0
 			$hash = $this->app->make('hash');
-		    $model = Config::get('auth.model');
+		    $model = config('auth.model');
 		    $session = $this->app->make('session.store');
 
 			// Fire up standard EloquentUserProvider
 			#$provider = new \Illuminate\Auth\EloquentUserProvider($hash, $model);
 			$provider = new \Mrcore\Modules\Wiki\Auth\WikiUserProvider($hash, $model);
-			
+
 			// Fire up my custom Auth Provider as an extension to Laravels
 			return new \Mrcore\Modules\Wiki\Auth\Guard($provider, $session);
 		});
