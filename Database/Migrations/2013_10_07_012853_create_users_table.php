@@ -20,10 +20,13 @@ class CreateUsersTable extends Migration
             // User id, increments=auto_increment+primary key
             $table->increments('id');
 
-            // Users uuid
+            // User uuid
             $table->string('uuid', 36)->unique();
 
-            // Password
+			// User email (username)
+			$table->string('email')->unique();
+
+            // User Password
             $table->string('password', 60);
 
             // User first name

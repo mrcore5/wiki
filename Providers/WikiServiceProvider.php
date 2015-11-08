@@ -58,6 +58,8 @@ class WikiServiceProvider extends ServiceProvider {
 
 		// Register facades
 		class_alias('Mrcore\Modules\Wiki\Facades\Mrcore', 'Mrcore');
+		class_alias('Illuminate\Html\FormFacade', 'Form');
+		class_alias('Illuminate\Html\HtmlFacade', 'Html');
 
 		// Register configs
 		$this->registerConfigs();
@@ -69,6 +71,9 @@ class WikiServiceProvider extends ServiceProvider {
 		$this->app->alias(Mrcore\Modules\Wiki\Api\Post::class, Mrcore\Modules\Wiki\Api\PostInterface::class);
 		$this->app->alias(Mrcore\Modules\Wiki\Api\Router::class, Mrcore\Modules\Wiki\Api\RouterInterface::class);
 		$this->app->alias(Mrcore\Modules\Wiki\Api\User::class, Mrcore\Modules\Wiki\Api\UserInterface::class);
+
+		// Register other service providers
+		$this->app->register(\Illuminate\Html\HtmlServiceProvider::class);
 
 		// Extend both auth guard and UserProvider
 		$this->extendAuth();
