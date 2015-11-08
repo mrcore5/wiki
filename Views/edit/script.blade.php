@@ -14,9 +14,16 @@ $(function() {
 	var aceTheme = 'xcode'; //monokai xcode
 	var aceMode = 'text'; //php html text plain_text...
 	var autosaveDelay = 3; // seconds
-	
 	var postRoute = "{{ URL::route('permalink', array('id' => $post->id)) }}"; // redirect here on save/view
 
+	// Grap laravel csrfToken for ajax calls
+	$.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $("input[name=_token]").val()
+		}
+	});
+
+	// Adjust theme based on post format
 	@if ($post->format->constant == 'php' || $post->format->constant == 'phpw')
 		aceTheme = 'monokai';
 		aceMode = 'php';
@@ -24,7 +31,6 @@ $(function() {
 		aceTheme = 'monokai';
 		aceMode = 'html';
 	@endif
-
 
 	// Ace Editor
 	require("ace/lib/fixoldbrowsers");

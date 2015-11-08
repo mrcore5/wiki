@@ -1,41 +1,27 @@
-# mrcore-modules-wiki
-Mrcore Wiki Module
+## Mrcore Wiki Module
 
+This is an mRcore module that provides wiki functionality.
 
-# Installation
+## What Is Mrcore
 
-config/app.php provider order
-foundation
-auth
-wiki
+Mrcore is a set of Laravel and Lumen components used to build various systems.
+It is a framework, a development platform and a CMS.  It is a modularized version of Laravel
+providing better package development support.  Think of Laravel 4.x workbenches on steroids.
 
-Auth must come before wiki, becuase it sets routes auth...and wiki routes have a catchall that will kill auth
+See https://github.com/mrcore5/framework for details and installation instructions.
 
-* add in composer.json
-* add to providers array
-* change auth driver to 'mrcore' in config/auth.php
-* change auth model to 'Mrcore\Modules\Wiki\Models\User' in config/auth.php
-* publish, migrate, seed
-* requires my custom config/mrcore.php
-* Add to config/theme.php assets array
+## Official Documentation
 
-Add to your app/Console/Kernel.php $commands array
-	'Mrcore\Modules\Wiki\Console\Commands\IndexPosts'
+For this wiki module, well, there isn't any...yet.
 
+Wiki specific documentaion will be here in the future.
 
-To Migrate and Seed
+For now, see https://github.com/mrcore5/framework
 
-	./artisan vendor:publish --provider="Mrcore\Modules\Wiki\Providers\WikiServiceProvider" --tag="migrations" --force
-	./artisan vendor:publish --provider="Mrcore\Modules\Wiki\Providers\WikiServiceProvider" --tag="seeds" --force
-	composer dump-autoload
+## Contributing
 
-	Edit your database/seeds/DatabaseSeeder.php and add this to the end of the run() function:
-	
-	require __DIR__.'/WikiDatabaseSeeder.php';
+Thank you for considering contributing to the mRcore framework!  Fork and pull!
 
-	Then migrate with standard artisan commands:
-	./artisan migrate
-	./artisan db:seed
-	or ./artisan migrate:refresh --seed
+### License
 
-
+Mrcore is open-sourced software licensed under the [MIT license](http://mreschke.com/license/mit)

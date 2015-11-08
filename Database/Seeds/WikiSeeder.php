@@ -20,7 +20,8 @@ class WikiSeeder extends Seeder
 
         Model::unguard();
 
-        // Order is Critical
+		// Order is Critical
+		$this->call('WikiUserSeeder');
         $this->call('WikiPostItemsSeeder');
         $this->call('WikiPostSeeder');
         $this->call('WikiRoleSeeder');
