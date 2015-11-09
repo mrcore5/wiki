@@ -99,7 +99,7 @@ return [
 	|
 	*/
 
-	'help' => env('MRCORE_WIKI_HELP', 'http://mrcore.mreschke.com/mrcore/help'),
+	'help' => env('MRCORE_WIKI_HELP', 'http://mreschke.com/205/wiki-help'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -112,7 +112,7 @@ return [
 	|
 	*/
 
-	'cheat' => env('MRCORE_WIKI_CHEAT', 'http://mrcore.mreschke.com/mrcore/cheatsheet'),
+	'cheat' => env('MRCORE_WIKI_CHEAT', 'http://mreschke.com/21/wiki-markup-cheat-sheet'),
 
 	/*
 	|--------------------------------------------------------------------------
