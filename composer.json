@@ -23,6 +23,10 @@
 		"sabre/dav": "~1.8.7",
 		"camspiers/porter-stemmer": "1.0.0",
 		"easybook/geshi": "~1.0.8.12",
+
+		"mrcore/foundation": "~1.0",
+		"mrcore/auth": "~1.0",
+		"mrcore/bootswatch-theme": "~1.0",
 		"mreschke/helpers": "~1.0"
 	},
 	"autoload": {
