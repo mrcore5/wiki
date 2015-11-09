@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ab0dad4d73ddb806e6fd01cd0505f29f",
-    "content-hash": "52260d92bdd3fece39631bdbe1d9db01",
+    "hash": "56493163db7ecb0710aaff78781bb566",
+    "content-hash": "e19af5362774d56be719c20e36e852a8",
     "packages": [
         {
             "name": "camspiers/porter-stemmer",
@@ -205,6 +205,50 @@
                 "syntax"
             ],
             "time": "2015-06-18 14:56:28"
+        },
+        {
+            "name": "gorhill/php-fine-diff",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/falk-graeser/PHP-FineDiff.git",
+                "reference": "eb03360edcca6954e306a89ceb6ccbd2fe8100ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/falk-graeser/PHP-FineDiff/zipball/eb03360edcca6954e306a89ceb6ccbd2fe8100ed",
+                "reference": "eb03360edcca6954e306a89ceb6ccbd2fe8100ed",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GorHill\\FineDiff\\": "GorHill/FineDiff"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Raymond Hill",
+                    "email": "r.michael@queo-group.com",
+                    "homepage": "http://www.queoflow.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Falk Gräser",
+                    "email": "f.graeser@queo-group.com",
+                    "homepage": "http://www.queoflow.com/",
+                    "role": "The-Clean-Up-Guy"
+                }
+            ],
+            "homepage": "http://www.raymondhill.net/finediff/",
+            "keywords": [
+                "finediff"
+            ],
+            "time": "2015-07-30 12:35:23"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1444,7 +1488,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "gorhill/php-fine-diff": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
