@@ -58,7 +58,7 @@ class AppMakeCommand extends Command {
 		$path = realpath($path);
 
 		// Git clone (and remove .git)
-		exec("cd $path && git clone https://github.com/mreschke/mrcore-appstub . && rm -rf .git");
+		exec("cd $path && git clone --depth 1 https://github.com/mreschke/mrcore-appstub . && rm -rf .git");
 
 		// Replace file contents
 		$files = File::allFiles($path);
@@ -98,6 +98,7 @@ class AppMakeCommand extends Command {
 		$this->sed('Mrcore\\\\\\\\Appstub', $doubleNamespace, $file);
 		$this->sed('Mrcore\\\\Appstub', $namespace, $file);
 		$this->sed('mrcore:appstub', "$vendor:$package", $file);
+		$this->sed('mrcore:$app', "$vendor:\$app", $file);
 		$this->sed('mrcore\.appstub', "$vendor.$package", $file);
 		$this->sed('appstub::', "$package::", $file);
 		$this->sed('AppstubController', studly_case($package).'Controller', $file);
