@@ -16,7 +16,7 @@ $(function() {
 	var autosaveDelay = 3; // seconds
 	var postRoute = "{{ URL::route('permalink', array('id' => $post->id)) }}"; // redirect here on save/view
 
-	// Grap laravel csrfToken for ajax calls
+	// Use laravel CSRF token for ajax callas to avoid TokenMismatchException
 	$.ajaxSetup({
 		headers: {
 			'X-CSRF-TOKEN': $("input[name=_token]").val()
@@ -48,7 +48,7 @@ $(function() {
 	editor.setTheme("ace/theme/" + aceTheme);
 	editor.setOptions({
 		fontSize: "14px"
-	});	
+	});
 	editor.getSession().setMode("ace/mode/" + aceMode);
 	editor.setBehavioursEnabled(true); // auto-pairing of special characters, like quotation marks, parenthesis, or brackets
 	editor.getSession().setUseSoftTabs(false); // true is spaces
@@ -125,17 +125,17 @@ $(function() {
 	}]);
 
 
-	
+
 
 	// Editor autosave feature
 	var saved = true;
 	var unpublishedChanges = false;
-	var autosaveCounter = new countdown({  
+	var autosaveCounter = new countdown({
 		seconds: autosaveDelay-1,
 		onUpdateStatus: function(sec) {
 			// callback for each second
 			message('autosave in ' + sec);
-		}, 
+		},
 		onCounterEnd: function() {
 			// Countdown complete, autosave post date
 			message('saving ...', 'danger');
@@ -164,7 +164,7 @@ $(function() {
 	function updatePost(autosave) {
 		unpublishedChanges = false;
 		var content = editor.getValue();
-		
+
 		return $.post(
 			"{{ URL::route('updatePost', array('id' => $post->id)) }}",
 			{
