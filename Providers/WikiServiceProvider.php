@@ -200,7 +200,7 @@ class WikiServiceProvider extends ServiceProvider {
 	{
 		if (!$this->app->runningInConsole()) return;
         $this->commands([
-            Mrcore\Wiki\Console\Commands\DbCommand::class,
+            Mrcore\Wiki\Console\Commands\AppCommand::class,
 			Mrcore\Wiki\Console\Commands\IndexPosts::class,
 			Mrcore\Wiki\Console\Commands\AppGitCommand::class,
 			Mrcore\Wiki\Console\Commands\AppMakeCommand::class
