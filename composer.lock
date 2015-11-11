@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a388b80cf07b95e99c9e1f05979c2071",
-    "content-hash": "ef306af4270e1090d3d1d8f52c8d49ac",
+    "hash": "5038118592dccca12993e023409d108a",
+    "content-hash": "169849acf9d19a72ad06b3c5b8d3a5a1",
     "packages": [
         {
             "name": "camspiers/porter-stemmer",
@@ -208,16 +208,16 @@
         },
         {
             "name": "gorhill/php-fine-diff",
-            "version": "dev-master",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/falk-graeser/PHP-FineDiff.git",
-                "reference": "eb03360edcca6954e306a89ceb6ccbd2fe8100ed"
+                "reference": "b0c9ab136958882c501d461b0ad204f908e19392"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/falk-graeser/PHP-FineDiff/zipball/eb03360edcca6954e306a89ceb6ccbd2fe8100ed",
-                "reference": "eb03360edcca6954e306a89ceb6ccbd2fe8100ed",
+                "url": "https://api.github.com/repos/falk-graeser/PHP-FineDiff/zipball/b0c9ab136958882c501d461b0ad204f908e19392",
+                "reference": "b0c9ab136958882c501d461b0ad204f908e19392",
                 "shasum": ""
             },
             "type": "library",
@@ -248,7 +248,7 @@
             "keywords": [
                 "finediff"
             ],
-            "time": "2015-07-30 12:35:23"
+            "time": "2015-07-30 10:21:26"
         },
         {
             "name": "illuminate/contracts",
@@ -1048,9 +1048,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "gorhill/php-fine-diff": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
