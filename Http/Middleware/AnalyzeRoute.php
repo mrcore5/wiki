@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Http\Middleware;
+<?php namespace Mrcore\Wiki\Http\Middleware;
 
 use Auth;
 use Input;
@@ -9,7 +9,7 @@ use Module;
 use Closure;
 use Redirect;
 use Response;
-use Mrcore\Modules\Wiki\Models\Post;
+use Mrcore\Wiki\Models\Post;
 
 class AnalyzeRoute {
 
@@ -44,7 +44,7 @@ class AnalyzeRoute {
 	private function analyzeRoute()
 	{
 		// Analyse URL and find matching mrcore router tabel entry
-		$route = app('Mrcore\Modules\Wiki\Support\RouteAnalyzer');
+		$route = app('Mrcore\Wiki\Support\RouteAnalyzer');
 		$route->analyzeUrl(Config::get('mrcore.wiki.reserved_routes'), Config::get('mrcore.wiki.legacy_routes'));
 
 		if ($route->foundRoute()) {

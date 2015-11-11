@@ -28,7 +28,7 @@
 			"Database"
 		],		
 		"psr-4": {
-			"Mrcore\\Modules\\Wiki\\": ""
+			"Mrcore\\Wiki\\": ""
 		}
 	}
 }

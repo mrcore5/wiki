@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Api;
+<?php namespace Mrcore\Wiki\Api;
 
 /**
  * This is the post API layer used from the Mrcore class/facade

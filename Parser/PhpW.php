@@ -1,6 +1,6 @@
-<?php namespace Mrcore\Modules\Wiki\Parser;
+<?php namespace Mrcore\Wiki\Parser;
 
-use Mrcore\Modules\Wiki\Parser\Wiki;
+use Mrcore\Wiki\Parser\Wiki;
 
 Class PhpW
 {

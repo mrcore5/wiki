@@ -1,6 +1,6 @@
-<?php namespace Mrcore\Modules\Wiki\Models;
+<?php namespace Mrcore\Wiki\Models;
 
-use Mrcore\Modules\Foundation\Support\Cache;
+use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class Hashtag extends Model
@@ -33,7 +33,7 @@ class Hashtag extends Model
 	 */
 	public function route()
 	{
-		return $this->hasOne('Mrcore\Modules\Wiki\Models\Router', 'id', 'route_id');
+		return $this->hasOne('Mrcore\Wiki\Models\Router', 'id', 'route_id');
 	}	
 
 	/**

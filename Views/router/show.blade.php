@@ -67,7 +67,7 @@
 						@if ($route->post_id)
 							{{-- Permalink standard /42/my-page route --}}
 							<td class="permalink">
-								<a href="{{ Mrcore\Modules\Wiki\Models\Post::route($route->post_id) }}" target="_blank">
+								<a href="{{ Mrcore\Wiki\Models\Post::route($route->post_id) }}" target="_blank">
 									{{{ $route->post_id }}}/{{{ $route->slug }}}
 								</a>
 							</td>

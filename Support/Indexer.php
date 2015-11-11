@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Support;
+<?php namespace Mrcore\Wiki\Support;
 
 use Porter;
 

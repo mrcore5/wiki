@@ -1,12 +1,12 @@
-<?php namespace Mrcore\Modules\Wiki\Console\Commands;
+<?php namespace Mrcore\Wiki\Console\Commands;
 
 use Config;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Mrcore\Modules\Wiki\Models\Post;
-use Mrcore\Modules\Wiki\Support\Crypt;
-use Mrcore\Modules\Wiki\Support\Indexer;
-use Mrcore\Modules\Wiki\Models\PostIndex;
+use Mrcore\Wiki\Models\Post;
+use Mrcore\Wiki\Support\Crypt;
+use Mrcore\Wiki\Support\Indexer;
+use Mrcore\Wiki\Models\PostIndex;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 

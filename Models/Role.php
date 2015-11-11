@@ -1,6 +1,6 @@
-<?php namespace Mrcore\Modules\Wiki\Models;
+<?php namespace Mrcore\Wiki\Models;
 
-use Mrcore\Modules\Foundation\Support\Cache;
+use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
@@ -27,7 +27,7 @@ class Role extends Model
 	 */
 	public function users()
 	{
-		return $this->belongsToMany('Mrcore\Modules\Wiki\Models\User', 'user_roles');
+		return $this->belongsToMany('Mrcore\Wiki\Models\User', 'user_roles');
 	}	
 
 	/**

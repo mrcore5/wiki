@@ -1,8 +1,8 @@
-<?php namespace Mrcore\Modules\Wiki\Support\Filemanager;
+<?php namespace Mrcore\Wiki\Support\Filemanager;
 
 use Config;
-use Mrcore\Modules\Wiki\Models\Post;
-use Mrcore\Modules\Wiki\Models\Router;
+use Mrcore\Wiki\Models\Post;
+use Mrcore\Wiki\Models\Router;
 
 
 class Symlink {

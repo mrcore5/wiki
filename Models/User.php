@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Models;
+<?php namespace Mrcore\Wiki\Models;
 
 use DB;
 use Auth;
@@ -6,7 +6,7 @@ use Config;
 use Session;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use Mrcore\Modules\Foundation\Support\Cache;
+use Mrcore\Foundation\Support\Cache;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -97,7 +97,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
 	/**
 	 * Get current logged in user
-	 * @return Mrcore\Modules\Wiki\Models\User
+	 * @return Mrcore\Wiki\Models\User
 	 */
 	public static function currentUserTEST()
 	{

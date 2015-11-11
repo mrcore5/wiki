@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Providers;
+<?php namespace Mrcore\Wiki\Providers;
 
 use Auth;
 use Gate;
@@ -7,9 +7,9 @@ use Mrcore;
 use Layout;
 use Module;
 use Illuminate\Routing\Router;
-use Mrcore\Modules\Wiki\Models\Post;
+use Mrcore\Wiki\Models\Post;
 use Illuminate\Contracts\Http\Kernel;
-use Mrcore\Modules\Foundation\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class WikiServiceProvider extends ServiceProvider {
 
@@ -57,7 +57,7 @@ class WikiServiceProvider extends ServiceProvider {
 		Module::trace(get_class(), __function__);
 
 		// Register facades
-		class_alias('Mrcore\Modules\Wiki\Facades\Mrcore', 'Mrcore');
+		class_alias('Mrcore\Wiki\Facades\Mrcore', 'Mrcore');
 		class_alias('Illuminate\Html\FormFacade', 'Form');
 		class_alias('Illuminate\Html\HtmlFacade', 'Html');
 
@@ -65,12 +65,12 @@ class WikiServiceProvider extends ServiceProvider {
 		$this->registerConfigs();
 
 		// Register IoC bind aliases
-		$this->app->alias(Mrcore\Modules\Wiki\Api\Mrcore::class, Mrcore\Modules\Wiki\Api\MrcoreInterface::class);
-		$this->app->alias(Mrcore\Modules\Wiki\Api\Config::class, Mrcore\Modules\Wiki\Api\ConfigInterface::class);
-		$this->app->alias(Mrcore\Modules\Wiki\Api\Layout::class, Mrcore\Modules\Wiki\Api\LayoutInterface::class);
-		$this->app->alias(Mrcore\Modules\Wiki\Api\Post::class, Mrcore\Modules\Wiki\Api\PostInterface::class);
-		$this->app->alias(Mrcore\Modules\Wiki\Api\Router::class, Mrcore\Modules\Wiki\Api\RouterInterface::class);
-		$this->app->alias(Mrcore\Modules\Wiki\Api\User::class, Mrcore\Modules\Wiki\Api\UserInterface::class);
+		$this->app->alias(Mrcore\Wiki\Api\Mrcore::class, Mrcore\Wiki\Api\MrcoreInterface::class);
+		$this->app->alias(Mrcore\Wiki\Api\Config::class, Mrcore\Wiki\Api\ConfigInterface::class);
+		$this->app->alias(Mrcore\Wiki\Api\Layout::class, Mrcore\Wiki\Api\LayoutInterface::class);
+		$this->app->alias(Mrcore\Wiki\Api\Post::class, Mrcore\Wiki\Api\PostInterface::class);
+		$this->app->alias(Mrcore\Wiki\Api\Router::class, Mrcore\Wiki\Api\RouterInterface::class);
+		$this->app->alias(Mrcore\Wiki\Api\User::class, Mrcore\Wiki\Api\UserInterface::class);
 
 		// Register other service providers
 		$this->app->register(\Illuminate\Html\HtmlServiceProvider::class);
@@ -136,10 +136,10 @@ class WikiServiceProvider extends ServiceProvider {
 	protected function registerMiddleware(Kernel $kernel, Router $router)
 	{
 		// Register global middleware
-		$kernel->pushMiddleware('Mrcore\Modules\Wiki\Http\Middleware\AnalyzeRoute');
+		$kernel->pushMiddleware('Mrcore\Wiki\Http\Middleware\AnalyzeRoute');
 
 		// Register route based middleware
-		$router->middleware('auth.admin', 'Mrcore\Modules\Wiki\Http\Middleware\AuthenticateAdmin');
+		$router->middleware('auth.admin', 'Mrcore\Wiki\Http\Middleware\AuthenticateAdmin');
 	}
 
 	/**
@@ -151,13 +151,13 @@ class WikiServiceProvider extends ServiceProvider {
 	{
 		// Login event listener
 		Event::listen('auth.login', function($user) {
-			$handler = app('Mrcore\Modules\Wiki\Handlers\Events\UserEventHandler');
+			$handler = app('Mrcore\Wiki\Handlers\Events\UserEventHandler');
 			$handler->onUserLoggedIn($user);
 		});
 
 		// Logout event listener
 		Event::listen('auth.logout', function($user) {
-			$handler = app('Mrcore\Modules\Wiki\Handlers\Events\UserEventHandler');
+			$handler = app('Mrcore\Wiki\Handlers\Events\UserEventHandler');
 			$handler->onUserLoggedOut($user);
 		});
 	}
@@ -200,10 +200,10 @@ class WikiServiceProvider extends ServiceProvider {
 	{
 		if (!$this->app->runningInConsole()) return;
         $this->commands([
-            Mrcore\Modules\Wiki\Console\Commands\DbCommand::class,
-			Mrcore\Modules\Wiki\Console\Commands\IndexPosts::class,
-			Mrcore\Modules\Wiki\Console\Commands\AppGitCommand::class,
-			Mrcore\Modules\Wiki\Console\Commands\AppMakeCommand::class
+            Mrcore\Wiki\Console\Commands\DbCommand::class,
+			Mrcore\Wiki\Console\Commands\IndexPosts::class,
+			Mrcore\Wiki\Console\Commands\AppGitCommand::class,
+			Mrcore\Wiki\Console\Commands\AppMakeCommand::class
 		]);
 	}
 
@@ -238,10 +238,10 @@ class WikiServiceProvider extends ServiceProvider {
 
 			// Fire up standard EloquentUserProvider
 			#$provider = new \Illuminate\Auth\EloquentUserProvider($hash, $model);
-			$provider = new \Mrcore\Modules\Wiki\Auth\WikiUserProvider($hash, $model);
+			$provider = new \Mrcore\Wiki\Auth\WikiUserProvider($hash, $model);
 
 			// Fire up my custom Auth Provider as an extension to Laravels
-			return new \Mrcore\Modules\Wiki\Auth\Guard($provider, $session);
+			return new \Mrcore\Wiki\Auth\Guard($provider, $session);
 		});
 	}
 

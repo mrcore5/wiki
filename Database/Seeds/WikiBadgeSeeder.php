@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Mrcore\Modules\Wiki\Models\Badge;
-use Mrcore\Modules\Wiki\Models\PostBadge;
+use Mrcore\Wiki\Models\Badge;
+use Mrcore\Wiki\Models\PostBadge;
 
 class WikiBadgeSeeder extends Seeder
 {

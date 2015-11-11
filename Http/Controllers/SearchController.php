@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Http\Controllers;
+<?php namespace Mrcore\Wiki\Http\Controllers;
 
 use View;
 use Input;
@@ -8,12 +8,12 @@ use Request;
 use Session;
 use Redirect;
 use Response;
-use Mrcore\Modules\Wiki\Models\Tag;
-use Mrcore\Modules\Wiki\Models\Type;
-use Mrcore\Modules\Wiki\Models\Post;
-use Mrcore\Modules\Wiki\Models\Badge;
-use Mrcore\Modules\Wiki\Models\Format;
-use Mrcore\Modules\Wiki\Models\Hashtag;
+use Mrcore\Wiki\Models\Tag;
+use Mrcore\Wiki\Models\Type;
+use Mrcore\Wiki\Models\Post;
+use Mrcore\Wiki\Models\Badge;
+use Mrcore\Wiki\Models\Format;
+use Mrcore\Wiki\Models\Hashtag;
 
 class SearchController extends Controller {
 

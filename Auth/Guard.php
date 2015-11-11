@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Auth;
+<?php namespace Mrcore\Wiki\Auth;
 
 use Config;
 use Session;

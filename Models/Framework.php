@@ -1,6 +1,6 @@
-<?php namespace Mrcore\Modules\Wiki\Models;
+<?php namespace Mrcore\Wiki\Models;
 
-use Mrcore\Modules\Foundation\Support\Cache;
+use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class Framework extends Model
@@ -27,7 +27,7 @@ class Framework extends Model
 	 */
 	public function posts()
 	{
-		return $this->hasMany('Mrcore\Modules\Wiki\Models\Post');
+		return $this->hasMany('Mrcore\Wiki\Models\Post');
 	}	
 
 	/**

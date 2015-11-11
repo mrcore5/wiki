@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Http\Controllers\Admin;
+<?php namespace Mrcore\Wiki\Http\Controllers\Admin;
 
 use DB;
 use View;
@@ -9,13 +9,13 @@ use Hash;
 use stdClass;
 use Response;
 use Carbon\Carbon;
-use Mrcore\Modules\Wiki\Models\User;
+use Mrcore\Wiki\Models\User;
 use Mreschke\Helpers\String;
-use Mrcore\Modules\Wiki\Models\Role;
-use Mrcore\Modules\Wiki\Models\UserRole;
-use Mrcore\Modules\Wiki\Models\Permission;
-use Mrcore\Modules\Wiki\Models\UserPermission;
-use Mrcore\Modules\Wiki\Http\Controllers\Controller;
+use Mrcore\Wiki\Models\Role;
+use Mrcore\Wiki\Models\UserRole;
+use Mrcore\Wiki\Models\Permission;
+use Mrcore\Wiki\Models\UserPermission;
+use Mrcore\Wiki\Http\Controllers\Controller;
 
 class UserController extends Controller {
 

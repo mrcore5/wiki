@@ -1,10 +1,10 @@
-<?php namespace Mrcore\Modules\Wiki\Support\Sabredav;
+<?php namespace Mrcore\Wiki\Support\Sabredav;
 
 use Request;
 use Sabre\DAV;
 use Sabre\DAV\Collection;
-use Mrcore\Modules\Wiki\Support\Filemanager;
-use Mrcore\Modules\Wiki\Support\Filemanager\Url;
+use Mrcore\Wiki\Support\Filemanager;
+use Mrcore\Wiki\Support\Filemanager\Url;
 
 class Directory extends Collection {
 

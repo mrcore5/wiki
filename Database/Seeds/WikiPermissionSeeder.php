@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Mrcore\Modules\Wiki\Models\Permission;
+use Mrcore\Wiki\Models\Permission;
 
 class WikiPermissionSeeder extends Seeder
 {

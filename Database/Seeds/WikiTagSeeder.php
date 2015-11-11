@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Mrcore\Modules\Wiki\Models\Tag;
-use Mrcore\Modules\Wiki\Models\PostTag;
+use Mrcore\Wiki\Models\Tag;
+use Mrcore\Wiki\Models\PostTag;
 
 class WikiTagSeeder extends Seeder
 {

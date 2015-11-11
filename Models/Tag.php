@@ -1,6 +1,6 @@
-<?php namespace Mrcore\Modules\Wiki\Models;
+<?php namespace Mrcore\Wiki\Models;
 
-use Mrcore\Modules\Foundation\Support\Cache;
+use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
@@ -27,7 +27,7 @@ class Tag extends Model
 	 */
 	public function posts()
 	{
-		return $this->belongsToMany('Mrcore\Modules\Wiki\Models\Post', 'post_tags');
+		return $this->belongsToMany('Mrcore\Wiki\Models\Post', 'post_tags');
 	}		
 
 	/**

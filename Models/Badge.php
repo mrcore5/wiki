@@ -1,6 +1,6 @@
-<?php namespace Mrcore\Modules\Wiki\Models;
+<?php namespace Mrcore\Wiki\Models;
 
-use Mrcore\Modules\Foundation\Support\Cache;
+use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class Badge extends Model
@@ -27,7 +27,7 @@ class Badge extends Model
 	 */
 	public function posts()
 	{
-		return $this->belongsToMany('Mrcore\Modules\Wiki\Models\Post', 'post_badges');
+		return $this->belongsToMany('Mrcore\Wiki\Models\Post', 'post_badges');
 	}	
 
 	/**

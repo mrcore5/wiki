@@ -1,10 +1,10 @@
-<?php namespace Mrcore\Modules\Wiki\Support\Filemanager;
+<?php namespace Mrcore\Wiki\Support\Filemanager;
 
 use Route;
 use Config;
 use Request;
 use URL as LaravelUrl;
-use Mrcore\Modules\Wiki\Models\Post;
+use Mrcore\Wiki\Models\Post;
 
 class Url {
 	private $absBase;

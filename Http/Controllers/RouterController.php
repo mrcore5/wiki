@@ -1,11 +1,11 @@
-<?php namespace Mrcore\Modules\Wiki\Http\Controllers;
+<?php namespace Mrcore\Wiki\Http\Controllers;
 
 use Auth;
 use View;
 use Mrcore;
 use Layout;
 use Response;
-use Mrcore\Modules\Wiki\Models\Router;
+use Mrcore\Wiki\Models\Router;
 
 class RouterController extends Controller {
 

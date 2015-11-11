@@ -1,6 +1,6 @@
-<?php namespace Mrcore\Modules\Wiki\Auth;
+<?php namespace Mrcore\Wiki\Auth;
 
-use Mrcore\Modules\Foundation\Support\Cache;
+use Mrcore\Foundation\Support\Cache;
 use Illuminate\Auth\EloquentUserProvider;
 
 class WikiUserProvider extends EloquentUserProvider {

@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Mrcore\Modules\Wiki\Models\Role;
-use Mrcore\Modules\Wiki\Models\UserRole;
+use Mrcore\Wiki\Models\Role;
+use Mrcore\Wiki\Models\UserRole;
 
 class WikiRoleSeeder extends Seeder
 {

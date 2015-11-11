@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Api;
+<?php namespace Mrcore\Wiki\Api;
 
 use Auth;
 
@@ -112,7 +112,7 @@ class User implements UserInterface
 
 	public static function hasPermission($constant)
 	{
-		return \Mrcore\Modules\Wiki\Models\User::hasPermission($constant);
+		return \Mrcore\Wiki\Models\User::hasPermission($constant);
 	}
 
 	/**

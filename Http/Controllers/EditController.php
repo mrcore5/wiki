@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Http\Controllers;
+<?php namespace Mrcore\Wiki\Http\Controllers;
 
 use Auth;
 use View;
@@ -12,25 +12,25 @@ use Response;
 use Redirect;
 use Carbon\Carbon;
 use Mreschke\Helpers\String;
-use Mrcore\Modules\Wiki\Models\Tag;
-use Mrcore\Modules\Wiki\Models\User;
-use Mrcore\Modules\Wiki\Models\Mode;
-use Mrcore\Modules\Wiki\Models\Post;
-use Mrcore\Modules\Wiki\Models\Role;
-use Mrcore\Modules\Wiki\Models\Type;
-use Mrcore\Modules\Wiki\Models\Badge;
-use Mrcore\Modules\Wiki\Models\Format;
-use Mrcore\Modules\Wiki\Models\Router;
-use Mrcore\Modules\Wiki\Support\Crypt;
-use Mrcore\Modules\Wiki\Models\Hashtag;
-use Mrcore\Modules\Wiki\Models\PostTag;
-use Mrcore\Modules\Wiki\Models\UserRole;
-use Mrcore\Modules\Wiki\Models\Revision;
-use Mrcore\Modules\Wiki\Models\Framework;
-use Mrcore\Modules\Wiki\Models\PostBadge;
-use Mrcore\Modules\Wiki\Models\Permission;
-use Mrcore\Modules\Wiki\Models\PostPermission;
-use Mrcore\Modules\Wiki\Support\Filemanager\Symlink;
+use Mrcore\Wiki\Models\Tag;
+use Mrcore\Wiki\Models\User;
+use Mrcore\Wiki\Models\Mode;
+use Mrcore\Wiki\Models\Post;
+use Mrcore\Wiki\Models\Role;
+use Mrcore\Wiki\Models\Type;
+use Mrcore\Wiki\Models\Badge;
+use Mrcore\Wiki\Models\Format;
+use Mrcore\Wiki\Models\Router;
+use Mrcore\Wiki\Support\Crypt;
+use Mrcore\Wiki\Models\Hashtag;
+use Mrcore\Wiki\Models\PostTag;
+use Mrcore\Wiki\Models\UserRole;
+use Mrcore\Wiki\Models\Revision;
+use Mrcore\Wiki\Models\Framework;
+use Mrcore\Wiki\Models\PostBadge;
+use Mrcore\Wiki\Models\Permission;
+use Mrcore\Wiki\Models\PostPermission;
+use Mrcore\Wiki\Support\Filemanager\Symlink;
 
 class EditController extends Controller {
 

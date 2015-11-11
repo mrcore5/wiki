@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Console\Commands;
+<?php namespace Mrcore\Wiki\Console\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;

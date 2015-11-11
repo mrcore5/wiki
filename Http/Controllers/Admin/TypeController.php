@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Http\Controllers\Admin;
+<?php namespace Mrcore\Wiki\Http\Controllers\Admin;
 
 use View;
 use Config;
@@ -6,8 +6,8 @@ use Request;
 use Input;
 use Response;
 use stdClass;
-use Mrcore\Modules\Wiki\Models\Type;
-use Mrcore\Modules\Wiki\Http\Controllers\Controller;
+use Mrcore\Wiki\Models\Type;
+use Mrcore\Wiki\Http\Controllers\Controller;
 
 class TypeController extends Controller {
 

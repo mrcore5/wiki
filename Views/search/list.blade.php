@@ -13,11 +13,11 @@
 					@endforeach
 				</span>
 
-				<a href="{{ Mrcore\Modules\Wiki\Models\Post::route($result->id) }}">{{ $result->title }}</a>
+				<a href="{{ Mrcore\Wiki\Models\Post::route($result->id) }}">{{ $result->title }}</a>
 				<span class="search-post-creator">
 					<i class="fa fa-angle-double-right"></i>
 					post {{ $result->id }}
-					by {{ Mrcore\Modules\Wiki\Models\User::find($result->created_by)->alias }}
+					by {{ Mrcore\Wiki\Models\User::find($result->created_by)->alias }}
 					{{ date("M jS Y", strtotime($result->created_at)) }}
 					({{ $result->clicks }} views)
 				</span>
@@ -37,7 +37,7 @@
 						<i class="fa fa-file-text-o text-primary" style="margin-left: 3px"></i>
 					</a>
 				@endif
-				{{ Mrcore\Modules\Wiki\Models\Post::route($result->id) }}
+				{{ Mrcore\Wiki\Models\Post::route($result->id) }}
 			</div>
 			<div class="search-post-tags">
 				<i class="fa fa-tags"></i>

@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Parser;
+<?php namespace Mrcore\Wiki\Parser;
 
 Class Php
 {

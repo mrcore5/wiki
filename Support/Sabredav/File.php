@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Support\Sabredav;
+<?php namespace Mrcore\Wiki\Support\Sabredav;
 
 use Sabre\DAV;
 

@@ -1,6 +1,6 @@
-<?php namespace Mrcore\Modules\Wiki\Models;
+<?php namespace Mrcore\Wiki\Models;
 
-use Mrcore\Modules\Foundation\Support\Cache;
+use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class Revision extends Model
@@ -26,7 +26,7 @@ class Revision extends Model
 	 */
 	public function post()
 	{
-		return $this->hasOne('Mrcore\Modules\Wiki\Models\User', 'id', 'post_id');
+		return $this->hasOne('Mrcore\Wiki\Models\User', 'id', 'post_id');
 	}
 
 	/**

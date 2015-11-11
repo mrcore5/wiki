@@ -2,7 +2,7 @@
 
 use Mreschke\Helpers\String;
 use Illuminate\Database\Seeder;
-use Mrcore\Modules\Wiki\Models\User;
+use Mrcore\Wiki\Models\User;
 
 class WikiUserSeeder extends Seeder
 {

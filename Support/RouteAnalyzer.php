@@ -1,8 +1,8 @@
-<?php namespace Mrcore\Modules\Wiki\Support;
+<?php namespace Mrcore\Wiki\Support;
 
 use Config;
 use Request;
-use Mrcore\Modules\Wiki\Models\Router as RouterTable;
+use Mrcore\Wiki\Models\Router as RouterTable;
 
 class RouteAnalyzer {
 	

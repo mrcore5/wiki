@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Http\Controllers;
+<?php namespace Mrcore\Wiki\Http\Controllers;
 
 use View;
 use Input;
@@ -7,8 +7,8 @@ use Mrcore;
 use Request;
 use Response;
 use Redirect;
-use Mrcore\Modules\Wiki\Models\Post;
-use Mrcore\Modules\Wiki\Models\Revision;
+use Mrcore\Wiki\Models\Post;
+use Mrcore\Wiki\Models\Revision;
 
 class PostController extends Controller {
 

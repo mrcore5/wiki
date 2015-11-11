@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Http\Middleware;
+<?php namespace Mrcore\Wiki\Http\Middleware;
 
 use Closure;
 use Response;

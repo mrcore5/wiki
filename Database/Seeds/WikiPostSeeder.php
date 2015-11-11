@@ -1,8 +1,8 @@
 <?php
 
-use Mrcore\Modules\Wiki\Models\Post;
-use Mrcore\Modules\Wiki\Models\Router;
-use Mrcore\Modules\Wiki\Support\Crypt;
+use Mrcore\Wiki\Models\Post;
+use Mrcore\Wiki\Models\Router;
+use Mrcore\Wiki\Support\Crypt;
 use Mreschke\Helpers\String as Str;
 use Illuminate\Database\Seeder;
 
@@ -189,7 +189,7 @@ See http://mrcore.mreschke.com/doc/advanced/workbench for more info in workbench
 			'title' => 'Search Box',
 			'slug' => 'search-box',
 			'content' =>  Crypt::encrypt('<?php
-$badges = Mrcore\Modules\Wiki\Models\Badge::all();
+$badges = Mrcore\Wiki\Models\Badge::all();
 
 $admin = array(
 	array("name" => "mRcore Workbench", "url" => "/5"),

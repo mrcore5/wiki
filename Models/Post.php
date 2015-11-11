@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Models;
+<?php namespace Mrcore\Wiki\Models;
 
 use DB;
 use URL;
@@ -7,18 +7,18 @@ use Input;
 use Config;
 use Session;
 use Request;
-use Mrcore\Modules\Wiki\Models\User;
+use Mrcore\Wiki\Models\User;
 use Mreschke\Helpers\String;
-use Mrcore\Modules\Wiki\Support\Crypt;
-use Mrcore\Modules\Foundation\Support\Cache;
+use Mrcore\Wiki\Support\Crypt;
+use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
-use Mrcore\Modules\Wiki\Support\Indexer;
-use Mrcore\Modules\Wiki\Parser\Wiki as WikiParser;
-use Mrcore\Modules\Wiki\Parser\Php as PhpParser;
-use Mrcore\Modules\Wiki\Parser\PhpW as PhpWParser;
-use Mrcore\Modules\Wiki\Parser\Html as HtmlParser;
-use Mrcore\Modules\Wiki\Parser\HtmlW as HtmlWParser;
-use Mrcore\Modules\Wiki\Parser\Text as TextParser;
+use Mrcore\Wiki\Support\Indexer;
+use Mrcore\Wiki\Parser\Wiki as WikiParser;
+use Mrcore\Wiki\Parser\Php as PhpParser;
+use Mrcore\Wiki\Parser\PhpW as PhpWParser;
+use Mrcore\Wiki\Parser\Html as HtmlParser;
+use Mrcore\Wiki\Parser\HtmlW as HtmlWParser;
+use Mrcore\Wiki\Parser\Text as TextParser;
 
 class Post extends Model
 {
@@ -48,7 +48,7 @@ class Post extends Model
 	 */
 	public function badges()
 	{
-		return $this->belongsToMany('Mrcore\Modules\Wiki\Models\Badge', 'post_badges');
+		return $this->belongsToMany('Mrcore\Wiki\Models\Badge', 'post_badges');
 	}
 
 	/**
@@ -57,7 +57,7 @@ class Post extends Model
 	 */
 	public function tags()
 	{
-		return $this->belongsToMany('Mrcore\Modules\Wiki\Models\Tag', 'post_tags');
+		return $this->belongsToMany('Mrcore\Wiki\Models\Tag', 'post_tags');
 	}
 
 	/**
@@ -66,7 +66,7 @@ class Post extends Model
 	 */
 	public function format()
 	{
-		return $this->hasOne('Mrcore\Modules\Wiki\Models\Format', 'id', 'format_id');
+		return $this->hasOne('Mrcore\Wiki\Models\Format', 'id', 'format_id');
 	}
 
 	/**
@@ -75,7 +75,7 @@ class Post extends Model
 	 */
 	public function type()
 	{
-		return $this->hasOne('Mrcore\Modules\Wiki\Models\Type', 'id', 'type_id');
+		return $this->hasOne('Mrcore\Wiki\Models\Type', 'id', 'type_id');
 	}
 
 	/**
@@ -84,7 +84,7 @@ class Post extends Model
 	 */
 	public function framework()
 	{
-		return $this->hasOne('Mrcore\Modules\Wiki\Models\Framework', 'id', 'framework_id');
+		return $this->hasOne('Mrcore\Wiki\Models\Framework', 'id', 'framework_id');
 	}
 
 	/**
@@ -93,7 +93,7 @@ class Post extends Model
 	 */
 	public function mode()
 	{
-		return $this->hasOne('Mrcore\Modules\Wiki\Models\Mode', 'id', 'mode_id');
+		return $this->hasOne('Mrcore\Wiki\Models\Mode', 'id', 'mode_id');
 	}
 
 	/**
@@ -102,7 +102,7 @@ class Post extends Model
 	 */
 	public function creator()
 	{
-		return $this->hasOne('Mrcore\Modules\Wiki\Models\User', 'id', 'created_by');
+		return $this->hasOne('Mrcore\Wiki\Models\User', 'id', 'created_by');
 	}
 
 	/**
@@ -111,7 +111,7 @@ class Post extends Model
 	 */
 	public function updater()
 	{
-		return $this->hasOne('Mrcore\Modules\Wiki\Models\User', 'id', 'updated_by');
+		return $this->hasOne('Mrcore\Wiki\Models\User', 'id', 'updated_by');
 	}
 
 	/**

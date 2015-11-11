@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Http\Controllers;
+<?php namespace Mrcore\Wiki\Http\Controllers;
 
 use View;
 use Illuminate\Foundation\Bus\DispatchesCommands;

@@ -158,7 +158,7 @@ Route::any('/search/{slug?}', array(
 Route::group(array('prefix' => 'admin', 'middleware' => 'auth.admin'), function() {
 	
 	// Cannot get resource controllers action() to work
-	//<li><a href="{{ action('Mrcore\Modules\Wiki\Http\Controllers\UserController@index') }}">Users</a></li>
+	//<li><a href="{{ action('Mrcore\Wiki\Http\Controllers\UserController@index') }}">Users</a></li>
 	// Gives Call to a member function domain() on null
 	#Route::resource('user', 'UserController');
 
@@ -283,7 +283,7 @@ Route::group(array('prefix' => 'admin', 'middleware' => 'auth.admin'), function(
 });
 
 
-// Login route (these are legacy, use new Mrcore\Modules\Auth now)
+// Login route (these are legacy, use new Mrcore\Auth now)
 /*Route::get('/login', array(
 	'uses' => 'LoginController@login',
 	'as' => 'login'

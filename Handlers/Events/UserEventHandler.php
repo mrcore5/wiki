@@ -1,11 +1,11 @@
-<?php namespace Mrcore\Modules\Wiki\Handlers\Events;
+<?php namespace Mrcore\Wiki\Handlers\Events;
 
 use Auth;
 use Config;
 use Session;
 use Carbon\Carbon;
 use Illuminate\Events\Dispatcher;
-use Mrcore\Modules\Wiki\Models\User;
+use Mrcore\Wiki\Models\User;
 
 class UserEventHandler {
 

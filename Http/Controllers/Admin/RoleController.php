@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Http\Controllers\Admin;
+<?php namespace Mrcore\Wiki\Http\Controllers\Admin;
 
 use View;
 use Config;
@@ -6,8 +6,8 @@ use Request;
 use Input;
 use Response;
 use stdClass;
-use Mrcore\Modules\Wiki\Models\Role;
-use Mrcore\Modules\Wiki\Http\Controllers\Controller;
+use Mrcore\Wiki\Models\Role;
+use Mrcore\Wiki\Http\Controllers\Controller;
 
 class RoleController extends Controller {
 

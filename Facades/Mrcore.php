@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Facades;
+<?php namespace Mrcore\Wiki\Facades;
 
 /**
  * @see \Mrcore\Mrcore\Mrcore
@@ -10,6 +10,6 @@ class Mrcore extends \Illuminate\Support\Facades\Facade {
 	 *
 	 * @return string
 	 */
-	protected static function getFacadeAccessor() { return 'Mrcore\Modules\Wiki\Api\Mrcore'; }
+	protected static function getFacadeAccessor() { return 'Mrcore\Wiki\Api\Mrcore'; }
 
 }

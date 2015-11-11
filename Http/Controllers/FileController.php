@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Http\Controllers;
+<?php namespace Mrcore\Wiki\Http\Controllers;
 
 use View;
 use Input;
@@ -8,11 +8,11 @@ use Layout;
 use Request;
 use Response;
 use Sabre\DAV;
-use Mrcore\Modules\Wiki\Models\Post;
+use Mrcore\Wiki\Models\Post;
 use Mreschke\Helpers\Guest;
-use Mrcore\Modules\Wiki\Support\Sabredav;
-use Mrcore\Modules\Wiki\Support\Filemanager;
-use Mrcore\Modules\Wiki\Support\Filemanager\Url;
+use Mrcore\Wiki\Support\Sabredav;
+use Mrcore\Wiki\Support\Filemanager;
+use Mrcore\Wiki\Support\Filemanager\Url;
 
 class FileController extends Controller {
 

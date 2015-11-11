@@ -1,10 +1,10 @@
-<?php namespace Mrcore\Modules\Wiki\Parser;
+<?php namespace Mrcore\Wiki\Parser;
 
 use URL;
 use Layout;
 use Config;
-use Mrcore\Modules\Wiki\Support\Crypt;
-use Mrcore\Modules\Wiki\Models\Post;
+use Mrcore\Wiki\Support\Crypt;
+use Mrcore\Wiki\Models\Post;
 
 Class Wiki
 {

@@ -5,11 +5,11 @@
 		<div class="search-post">
 			<div class="search-detail-container hvr-glow theme-border-color-1 panel">
 				<div class="search-detail-image theme-bg-color-4 theme-border-color-1">
-					<img src="{{ asset('uploads/'.Mrcore\Modules\Wiki\Models\User::find($result->created_by)->avatar) }}" class="theme-border-color-2"  />
+					<img src="{{ asset('uploads/'.Mrcore\Wiki\Models\User::find($result->created_by)->avatar) }}" class="theme-border-color-2"  />
 				</div>
 				<div style="position:relative;display:table-cell;width:100%">
 					<div class="search-detail-content">
-						<span style="font-size:14px"><a href="{{ Mrcore\Modules\Wiki\Models\Post::route($result->id) }}">{{ $result->title }}</a></span>
+						<span style="font-size:14px"><a href="{{ Mrcore\Wiki\Models\Post::route($result->id) }}">{{ $result->title }}</a></span>
 						<div class="search-post-url">
 							@if ($result->type_id == 2)
 								<a href="{{ URL::route('search').'?type=page' }}">
@@ -24,7 +24,7 @@
 									<i class="fa fa-file-text-o text-primary"></i>
 								</a>
 							@endif
-							{{ Mrcore\Modules\Wiki\Models\Post::route($result->id) }}
+							{{ Mrcore\Wiki\Models\Post::route($result->id) }}
 						</div>
 						<div style="font-size:10px;padding:5px;">{{ $result->teaser }}</div>
 					</div>
@@ -64,7 +64,7 @@
 					<div style="float:right;">
 					<span class="search-post-creator">
 							post #{{ $result->id }}
-							by <b>{{ Mrcore\Modules\Wiki\Models\User::find($result->created_by)->alias }}</b>
+							by <b>{{ Mrcore\Wiki\Models\User::find($result->created_by)->alias }}</b>
 							{{ date("M jS Y", strtotime($result->created_at)) }}
 							({{ $result->clicks }} views)
 						</span>

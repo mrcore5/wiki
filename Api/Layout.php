@@ -1,4 +1,4 @@
-<?php namespace Mrcore\Modules\Wiki\Api;
+<?php namespace Mrcore\Wiki\Api;
 
 use Layout as LayoutFacade;
 
