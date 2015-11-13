@@ -18,6 +18,68 @@ Wiki specific documentaion will be here in the future.
 
 For now, see https://github.com/mrcore5/framework
 
+
+
+
+
+
+## Enhancement Ideas
+
+* Foundation installer should prompt and notify about to delete laravel models, migrations...
+* Build `mrcore5-installer` symfony console command to install fresh laravel/lumen + foundation.  Options for --wiki install or --blog or whatever.
+* Perfect entities with `mreschke/repository` for auth, foundation and wiki.  Split tables between them
+* Change namespace of bootswatch theme, maybe just Mrcore/BootswatchTheme ?
+
+
+### Wiki Tables
+
+* badges
+* comments
+* formats (wiki, php, phpw, html, text, markdown, htmlw)
+* frameworks (custom, workbench)
+* hashtags
+* modes (default, simple, raw, source)
+* post_badges
+* post_indexes
+* post_locks
+* post_permissions
+* post_reads
+* post_tags
+* posts
+* revisions
+* router
+* tags
+* types (doc, page, app)
+
+
+    $wiki = App::make('Mrcore\Wiki');
+
+
+### Auth Tables
+
+* permissions (update with per type, like wiki, or user, or blog...)
+* roles
+* user_permissions
+* user_roles
+* users
+
+
+    $auth = App::make('Mrcore\Auth');
+    $user = $auth->user->find(3);
+    $user->roles;
+    $user->permissions;
+
+
+### Foundation Tables
+
+*
+
+
+
+
+
+
+
 ## Contributing
 
 Thank you for considering contributing to the mRcore framework!  Fork and pull!
