@@ -1,6 +1,7 @@
 <?php namespace Mrcore\Wiki\Api;
 
 use Config;
+use Module;
 
 /**
  * This is the main mrcore API interface
@@ -13,7 +14,7 @@ class Mrcore implements MrcoreInterface
 	private $user;
 	private $layout;
 	private $config;
-	
+
 	public function __construct(PostInterface $post, RouterInterface $router, UserInterface $user, LayoutInterface $layout, ConfigInterface $config)
 	{
 		$this->post = $post;
@@ -40,15 +41,14 @@ class Mrcore implements MrcoreInterface
 		return $this;
 	}
 
-
 	/**
 	 * Return the laravel/mrcore lifecycle dump
 	 * @return string of html
 	 */
 	public function lifecycle()
 	{
-		return "Deprecated";
-		#return \Lifecycle::dump();
+		// Lifecycle is deprecated, but Module::trace() exists
+		return Module::trace();
 	}
 
 	/**
@@ -57,11 +57,10 @@ class Mrcore implements MrcoreInterface
 	 */
 	public function asset($file)
 	{
+		//http://mrcore5.xendev1.dynatronsoftware.com/file/16/test.txt
 		// Baseurl remove the http: or http, just //xys.com
-		$baseUrl = substr(Config::get('app.url'), strpos(Config::get('app.url'), '://') +1);
-		return $baseUrl . '/' . $file;
+		return Config::get('app.url') . '/file/' . $this->post()->id . '/' . $file;
 	}
-
 
 	/**
 	 * Return the path of a file in the currnet post folder
@@ -77,23 +76,18 @@ class Mrcore implements MrcoreInterface
 		}
 	}
 
-
 	/**
 	 * var_dump helper
 	 */
 	public function vd($object) {
-		echo "<pre>";
-		var_dump($object);
-		echo "</pre>";
+		dump($object);
 	}
-
 
 	/**
 	 * var_dump and die helper
 	 */
 	public function dd($object) {
-		$this->vd($object);
-		exit();
+		dd($object);
 	}
-	
+
 }
