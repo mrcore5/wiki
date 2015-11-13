@@ -11,7 +11,7 @@
 	{{-- Layout script code array --}}
 	@if (Layout::script())
 		<script>
-		@foreach (Layout::script() as $script) 
+		@foreach (Layout::script() as $script)
 			{!! $script !!}
 		@endforeach
 		</script>
@@ -37,6 +37,11 @@
 			var params = $(this).attr('data-params');
 			var id = 'fm' + fm_instance
 			$(this).attr('id', id);
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				}
+			});
 			$.post(
 				"{{ URL::route('file') }}/" + path,
 				{
@@ -51,7 +56,6 @@
 				console.log(response);
 			});
 		});
-
 
 		// btn-scroll-up animations
 		$(window).scroll(function(){
