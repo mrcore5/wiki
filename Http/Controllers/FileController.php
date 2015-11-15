@@ -54,7 +54,7 @@ class FileController extends Controller {
 					return self::showFile($url);
 				}
 			}
-			
+
 		} elseif ($url->isMethod('PROPFIND')) {
 			// Display webdav only directory
 			if ($url->isDir()) {
@@ -84,7 +84,7 @@ class FileController extends Controller {
 			} else {
 				return self::showError(404);
 			}
-		
+
 		} elseif ($url->isMethod('COPY')) {
 			// Copy file from source to destination
 			// Source needs read permissions while dest needs write
@@ -106,7 +106,7 @@ class FileController extends Controller {
 			} else {
 				return self::showError(404);
 			}
-		
+
 		} elseif ($url->isMethod('MOVE')) {
 			// Move file from source to destination
 			// Both source and dest need write permissions
@@ -182,16 +182,26 @@ class FileController extends Controller {
 		# Find any $_GET input variables
 		$getWiki = Input::get('wiki');
 		$getText = Input::get('text');
+		$getMarkdown = Input::get('md');
 		$getDownload = Input::get('download');
 
 		if (isset($getText)) $mimetype = 'text/plain';
 		if (($extension == 'wiki' && !isset($getText)) && !isset($getDownload) || isset($getWiki)) {
-			// Parse file content and display in simple mode!
+			// Parse wiki file content and display in simple mode!
 			Layout::mode('simple');
 			$post = Post::find($url->getPostID());
 			Mrcore::post()->setModel($post);
-			$content = $post->parse(file_get_contents($abs));
+			$content = $post->parse(file_get_contents($abs), 'wiki');
 			return View::make('file.wiki', [
+				'content' => $content
+			]);
+		} elseif (($extension == 'md' && !isset($getText)) && !isset($getDownload) || isset($getMarkdown)) {
+			// Parse markdown file content and display in simple mode!
+			Layout::mode('simple');
+			$post = Post::find($url->getPostID());
+			Mrcore::post()->setModel($post);
+			$content = $post->parse(file_get_contents($abs, 'markdown'));
+			return View::make('file.markdown', [
 				'content' => $content
 			]);
 		}
@@ -247,7 +257,7 @@ class FileController extends Controller {
 	{
 		// Send 404 if not exist
 		if (!$url->exists()) {
-			return self::showError(404);	
+			return self::showError(404);
 		}
 
 		// Send 401 if access denied
@@ -300,7 +310,7 @@ class FileController extends Controller {
 			#$view = 'detail';
 			$params['nomenu'] = true;
 			$params['nonav'] = true;
-			
+
 			return View::make('file.'.$view, array(
 				'url' => $url,
 				'dir' => $dir,

@@ -218,9 +218,10 @@ class Post extends Model
 	 * $data should already be decrypted
 	 *
 	 * @param string $data optional decrypted content to parse instead of $this->content
+	 * @param string $format optional wiki, htmlw, phpw, php, html, text, markdown (or md)
 	 * @return if $data = null then none, else returns parsed $data
 	 */
-	public function parse($data = null)
+	public function parse($data = null, $format = null)
 	{
 		# Setup the Parser
 		$format = strtolower($this->format->constant);
@@ -248,7 +249,7 @@ class Post extends Model
 		} elseif ($format == 'text') {
 			$parser = new TextParser();
 
-		} elseif ($format == 'md') {
+		} elseif ($format == 'md' || $format == 'markdown') {
 			$parser = new MarkdownParser();
 		}
 
