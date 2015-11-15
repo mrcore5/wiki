@@ -13,12 +13,13 @@ use Mrcore\Wiki\Support\Crypt;
 use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Mrcore\Wiki\Support\Indexer;
-use Mrcore\Wiki\Parser\Wiki as WikiParser;
-use Mrcore\Wiki\Parser\Php as PhpParser;
-use Mrcore\Wiki\Parser\PhpW as PhpWParser;
-use Mrcore\Wiki\Parser\Html as HtmlParser;
-use Mrcore\Wiki\Parser\HtmlW as HtmlWParser;
-use Mrcore\Wiki\Parser\Text as TextParser;
+use Mrcore\Parser\Wiki as WikiParser;
+use Mrcore\Parser\Php as PhpParser;
+use Mrcore\Parser\WikiPhp as PhpWParser;
+use Mrcore\Parser\Html as HtmlParser;
+use Mrcore\Parser\WikiHtml as HtmlWParser;
+use Mrcore\Parser\Text as TextParser;
+use Mrcore\Parser\Markdown as MarkdownParser;
 
 class Post extends Model
 {
@@ -223,8 +224,15 @@ class Post extends Model
 	{
 		# Setup the Parser
 		$format = strtolower($this->format->constant);
-		if ($format == 'wiki') {
-			$parser = new WikiParser();
+		if ($format == 'wiki' || $format == 'htmlw' || $format == 'phpw') {
+
+			if ($format == 'wiki') {
+				$parser = new WikiParser();
+			} elseif ($format == 'htmlw') {
+				$parser = new HtmlWParser();
+			} elseif ($format == 'phpw') {
+				$parser = new PhpWParser();
+			}
 			$parser->userID = Auth::user()->id;
 			$parser->postID = $this->id;
 			$parser->postCreator = $this->created_by;
@@ -234,31 +242,14 @@ class Post extends Model
 		} elseif ($format == 'php') {
 			$parser = new PhpParser();
 
-		} elseif ($format == 'phpw') {
-			$parser = new PhpWParser();
-			$parser->userID = Auth::user()->id;
-			$parser->postID = $this->id;
-			$parser->postCreator = $this->created_by;
-			$parser->isAuthenticated = Auth::check();
-			$parser->isAdmin = Auth::admin();
-			#$parser->disabledRules = array('Html', 'Newline', 'Paragraph');
-			$parser->disabledRules = array('Html');
-
 		} elseif ($format == 'html') {
 			$parser = new HtmlParser();
 
-		} elseif ($format == 'htmlw') {
-			$parser = new HtmlWParser();
-			$parser->userID = Auth::user()->id;
-			$parser->postID = $this->id;
-			$parser->postCreator = $this->created_by;
-			$parser->isAuthenticated = Auth::check();
-			$parser->isAdmin = Auth::admin();
-			#$parser->disabledRules = array('Html', 'Newline', 'Paragraph');
-			$parser->disabledRules = array('Html');
-
-		} elseif ($format == 'text' || $format == 'md') {
+		} elseif ($format == 'text') {
 			$parser = new TextParser();
+
+		} elseif ($format == 'md') {
+			$parser = new MarkdownParser();
 		}
 
 		// Decrypt content if not already decrypted
