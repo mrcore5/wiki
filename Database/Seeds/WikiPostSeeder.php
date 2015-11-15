@@ -20,9 +20,9 @@ class WikiPostSeeder extends Seeder
 			'title' => 'Home',
 			'slug' => 'home',
 			'content' =>  Crypt::encrypt("<div class='jumbotron'>
-	<h1>Welcome to mRcore</h1>
-	<p>A Wiki/CMS system built with Laravel</p>
-	<p><a class='btn btn-primary btn-lg' onclick=\"window.location='/search'\"><i class='fa fa-search'></i> Browse Posts</a></p>
+	<h1>Welcome to the <a href='https://github.com/mrcore5/wiki' target='_blank'>mrcore5/wiki</a></h1>
+	<p>A Wiki and CMS system built with <a href='http://laravel.com' target='_blank'>Laravel</a> and the <a href='https://github.com/mrcore5/framework' target='_blank'>mrcore5/framework</a></p>
+	<p><a href='/search' class='btn btn-primary btn-lg'><i class='fa fa-search'></i> Browse Posts</a></p>
 </div>"),
 			'teaser' => Crypt::encrypt(''),
 			'contains_script' => false,
