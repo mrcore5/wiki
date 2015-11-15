@@ -17,12 +17,12 @@ class WikiPostItemsSeeder extends Seeder
 		DB::table('formats')->delete();
 		Format::create(array('name' => 'Wiki', 'constant' => 'wiki', 'order' => 1));		#1
 		Format::create(array('name' => 'PHP', 'constant' => 'php', 'order' => 2));			#2
-		Format::create(array('name' => 'PHPW', 'constant' => 'phpw', 'order' => 3));		#3
+		Format::create(array('name' => 'PHP (wiki parsed output)', 'constant' => 'phpw', 'order' => 3));		#3
 		Format::create(array('name' => 'HTML', 'constant' => 'html', 'order' => 4));		#4
 		Format::create(array('name' => 'Text', 'constant' => 'text', 'order' => 6));		#5
 		Format::create(array('name' => 'Markdown', 'constant' => 'md', 'order' => 7));		#6
-		Format::create(array('name' => 'HTMLW', 'constant' => 'htmlw', 'order' => 5));		#7
-		
+		Format::create(array('name' => 'HTML (wiki parsed output)', 'constant' => 'htmlw', 'order' => 5));		#7
+
 		// Post Types
 		DB::table('types')->delete();
 		Type::create(array('name' => 'Document', 'constant' => 'doc'));		#1

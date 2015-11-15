@@ -52,7 +52,7 @@ For now, see https://github.com/mrcore5/framework
 * types (doc, page, app)
 
 
-    $wiki = App::make('Mrcore\Wiki');
+	$wiki = App::make('Mrcore\Wiki');
 
 
 ### Auth Tables
@@ -64,18 +64,10 @@ For now, see https://github.com/mrcore5/framework
 * users
 
 
-    $auth = App::make('Mrcore\Auth');
-    $user = $auth->user->find(3);
-    $user->roles;
-    $user->permissions;
-
-
-### Foundation Tables
-
-*
-
-
-
+	$auth = App::make('Mrcore\Auth');
+	$user = $auth->user->find(3);
+	$user->roles;
+	$user->permissions;
 
 
 
