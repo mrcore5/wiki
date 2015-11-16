@@ -8,7 +8,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="page-header">
-			<h1>Default Route</h1>
+			<h3>Default Route</h3>
 		</div>
 	</div>
 </div>
@@ -25,7 +25,7 @@
 			<span class="help-block">
 				Example: <b>/app/myapp</b> or <b>/doc/help/mydoc</b> or <b>/myapp</b><br />
 				A static route allows you to define a custom url for this post<br />
-				To remove the static route and revert back to the post id/slug url, leave it blank 
+				To remove the static route and revert back to the post id/slug url, leave it blank
 			</span>
 		</div>
 	</div>
@@ -59,7 +59,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="page-header">
-			<h1>Workbench/App Forge</h1>
+			<h3>Workbench/App Forge</h3>
 		</div>
 	</div>
 </div>

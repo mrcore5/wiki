@@ -8,9 +8,9 @@
 $(function() {
 
 	// Variables
-	var aceTheme = 'xcode'; //monokai xcode
-	var aceMode = 'text'; //php html text plain_text...
-	var autosaveDelay = 3; // seconds
+	var aceTheme = 'xcode';
+	var aceMode = 'text';
+	var autosaveDelay = 10; // seconds
 	var postRoute = "{{ URL::route('permalink', array('id' => $post->id)) }}"; // redirect here on save/view
 
 	// Use laravel CSRF token for ajax callas to avoid TokenMismatchException
@@ -32,6 +32,9 @@ $(function() {
 		//LIGHT: github, textmate
 		aceTheme = 'terminal';
 		aceMode = 'markdown';
+	@elseif ($post->format->constant == 'wiki')
+			aceTheme = 'vibrant_ink'; //chrome
+			aceMode = 'handlebars';
 	@endif
 
 	// Ace Editor
@@ -87,6 +90,7 @@ $(function() {
 		name: 'publishShow',
 		bindKey: {win: 'Ctrl-Shift-S',  mac: 'Cmd-Shift-S'},
 		exec: function(editor) {
+			autosaveCounter.stop();
 			if (unpublishedChanges) {
 				updatePost(false).done(function() {
 					// post saved successfully
@@ -102,6 +106,7 @@ $(function() {
 		name: 'publishShow2',
 		bindKey: {win: 'Ctrl-Enter',  mac: 'Cmd-Enter'},
 		exec: function(editor) {
+			autosaveCounter.stop();
 			updatePost(false).done(function() {
 				// post saved successfully
 				window.location = postRoute;
@@ -126,12 +131,10 @@ $(function() {
 	    }
 	}]);
 
-
-
-
 	// Editor autosave feature
 	var saved = true;
 	var unpublishedChanges = false;
+	var autosavingNow = false;
 	var autosaveCounter = new countdown({
 		seconds: autosaveDelay-1,
 		onUpdateStatus: function(sec) {
@@ -140,9 +143,11 @@ $(function() {
 		},
 		onCounterEnd: function() {
 			// Countdown complete, autosave post date
+			autosavingNow = true;
 			message('saving ...', 'danger');
 			updatePost(true).done(function(response) {
 				// post saved successfully
+				autosavingNow = false;
 				saved = true;
 				unpublishedChanges = true;
 				message(response, 'success');
@@ -164,6 +169,11 @@ $(function() {
 
 	// Save only post content via ajax $.post
 	function updatePost(autosave) {
+		if (!autosave && autosavingNow == true) {
+			// Don't allow save, becuase autosave is happening right now
+			alert('Ooops, you hit save just as I was autosaving, please try again');
+			return;
+		}
 		unpublishedChanges = false;
 		var content = editor.getValue();
 

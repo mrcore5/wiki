@@ -8,7 +8,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="page-header">
-			<h1>Permissions</h1>
+			<h3>Permissions</h3>
 		</div>
 	</div>
 </div>
@@ -70,7 +70,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="page-header">
-			<h1>Public URL</h1>
+			<h3>Public URL</h3>
 		</div>
 	</div>
 </div>
