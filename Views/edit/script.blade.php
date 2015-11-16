@@ -10,7 +10,7 @@ $(function() {
 	// Variables
 	var aceTheme = 'xcode';
 	var aceMode = 'text';
-	var autosaveDelay = 10; // seconds
+	var autosaveDelay = 5; // seconds
 	var postRoute = "{{ URL::route('permalink', array('id' => $post->id)) }}"; // redirect here on save/view
 
 	// Use laravel CSRF token for ajax callas to avoid TokenMismatchException
@@ -170,8 +170,9 @@ $(function() {
 	// Save only post content via ajax $.post
 	function updatePost(autosave) {
 		if (!autosave && autosavingNow == true) {
-			// Don't allow save, becuase autosave is happening right now
-			alert('Ooops, you hit save just as I was autosaving, please try again');
+			// Don't allow save, becuase autosave is happening right now or
+			// this will cause unsaved revision bugs
+			alert('Oops, you hit save just as I was autosaving, please try again');
 			return;
 		}
 		unpublishedChanges = false;
@@ -291,6 +292,19 @@ $(function() {
 		} else {
 			window.location = postRoute;
 		}
+	}
+
+	// Discard all posts revisions
+	function discardPostRevisions(postID) {
+		// Remove all unpublished revisions by post
+		return $.ajax({
+			url: "{{ URL::route('deleteRevision') }}",
+			type: 'DELETE',
+			data: {
+				postID: postID,
+				userID: 0
+			}
+		});
 	}
 
 	// Display small onscreen message
@@ -496,10 +510,6 @@ $(function() {
 		}
 	});
 
-
-
-
-
 	// Help button
 	$('#btnHelp').click(function() {
 		window.open("{{ Config::get('mrcore.wiki.help') }}");
@@ -518,6 +528,21 @@ $(function() {
 	// Ace settings
 	$('#btnAceSettings').click(function() {
 		editor.execCommand("showSettingsMenu");
+	});
+
+	// Revision continue
+	$('#btnRevisionContinue').click(function() {
+		var revisionID = $(this).data('id');
+		var uncommitted = {!! json_encode($uncommitted) !!};
+		discardPostRevisions({{ $post->id }}).done(function(response) {
+			editor.setValue(uncommitted[revisionID].content);
+			$('#myModal').modal('hide');
+		});
+	});
+
+	// Revision cancel
+	$('.btnCancelRevision').click(function() {
+		discard();
 	});
 
 	// Type dropdown changed (if app show framework dropdown)

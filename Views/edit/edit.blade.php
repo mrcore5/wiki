@@ -7,8 +7,6 @@
 @include('edit.permissions')
 @include('edit.advanced')
 
-
-
 @section('title')
 	Edit {{ Layout::title() }}
 @stop
@@ -160,23 +158,34 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<button type="button" class="close btnCancelRevision" aria-hidden="true">&times;</button>
 					<h4 class="modal-title red" id="myModalLabel"><b>NOTICE:</b> Uncommitted Revisions</h4>
 				</div>
 				<div class="modal-body">
 					<p><b>There are {{ count($uncommitted) }} uncommitted revisions for this post.</b></p>
+					<p>This either means <span class="label label-danger">someone is currently editing this post</span> or someone was editing this post but forgot to click publish/discard.  Look at the revision date and use your own logic to solve this problem.</p>
 
 					<ul>
 					@foreach ($uncommitted as $revision)
-						<li>Revision by {{ $revision->created_by }} on {{ $revision->created_at }}</li>
+						<li>
+							Revision by {{ $revision->creator->alias }} on {{ $revision->created_at }} <b>({{ (new Carbon\Carbon($revision->created_at))->diffForHumans() }})</b>
+							<div class="revision"><pre>{!! $revision->diffHtml !!}</pre></div>
+							<p>
+								<button class="btn btn-danger" id="btnRevisionContinue" data-id="{{ $revision->id }}" title="Continue editing this revision and delete all other uncommitted revision">
+									<i class="fa fa-save"></i> Edit this Revision and Delete all Others
+								</button>
+							</p>
+						</li>
 					@endforeach
 					</ul>
 
-					<p>This either means someone is currently editing this post or someone was editing this post but forgot to click publish/discard.</p>
+
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button class="btn btn-primary btnCancelRevision">
+						<i class="fa fa-times"></i> Cancel Edit
+					</button>
+					{{--<button type="button" class="btn btn-primary">Save changes</button>--}}
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->

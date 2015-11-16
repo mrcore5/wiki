@@ -30,6 +30,15 @@ class Revision extends Model
 	}
 
 	/**
+	 * A revision has one creator
+	 * Usage: $revision->creator
+	 */
+	public function creator()
+	{
+		return $this->hasOne('Mrcore\Wiki\Models\User', 'id', 'created_by');
+	}
+
+	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
 	 *
 	 * @param  mixed  $id
@@ -40,7 +49,7 @@ class Revision extends Model
 	{
 		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
 			return static::query()->find($id, $columns);
-		});		
+		});
 	}
 
 	/*
@@ -50,5 +59,5 @@ class Revision extends Model
 	public static function forgetCache($id = null)
 	{
 		if (isset($id)) Cache::forget(strtolower(get_class()).":$id");
-	}	
+	}
 }

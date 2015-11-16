@@ -44,7 +44,7 @@
 		margin: 0px;
 		padding: 0px;
 	}
-	#editor { 
+	#editor {
 		/*display: none;*/
 		width: 100%;
 		font-size: 12px;
@@ -63,6 +63,25 @@
 	}
 	.chosen-container {
 		width: 250px;
+	}
+
+	/* FineDiff */
+	.revision pre {
+		max-height: 400px;
+	}
+	.modal-dialog {
+		width: 80%;
+		padding: 15px;
+	}
+	ins {
+		color: green;
+		background: #dfd;
+		text-decoration: none;
+	}
+	del {
+		color: red;
+		background: #fdd;
+		text-decoration: none;
 	}
 
 </style>

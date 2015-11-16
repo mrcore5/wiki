@@ -76,7 +76,7 @@ class PostController extends Controller {
 	}
 
 	/**
-	 * Delete an uncommitted revision by postID and userID
+	 * Delete all uncommitted revisions by postID or by postID + userID
 	 */
 	public function deleteRevision()
 	{
@@ -85,19 +85,36 @@ class PostController extends Controller {
 
 		$postID = Input::get('postID');
 		$userID = Input::get('userID');
-		if ($postID > 0 && $userID > 0 && Mrcore::user()->isAuthenticated()) {
+		if ($postID > 0 && Mrcore::user()->isAuthenticated()) {
 			$post = Post::find($postID);
 			if (isset($post)) {
-				if ($post->hasPermission('write')) {
-					$revision = Revision::where('post_id', '=', $postID)
-						->where('created_by', '=', $userID)
-						->where('revision', '=', 0)
-						->first();
-					if (isset($revision)) {
-						$revision->delete();
+				if ($userID > 0) {
+					// Delete the only one by post and user
+					if ($post->hasPermission('write')) {
+						$revision = Revision::where('post_id', '=', $postID)
+							->where('created_by', '=', $userID)
+							->where('revision', '=', 0)
+							->first();
+						if (isset($revision)) {
+							$revision->delete();
+						}
+					} else {
+						return Response::notFound();
 					}
 				} else {
-					return Response::notFound();
+					// Delete all by post
+					if ($post->hasPermission('write')) {
+						$revisions = Revision::where('post_id', '=', $postID)
+							->where('revision', '=', 0)
+							->get();
+						if (isset($revisions)) {
+							foreach ($revisions as $revision) {
+								$revision->delete();
+							}
+						}
+					} else {
+						return Response::notFound();
+					}
 				}
 			} else {
 				return Response::notFound();

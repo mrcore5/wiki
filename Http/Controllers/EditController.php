@@ -32,6 +32,10 @@ use Mrcore\Wiki\Models\Permission;
 use Mrcore\Wiki\Models\PostPermission;
 use Mrcore\Wiki\Support\Filemanager\Symlink;
 
+use cogpowered\FineDiff\Diff;
+use cogpowered\FineDiff\Granularity as DiffGranularity;
+use cogpowered\FineDiff\Render as DiffRender;
+
 class EditController extends Controller {
 
 	/**
@@ -53,6 +57,16 @@ class EditController extends Controller {
 
 		// Check for uncommited revisions
 		$uncommitted = Revision::where('post_id', '=', $id)->where('revision', '=', 0)->get();
+		if (!empty($uncommitted)) {
+			$uncommitted = $uncommitted->keyBy('id');
+			$granularity = new DiffGranularity\Word;
+			$diff = new Diff($granularity);
+			$render = new DiffRender\Html;
+			foreach ($uncommitted as $revision) {
+				$revision->diffOpcodes = $diff->getOpcodes($post->content, $revision->content);
+				$revision->diffHtml = $render->process($post->content, $revision->diffOpcodes);
+			}
+		}
 
 		// Get all formats
 		$formats = Format::all(['name', 'id'])->lists('name', 'id')->all();
