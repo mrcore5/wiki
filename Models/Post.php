@@ -224,7 +224,7 @@ class Post extends Model
 	public function parse($data = null, $format = null)
 	{
 		# Setup the Parser
-		$format = strtolower($this->format->constant);
+		if (is_null($format)) $format = strtolower($this->format->constant);
 		if ($format == 'wiki' || $format == 'htmlw' || $format == 'phpw') {
 
 			if ($format == 'wiki') {

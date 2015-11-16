@@ -1,0 +1,10 @@
+.md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+.md h1 {
+	padding-top: 0px;
+}
+.md p {
+	margin: 20px 0px 15px 0px;
+}

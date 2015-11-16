@@ -17,7 +17,14 @@
 					@yield('post-header')
 				@endif
 
-				<div><div><div><div><div><div>{!! $post->content !!}</div></div></div></div></div></div>			
+				<div class="post-content {{ $post->format->constant }}">
+				@if ($post->format->constant == 'wiki')
+
+					<div><div><div><div><div><div>{!! $post->content !!}</div></div></div></div></div></div>
+				@else
+					{!! $post->content !!}
+				@endif
+				</div>
 
 			</form>
 		@endif
@@ -30,6 +37,10 @@
 			@if ($post->hasPermission('write', $post->perms))
 				// Hotkey Ctrl+Enter edits post
 				$(document).bind('keydown', 'ctrl+return', function() {
+					window.location = '{{ URL::route("edit", array("id" => $post->id)) }}';
+				});
+
+				$(document).bind('keydown', 'meta+return', function() {
 					window.location = '{{ URL::route("edit", array("id" => $post->id)) }}';
 				});
 			@endif

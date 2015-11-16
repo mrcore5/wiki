@@ -200,7 +200,7 @@ class FileController extends Controller {
 			Layout::mode('simple');
 			$post = Post::find($url->getPostID());
 			Mrcore::post()->setModel($post);
-			$content = $post->parse(file_get_contents($abs, 'markdown'));
+			$content = $post->parse(file_get_contents($abs), 'markdown');
 			return View::make('file.markdown', [
 				'content' => $content
 			]);
