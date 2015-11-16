@@ -29,11 +29,11 @@
 					<i class="fa fa-edit"></i>
 				</a>
 			</li>
-			<li>
+			{{--<li>
 				<a data-toggle="tab" href="#files" title="Post fles">
 					<i class="fa fa-folder"></i>
 				</a>
-			</li>
+			</li>--}}
 			<li>
 				<a data-toggle="tab" href="#organization" title="Post title and organization">
 					<i class="fa fa-tags"></i>
@@ -129,9 +129,9 @@
 			</div>
 
 			{{-- ===== Files Tab ===== --}}
-			<div id="files" class="tab-pane pad">
+			{{--<div id="files" class="tab-pane pad">
 				@yield('files')
-			</div>
+			</div>--}}
 
 			{{-- ===== Organization Tab ===== --}}
 			<div id="organization" class="tab-pane pad">

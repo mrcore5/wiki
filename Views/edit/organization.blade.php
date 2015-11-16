@@ -9,7 +9,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="page-header">
-			<h1>Organization</h1>
+			<h3>Organization</h3>
 		</div>
 	</div>
 </div>
@@ -80,7 +80,7 @@
 			)) !!}
 			<span class="help-block">Comma separated, no spaces in tags</span>
 		</div>
-		
+
 	</div>
 
 
@@ -97,7 +97,7 @@
 			)) !!}
 			<span class="help-block">Never change a hashtag once it is in use, they are constants like URLs</span>
 		</div>
-		
+
 	</div>
 
 
@@ -201,7 +201,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="page-header">
-			<h1>Delete Post</h1>
+			<h3>Delete Post</h3>
 		</div>
 	</div>
 </div>

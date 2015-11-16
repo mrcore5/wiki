@@ -8,8 +8,8 @@
 $(function() {
 
 	// Variables
-	var aceTheme = 'xcode'; //monokai xcode
-	var aceMode = 'text'; //php html text plain_text...
+	var aceTheme = 'xcode';
+	var aceMode = 'text';
 	var autosaveDelay = 3; // seconds
 	var postRoute = "{{ URL::route('permalink', array('id' => $post->id)) }}"; // redirect here on save/view
 
@@ -32,6 +32,9 @@ $(function() {
 		//LIGHT: github, textmate
 		aceTheme = 'terminal';
 		aceMode = 'markdown';
+	@elseif ($post->format->constant == 'wiki')
+			aceTheme = 'vibrant_ink'; //chrome
+			aceMode = 'handlebars';
 	@endif
 
 	// Ace Editor
