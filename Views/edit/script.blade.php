@@ -1,12 +1,9 @@
 @section('script')
-<!--<script src="{{ asset('js/bootbox.min.js') }}"></script>-->
-<script src="{{ asset('ace-editor/ace.js') }}"></script>
-<script src="{{ asset('ace-editor/ext-language_tools.js') }}"></script>
-{{-- <script src="{{ asset('typo/typo.js') }}"></script> --}}
-{{-- <script src="{{ asset('typo/spellcheck_ace.js') }}"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ext-language_tools.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ext-spellcheck.js"></script>
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('js/select2.min.js') }}"></script>
-<!--<script src="{{ asset('js/jquery.chosen.min.js') }}"></script>-->
 <script>
 $(function() {
 
@@ -30,13 +27,18 @@ $(function() {
 	@elseif ($post->format->constant == 'html' || $post->format->constant == 'htmlw')
 		aceTheme = 'monokai';
 		aceMode = 'html';
+	@elseif ($post->format->constant == 'md')
+		//DARK: chaos, clouds_midnight, idle_fingers, merbivore, merbivore_soft, pastel_on_dark, terminal, tomorrow_night_bright
+		//LIGHT: github, textmate
+		aceTheme = 'textmate';
+		aceMode = 'markdown';
 	@endif
 
 	// Ace Editor
-	require("ace/lib/fixoldbrowsers");
-	require("ace/ext/language_tools");
-	//require("ace/ext/spellcheck");
-	require("ace/ext/keybinding_menu");
+	//require("ace/lib/fixoldbrowsers");
+	//require("ace/ext/language_tools");
+	//require("ace/ext/spellcheck"); //no
+	//require("ace/ext/keybinding_menu");
 
 	var config = require("ace/config");
 	config.init();
@@ -46,17 +48,17 @@ $(function() {
 
 	// Editor Settings
 	editor.setTheme("ace/theme/" + aceTheme);
-	editor.setOptions({
-		fontSize: "14px"
-	});
+	/*editor.setOptions({
+		fontSize: "12px"
+	});*/
 	editor.getSession().setMode("ace/mode/" + aceMode);
 	editor.setBehavioursEnabled(true); // auto-pairing of special characters, like quotation marks, parenthesis, or brackets
-	editor.getSession().setUseSoftTabs(false); // true is spaces
+	editor.getSession().setUseSoftTabs(true); // true is spaces
 	editor.setShowPrintMargin(true);
 	editor.setShowInvisibles(false);
 	editor.setDisplayIndentGuides(true);
 	editor.setOption("scrollPastEnd", true);
-	//editor.setOption("spellcheck", true);
+	editor.setOption("spellcheck", true);
 	editor.setOptions({
 		enableBasicAutocompletion: true,
 		enableSnippets: true,
@@ -66,7 +68,7 @@ $(function() {
 	// Editor custom commands
 	editor.commands.addCommands([{
 		name: 'publish',
-		bindKey: {win: 'Ctrl-S',  mac: 'Ctrl-S'},
+		bindKey: {win: 'Ctrl-S',  mac: 'Cmd-S'},
 		exec: function(editor) {
 			autosaveCounter.stop();
 			message('saving ...', 'danger');
@@ -83,7 +85,7 @@ $(function() {
 		readOnly: true // false if this command should not apply in readOnly mode
 	}, {
 		name: 'publishShow',
-		bindKey: {win: 'Ctrl-Shift-S',  mac: 'Ctrl-Shift-S'},
+		bindKey: {win: 'Ctrl-Shift-S',  mac: 'Cmd-Shift-S'},
 		exec: function(editor) {
 			if (unpublishedChanges) {
 				updatePost(false).done(function() {
@@ -98,7 +100,7 @@ $(function() {
 		readOnly: true // false if this command should not apply in readOnly mode
 	}, {
 		name: 'publishShow2',
-		bindKey: {win: 'Ctrl-Enter',  mac: 'Ctrl-Enter'},
+		bindKey: {win: 'Ctrl-Enter',  mac: 'Cmd-Enter'},
 		exec: function(editor) {
 			updatePost(false).done(function() {
 				// post saved successfully
@@ -108,7 +110,7 @@ $(function() {
 		readOnly: true // false if this command should not apply in readOnly mode
 	}, {
 		name: 'discard',
-		bindKey: {win: 'Ctrl-Shift-Esc',  mac: 'Ctrl-Shift-Esc'},
+		bindKey: {win: 'Ctrl-Shift-Esc',  mac: 'Cmd-Esc'},
 		exec: function(editor) {
 			discard();
 		},
@@ -491,12 +493,22 @@ $(function() {
 	// Help button
 	$('#btnHelp').click(function() {
 		window.open("{{ Config::get('mrcore.wiki.help') }}");
-	})
+	});
 
 	// Cheatsheet button
 	$('#btnCheat').click(function() {
 		window.open("{{ Config::get('mrcore.wiki.cheat') }}", "_blank", "width=800, height=600");
-	})
+	});
+
+	// Ace shortcuts keys
+	$('#btnAceKeys').click(function() {
+		editor.execCommand("showKeyboardShortcuts");
+	});
+
+	// Ace settings
+	$('#btnAceSettings').click(function() {
+		editor.execCommand("showSettingsMenu");
+	});
 
 	// Type dropdown changed (if app show framework dropdown)
 	$('#type').change(function()
@@ -516,8 +528,7 @@ $(function() {
 		}
 	});
 
-})
-
+});
 
 // Automatic #editor div resize
 function resizeAce(resize) {
@@ -533,9 +544,6 @@ function resizeAce(resize) {
 };
 $( window ).resize(function() { resizeAce(true); });
 resizeAce(false);
-
-
-
 
 </script>
 @stop

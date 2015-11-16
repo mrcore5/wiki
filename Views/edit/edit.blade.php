@@ -28,7 +28,7 @@
 				<a data-toggle="tab" href="#content" title="Edit post">
 					<i class="fa fa-edit"></i>
 				</a>
-			</li>			
+			</li>
 			<li>
 				<a data-toggle="tab" href="#files" title="Post fles">
 					<i class="fa fa-folder"></i>
@@ -48,25 +48,25 @@
 			<li>
 				<a data-toggle="tab" href="#advanced" title="Advanced settings">
 					<i class="fa fa-cog"></i>
-					
+
 				</a>
 			</li>
 			@endif
 
 
-			
+
 
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 					<i class="fa fa-bars"></i>
 				</a>
 				<ul id="edit-menu" class="dropdown-menu">
-					<li>
+					{{--<li>
 						<a title="Help" id="btnHelp">
 							<i class="fa fa-question-circle text-success"></i>
 							Help
 						</a>
-					</li>
+					</li>--}}
 					<li>
 						<a title="Markup Cheatsheet" id="btnCheat">
 							<i class="fa fa-question-circle text-warning"></i>
@@ -74,23 +74,36 @@
 						</a>
 					</li>
 					<li>
+						<a title="Ace Editor Keyboard Shortcuts (? or Cmd+Alt+H on mac)" id="btnAceKeys">
+							<i class="fa fa-keyboard-o text-info"></i>
+							Editor Shortcuts
+						</a>
+					</li>
+					<li>
+						<a title="Ace Editor Options (Ctrl+, or Cmd+, on mac)" id="btnAceSettings">
+							<i class="fa fa-gears text-primary"></i>
+							Editor Settings
+						</a>
+					</li>
+					{{--<li>
 						<a title="Info (Ctrl+I)" id="btnInfo">
 							<i class="fa fa-exclamation-circle"></i>
 							Info
 						</a>
-					</li>
+					</li>--}}
+
 					<li class="divider"></li>
 
 					<li>
-						<a title="Discard changes (Ctrl+Shift+Esc)" id="btnCancel">
+						<a title="Discard changes (Ctrl+Shift+Esc or Cmd+Esc on mac)" id="btnCancel">
 							<i class="fa fa-times text-danger"></i>
 							Discard changes
 						</a>
 					</li>
 					<li class="divider"></li>
-					
+
 					<li>
-						<a title="Publish and continue editing (Ctrl+S)" id="btnPublish">
+						<a title="Publish and continue editing (Ctrl+S or Cmd+S on mac)" id="btnPublish">
 							<i class="fa fa-save text-success"></i>
 							Publish
 						</a>
@@ -98,12 +111,12 @@
 					<li class="divider"></li>
 
 					<li>
-						<a title="Publish and view (Ctrl+Shift+S or Ctrl+Enter)" id="btnPublishShow">
+						<a title="Publish and view (Ctrl+Shift+S or Ctrl+Enter or Cmd+Shift+S or Cmd+Enter on mac)" id="btnPublishShow">
 							<i class="fa fa-eye text-info"></i>
 							Publish and View
 						</a>
 					</li>
-					
+
 				</ul>
 			</li>
 
@@ -114,12 +127,12 @@
 				{{-- Form::textarea('content', $post->content, array('id' => 'editor', 'style' => 'width: 100%;')) --}}
 				<div id="editor">{{{ $post->content }}}</div>
 			</div>
-			
+
 			{{-- ===== Files Tab ===== --}}
 			<div id="files" class="tab-pane pad">
 				@yield('files')
 			</div>
-			
+
 			{{-- ===== Organization Tab ===== --}}
 			<div id="organization" class="tab-pane pad">
 				@yield('organization')

@@ -55,7 +55,7 @@ priv
 }
 
 /* toc */
-.toc {
+.wiki .toc {
 	font-size: 12px !important;
 	min-width: 200px;
 	max-width: 300px; /* set same as .info width */
@@ -63,78 +63,78 @@ priv
 	margin-left: 15px;
 	float: right;
 }
-.toc {
+.wiki .toc {
 	border-bottom: 0px;
 }
-.toc hr {
+.wiki .toc hr {
 	margin: 2px 0px 0px 0px;
 }
-.toc .panel-body {
+.wiki .toc .panel-body {
 	padding: 0px;
 }
-.toc .panel-heading {
+.wiki .toc .panel-heading {
 	padding: 10px;
 
 }
-.toc .panel-title {
+.wiki .toc .panel-title {
 	font-size: 12px !important;
 }
-.toc_items {
+.wiki .toc_items {
 	padding: 3px 5px 3px 15px;
 	padding-bottom: 1px;
 }
-.info .toc, .infol .toc {
+.wiki .info .toc, .wiki .infol .toc {
 	margin: 0px;
 	min-width: 100%;
 }
 
 /* info */
-.info, .infol {
+.wiki .info, .wiki .infol {
 	font-size: 12px !important;
 	margin-top: -21px;
 	margin-bottom: 15px;
 	min-width: 200px;
 	max-width: 300px; /* set same as .toc width */
 }
-.info .panel, .infol .panel {
+.wiki .info .panel, .wiki .infol .panel {
 	margin-bottom: 0px;
 }
-.info {
+.wiki .info {
 	float: right;
 	margin-left: 15px;
 }
-.infol {
+.wiki .infol {
 	float: left;
 	/* leave at 20 not 15 because of <ul><li> goes into info box */
 	margin-right: 20px;
 }
 
 /* code */
-.code_outer pre {
+.wiki .code_outer pre {
 	border: 0px;
 }
-.code_header {
+.wiki .code_header {
 	margin-left: 15px;
 }
 
 /* box */
-.box {
+.wiki .box {
 	padding: 10px;
 }
-.box_left {
+.wiki .box_left {
 	margin-right: 15px;
 }
-.info .box table, .infol .box table {
+.wiki .info .box table, .wiki .infol .box table {
 	width: 100%;
 }
-.info .box ul {
+.wiki .info .box ul {
 	padding-left: 15px;
 }
 
 
 
 /* headers */
-.header_toggle {
+.wiki .header_toggle {
 	font-family: monospace;
 	font-size: 10px;
 	font-weight: normal;
@@ -142,103 +142,103 @@ priv
 	margin-right: 5px;
 	cursor: pointer;
 }
-.header_expand, .header_collapse {
+.wiki .header_expand, .wiki .header_collapse {
 	font-family: monospace;
 	font-size: 10px;
 	font-weight: normal;
 	margin-left: 5px;
 	float: right;
 }
-.heading1 .header_expand, .heading1 .header_collapse {
+.wiki .heading1 .header_expand, .wiki .heading1 .header_collapse {
 	margin-top: 7px;
 }
-.heading2 .header_expand, .heading2 .header_collapse {
+.wiki .heading2 .header_expand, .wiki .heading2 .header_collapse {
 	margin-top: 6px;
 }
-.heading3 .header_expand, .heading3 .header_collapse {
+.wiki .heading3 .header_expand, .wiki .heading3 .header_collapse {
 	margin-top: 5px;
 }
-.heading4 .header_expand, .heading4 .header_collapse {
+.wiki .heading4 .header_expand, .wiki .heading4 .header_collapse {
 	margin-top: 5px;
 }
-.heading5 .header_expand, .heading5 .header_collapse {
+.wiki .heading5 .header_expand, .wiki .heading5 .header_collapse {
 	margin-top: 5px;
 }
-.heading6 .header_expand, .heading6 .header_collapse {
+.wiki .heading6 .header_expand, .wiki .heading6 .header_collapse {
 	margin-top: 4px;
 }
-.header_collapse {
+.wiki .header_collapse {
 	margin-right: 5px;
 }
-.header_expand a, .header_collapse a {
+.wiki .header_expand a, .wiki .header_collapse a {
 }
-.header_toggle a:hover, .header_expand a:hover, .header_collapse a:hover {
+.wiki .header_toggle a:hover, .wiki .header_expand a:hover, .wiki .header_collapse a:hover {
 	text-decoration: none;
 }
-.header1_content, .header2_content, .header3_content,
-.header4_content, .header5_content, .header6_content  {
+.wiki .header1_content, .wiki .header2_content, .wiki .header3_content,
+.wiki .header4_content, .wiki .header5_content, .wiki .header6_content  {
 	padding: 5px 15px 5px 15px;
 	margin-bottom: 5px;
 }
-.header1_content .header2_content, .header2_content .header3_content,
-.header3_content .header4_content, .header4_content .header5_content,
-.header5_content .header6_content {
+.wiki .header1_content .wiki .header2_content, .wiki .header2_content .wiki .header3_content,
+.wiki .header3_content .wiki .header4_content, .wiki .header4_content .wiki .header5_content,
+.wiki .header5_content .wiki .header6_content {
 	margin-right: -15px;
 }
 
-.heading1, h1 {
+.wiki .heading1, .wiki h1 {
 	/*font-size: 30px !important;*/
 	font-size: 22px !important;
 }
-.heading1 {
+.wiki .heading1 {
 	/*margin: 26px 0px 0px 0px !important;*/
 	margin: 26px 0px 5px 0px !important;
 
 }
-.toc0 {
+.wiki .toc0 {
 	margin-top: 0px !important;
 }
-.heading2, h2 {
+.wiki .heading2, .wiki h2 {
 	/*font-size: 26px !important;*/
 	font-size: 20px !important;
 }
-.heading2 {
+.wiki .heading2 {
 	/*margin: 24px 0px 0px 0px !important;*/
 	margin: 24px 0px 5px 0px !important;
 	font-weight: bold;
 }
-.heading3, h3 {
+.wiki .heading3, .wiki h3 {
 	/*font-size: 22px !important;*/
 	font-size: 18px !important
 }
-.heading3 {
+.wiki .heading3 {
 	/*margin: 22px 0px 0px 0px !important;*/
 	margin: 22px 0px 5px 0px !important;
 	font-weight: bold;
 }
-.heading4, h4 {
+.wiki .heading4, .wiki h4 {
 	/*font-size: 18px !important;*/
 	font-size: 17px !important;
 }
-.heading4 {
+.wiki .heading4 {
 	/*margin: 20px 0px 0px 0px !important;*/
 	margin: 20px 0px 5px 0px !important;
 	font-weight: bold;
 }
-.heading5, h5 {
+.wiki .heading5, .wiki h5 {
 	/*font-size: 17px !important;*/
 	font-size: 16px !important;
 }
-.heading5 {
+.wiki .heading5 {
 	/*margin: 18px 0px 0px 0px !important;*/
 	margin: 18px 0px 5px 0px !important;
 	font-weight: bold;
 }
-.heading6, h6 {
+.wiki .heading6, .wiki h6 {
 	/*font-size: 16px !important;*/
 	font-size: 15px !important;
 }
-.heading6 {
+.wiki .heading6 {
 	/*margin: 16px 0px 0px 0px !important;*/
 	margin: 16px 0px 5px 0px !important;
 	font-weight: bold;
@@ -246,28 +246,27 @@ priv
 
 
 /* Table */
-.table {
+.wiki .table {
 	width: auto !important;
 }
-.dataTables_wrapper .table {
+.wiki .dataTables_wrapper .wiki .table {
 	width: 100% !important;
 }
 
-table.dataTable {
+.wiki table.dataTable {
 	clear: none !important;
 }
 
 
 /* Links */
-.free_link_new {
+.wiki .free_link_new {
 	text-decoration: none;
 	border-bottom: red 1px dashed;
 }
 
 
 /* Files */
-
-.fm-table {
+.wiki .fm-table {
 	white-space: nowrap;
 }
 
