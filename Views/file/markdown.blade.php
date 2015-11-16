@@ -1,5 +1,7 @@
 @extends('layout')
 
 @section('content')
-	{!! $content !!}
+	<div class="post-content md">
+		{!! $content !!}
+	</div>
 @endsection

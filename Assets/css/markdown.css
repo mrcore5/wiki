@@ -8,3 +8,7 @@
 .md p {
 	margin: 20px 0px 15px 0px;
 }
+
+.md .dataTables_wrapper {
+	margin-top: 20px;
+}

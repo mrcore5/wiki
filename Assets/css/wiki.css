@@ -54,6 +54,12 @@ priv
 	margin-right:0px;
 }
 
+/* Html Entities */
+.wiki p {
+	margin: 20px 0px 15px 0px;
+}
+
+
 /* toc */
 .wiki .toc {
 	font-size: 12px !important;
@@ -110,11 +116,8 @@ priv
 }
 
 /* code */
-.wiki .code_outer pre {
-	border: 0px;
-}
-.wiki .code_header {
-	margin-left: 15px;
+.code .title {
+	color: red;
 }
 
 /* box */
@@ -130,8 +133,6 @@ priv
 .wiki .info .box ul {
 	padding-left: 15px;
 }
-
-
 
 /* headers */
 .wiki .header_toggle {
@@ -244,7 +245,6 @@ priv
 	font-weight: bold;
 }
 
-
 /* Table */
 .wiki .table {
 	width: auto !important;
@@ -257,7 +257,6 @@ priv
 	clear: none !important;
 }
 
-
 /* Links */
 .wiki .free_link_new {
 	text-decoration: none;
@@ -266,17 +265,9 @@ priv
 
 
 /* Files */
-.wiki .fm-table {
+.fm-table td {
 	white-space: nowrap;
 }
-
-
-
-
-
-
-
-
 
 
 

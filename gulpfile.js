@@ -30,6 +30,7 @@ elixir(function(mix) {
 		"jquery.dataTables.bootstrap.js",
 		"dataTables.js",
 		"bootstrap.min.js",
+		"prism.js",
 		"wiki.js",
 		"jquery.growl.js",
 	], 'Assets/js/wiki-bundle.js', 'Assets/js');
