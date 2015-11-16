@@ -1,5 +1,5 @@
 @section('style')
-	@parent 
+	@parent
 	<style>
 
 	#headerBar {
@@ -30,8 +30,8 @@
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-9 wb-subheader-content">
-				@yield('subheader-content')						
-			</div>				
+				@yield('subheader-content')
+			</div>
 		</div>
 	</div>
 	<div id="headerBarBottom" class="nav-tabs"></div>

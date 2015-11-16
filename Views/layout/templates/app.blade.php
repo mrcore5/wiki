@@ -23,6 +23,7 @@
 	#page-title-text {
 		display:inline;
 		float:right;
+		font-size: 70%;
 	}
 
 	#page-help {
