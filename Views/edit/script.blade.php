@@ -30,7 +30,7 @@ $(function() {
 	@elseif ($post->format->constant == 'md')
 		//DARK: chaos, clouds_midnight, idle_fingers, merbivore, merbivore_soft, pastel_on_dark, terminal, tomorrow_night_bright
 		//LIGHT: github, textmate
-		aceTheme = 'textmate';
+		aceTheme = 'terminal';
 		aceMode = 'markdown';
 	@endif
 
