@@ -167,7 +167,21 @@ $(function() {
 		}
 	});
 
-	// Save only post content via ajax $.post
+	@if (count($uncommitted) > 0)
+		// Show uncommitted modal message
+		$('#myModal').modal({
+			keyboard: false,
+			show: true,
+			backdrop: 'static',
+		})
+	@else
+		// On load, save uncommitted revision immediately so others know we may be editing this doc
+		message('{{ Auth::user()->alias }} given exclusive lock', 'success');
+		updatePost(true);
+		unpublishedChanges = true;
+	@endif
+
+	// Save to posts or revisions table (for autosave)
 	function updatePost(autosave) {
 		if (!autosave && autosavingNow == true) {
 			// Don't allow save, becuase autosave is happening right now or
@@ -178,6 +192,7 @@ $(function() {
 		unpublishedChanges = false;
 		var content = editor.getValue();
 
+		// If autosave, will save to revisions table, else to actual posts table
 		return $.post(
 			"{{ URL::route('updatePost', array('id' => $post->id)) }}",
 			{
@@ -321,16 +336,6 @@ $(function() {
 			$("#alert").delay(3000).slideUp(300);
 		}
 	}
-
-	// Show uncommitted modal message
-	@if (count($uncommitted) > 0)
-	$('#myModal').modal({
-		keyboard: false,
-		show: true,
-		backdrop: 'static',
-	})
-	@endif
-
 
 	// Start chosen (before validator)
 	//$(".chosen-select").chosen({ width: '250px' });
@@ -542,6 +547,7 @@ $(function() {
 
 	// Revision cancel
 	$('.btnCancelRevision').click(function() {
+		unpublishedChanges = false;
 		discard();
 	});
 
