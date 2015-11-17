@@ -3,12 +3,14 @@
 use Auth;
 use Gate;
 use Event;
-use Mrcore;
 use Layout;
 use Module;
-use Illuminate\Routing\Router;
+use Mrcore\Wiki\Auth\Guard;
 use Mrcore\Wiki\Models\Post;
+use Illuminate\Routing\Router;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Foundation\AliasLoader;
+use Mrcore\Wiki\Auth\WikiUserProvider;
 use Illuminate\Support\ServiceProvider;
 
 class WikiServiceProvider extends ServiceProvider {
@@ -57,20 +59,21 @@ class WikiServiceProvider extends ServiceProvider {
 		Module::trace(get_class(), __function__);
 
 		// Register facades
-		class_alias('Mrcore\Wiki\Facades\Mrcore', 'Mrcore');
-		class_alias('Illuminate\Html\FormFacade', 'Form');
-		class_alias('Illuminate\Html\HtmlFacade', 'Html');
+		$facade = AliasLoader::getInstance();
+		$facade->alias('Mrcore', \Mrcore\Wiki\Facades\Mrcore::class);
+		$facade->alias('Form', \Illuminate\Html\FormFacade::class);
+		$facade->alias('Html', \Illuminate\Html\HtmlFacade::class);
 
 		// Register configs
 		$this->registerConfigs();
 
 		// Register IoC bind aliases
-		$this->app->alias(Mrcore\Wiki\Api\Mrcore::class, Mrcore\Wiki\Api\MrcoreInterface::class);
-		$this->app->alias(Mrcore\Wiki\Api\Config::class, Mrcore\Wiki\Api\ConfigInterface::class);
-		$this->app->alias(Mrcore\Wiki\Api\Layout::class, Mrcore\Wiki\Api\LayoutInterface::class);
-		$this->app->alias(Mrcore\Wiki\Api\Post::class, Mrcore\Wiki\Api\PostInterface::class);
-		$this->app->alias(Mrcore\Wiki\Api\Router::class, Mrcore\Wiki\Api\RouterInterface::class);
-		$this->app->alias(Mrcore\Wiki\Api\User::class, Mrcore\Wiki\Api\UserInterface::class);
+		$this->app->alias(\Mrcore\Wiki\Api\Mrcore::class, \Mrcore\Wiki\Api\MrcoreInterface::class);
+		$this->app->alias(\Mrcore\Wiki\Api\Config::class, \Mrcore\Wiki\Api\ConfigInterface::class);
+		$this->app->alias(\Mrcore\Wiki\Api\Layout::class, \Mrcore\Wiki\Api\LayoutInterface::class);
+		$this->app->alias(\Mrcore\Wiki\Api\Post::class, \Mrcore\Wiki\Api\PostInterface::class);
+		$this->app->alias(\Mrcore\Wiki\Api\Router::class, \Mrcore\Wiki\Api\RouterInterface::class);
+		$this->app->alias(\Mrcore\Wiki\Api\User::class, \Mrcore\Wiki\Api\UserInterface::class);
 
 		// Register other service providers
 		$this->app->register(\Illuminate\Html\HtmlServiceProvider::class);
@@ -199,11 +202,11 @@ class WikiServiceProvider extends ServiceProvider {
 	protected function registerCommands()
 	{
 		if (!$this->app->runningInConsole()) return;
-        $this->commands([
-            Mrcore\Wiki\Console\Commands\AppCommand::class,
-			Mrcore\Wiki\Console\Commands\IndexPosts::class,
-			Mrcore\Wiki\Console\Commands\AppGitCommand::class,
-			Mrcore\Wiki\Console\Commands\AppMakeCommand::class
+		$this->commands([
+			\Mrcore\Wiki\Console\Commands\AppCommand::class,
+			\Mrcore\Wiki\Console\Commands\IndexPosts::class,
+			\Mrcore\Wiki\Console\Commands\AppGitCommand::class,
+			\Mrcore\Wiki\Console\Commands\AppMakeCommand::class
 		]);
 	}
 
@@ -233,15 +236,15 @@ class WikiServiceProvider extends ServiceProvider {
 		Auth::extend('mrcore', function() {
 			// Guard extension found at https://laracasts.com/forum/?p=910-how-to-extend-auth/0
 			$hash = $this->app->make('hash');
-		    $model = config('auth.model');
-		    $session = $this->app->make('session.store');
+			$model = config('auth.model');
+			$session = $this->app->make('session.store');
 
 			// Fire up standard EloquentUserProvider
 			#$provider = new \Illuminate\Auth\EloquentUserProvider($hash, $model);
-			$provider = new \Mrcore\Wiki\Auth\WikiUserProvider($hash, $model);
+			$provider = new WikiUserProvider($hash, $model);
 
 			// Fire up my custom Auth Provider as an extension to Laravels
-			return new \Mrcore\Wiki\Auth\Guard($provider, $session);
+			return new Guard($provider, $session);
 		});
 	}
 
