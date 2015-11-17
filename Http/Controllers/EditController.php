@@ -63,6 +63,7 @@ class EditController extends Controller {
 			$diff = new Diff($granularity);
 			$render = new DiffRender\Html;
 			foreach ($uncommitted as $revision) {
+				$revision->content = Crypt::decrypt($revision->content);
 				$revision->diffOpcodes = $diff->getOpcodes($post->content, $revision->content);
 				$revision->diffHtml = $render->process($post->content, $revision->diffOpcodes);
 			}
@@ -102,8 +103,6 @@ class EditController extends Controller {
 
 		// Get Post Permissions
 		$postPerms = PostPermission::where('post_id', '=', $id)->get();
-
-
 
 		// Get Post Routes
 		$route = Router::findDefaultByPost($id);
