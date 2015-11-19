@@ -73,33 +73,14 @@ $(function() {
 		name: 'publish',
 		bindKey: {win: 'Ctrl-S',  mac: 'Cmd-S'},
 		exec: function(editor) {
-			autosaveCounter.stop();
-			message('saving ...', 'danger');
-			if (unpublishedChanges) {
-				updatePost(false).done(function(response) {
-					// post saved successfully
-					unpublishedChanges = false;
-					message('saved and published ' + response, 'success');
-				});
-			} else {
-				message('no changes to publish', 'success');
-			}
+			publish();
 		},
 		readOnly: true // false if this command should not apply in readOnly mode
 	}, {
 		name: 'publishShow',
 		bindKey: {win: 'Ctrl-Shift-S',  mac: 'Cmd-Shift-S'},
 		exec: function(editor) {
-			autosaveCounter.stop();
-			if (unpublishedChanges) {
-				updatePost(false).done(function() {
-					// post saved successfully
-					window.location = postRoute;
-				});
-			} else {
-				// no changes to post since last publish
-				window.location = postRoute;
-			}
+			publishAndShow();
 		},
 		readOnly: true // false if this command should not apply in readOnly mode
 	}, {
@@ -121,14 +102,14 @@ $(function() {
 		},
 		readOnly: true // false if this command should not apply in readOnly mode
 	}, {
-	    name: "showKeyboardShortcuts",
-	    bindKey: {win: "Ctrl-Alt-h", mac: "Command-Alt-h"},
-	    exec: function(editor) {
-	        config.loadModule("ace/ext/keybinding_menu", function(module) {
-	            module.init(editor);
-	            editor.showKeyboardShortcuts();
-	        });
-	    }
+		name: "showKeyboardShortcuts",
+		bindKey: {win: "Ctrl-Alt-h", mac: "Command-Alt-h"},
+		exec: function(editor) {
+			config.loadModule("ace/ext/keybinding_menu", function(module) {
+				module.init(editor);
+				editor.showKeyboardShortcuts();
+			});
+		}
 	}]);
 
 	// Editor autosave feature
@@ -180,6 +161,36 @@ $(function() {
 		updatePost(true);
 		unpublishedChanges = true;
 	@endif
+
+	//Publish changes and continue editing
+	function publish() {
+		autosaveCounter.stop();
+		message('saving ...', 'danger');
+		if (unpublishedChanges) {
+			updatePost(false).done(function() {
+				// post saved successfully
+				updatePost(true); // save again as uncommitted revision
+				unpublishedChanges = true; //still true to keep uncommitted
+				message('saved and published', 'success');
+			});
+		} else {
+			message('no changes to publish', 'success');
+		}
+	}
+
+	//Publish changes show post
+	function publishAndShow() {
+		autosaveCounter.stop();
+		if (unpublishedChanges) {
+			updatePost(false).done(function() {
+				// post saved successfully
+				window.location = postRoute;
+			});
+		} else {
+			// no changes to post since last publish
+			window.location = postRoute;
+		}
+	}
 
 	// Save to posts or revisions table (for autosave)
 	function updatePost(autosave) {
@@ -369,49 +380,15 @@ $(function() {
 			$(e).remove();
 		}
 	});
-	/*$('#organization-form').find('select.chosen-select').each(function(){
-		$(this).chosen().change(function(){
-			$(this).valid();
-		});
-		$(this).rules('add', {
-			required: true,
-		});
-	});*/
-
-
 
 	// Discard click event
 	$('#btnCancel').click(function() {
 		discard();
 	})
 
-	// Publish click event
-	$('#btnPublish').click(function() {
-		autosaveCounter.stop();
-		message('saving ...', 'danger');
-		if (unpublishedChanges) {
-			updatePost(false).done(function() {
-				// post saved successfully
-				unpublishedChanges = false;
-				message('saved and published', 'success');
-			});
-		} else {
-			message('no changes to publish', 'success');
-		}
-	});
-
-	// Publish and show click event
-	$('#btnPublishShow').click(function() {
-		if (unpublishedChanges) {
-			updatePost(false).done(function(response) {
-				// post saved successfully
-				window.location = postRoute;
-			});
-		} else {
-			// no changes to post since last publish
-			window.location = postRoute;
-		}
-	});
+	// Publish or Publish and show click event
+	$('#btnPublish').click(function() { editor.execCommand("publish"); });
+	$('#btnPublishShow').click(function() { editor.execCommand("publishShow"); });
 
 	// Save post organization event
 	$('#btnSaveOrg').click(function() {
@@ -440,7 +417,6 @@ $(function() {
 		if ($("#confirm-mark-delete").is(":checked")) {
 			message('deleting...', 'danger');
 			deletePost().done(function(response) {
-				//console.log(response);
 				window.location = "{{ URL::route('home') }}";
 			}).fail(function() {
 				alert('Delete Failed');
@@ -525,15 +501,9 @@ $(function() {
 		window.open("{{ Config::get('mrcore.wiki.cheat') }}", "_blank", "width=800, height=600");
 	});
 
-	// Ace shortcuts keys
-	$('#btnAceKeys').click(function() {
-		editor.execCommand("showKeyboardShortcuts");
-	});
-
-	// Ace settings
-	$('#btnAceSettings').click(function() {
-		editor.execCommand("showSettingsMenu");
-	});
+	// Ace shortcuts and settings
+	$('#btnAceKeys').click(function() { editor.execCommand("showKeyboardShortcuts"); });
+	$('#btnAceSettings').click(function() { editor.execCommand("showSettingsMenu"); });
 
 	// Revision continue
 	$('#btnRevisionContinue').click(function() {
@@ -542,6 +512,9 @@ $(function() {
 		discardPostRevisions({{ $post->id }}).done(function(response) {
 			editor.setValue(uncommitted[revisionID].content);
 			$('#myModal').modal('hide');
+
+			// Call updatePost with autosave=true immediately to create a new uncommitted revision for this new user
+			updatePost(true);
 		});
 	});
 
@@ -552,14 +525,12 @@ $(function() {
 	});
 
 	// Type dropdown changed (if app show framework dropdown)
-	$('#type').change(function()
-	{
+	$('#type').change(function() {
 		var type = $('#type option:selected').val();
 		$('#framework-group').hide();
 		if (type == {{ Config::get('mrcore.wiki.app_type') }}) {
 			$('#framework-group').show();
 		}
-
 	});
 
 	// Window Before Unload Warning

@@ -172,6 +172,7 @@ class EditController extends Controller {
 			// Clear this posts cache
 			Post::forgetCache($id);
 
+			// Bump up the revision
 			$lastRevisionNum = 0;
 			$lastRevision = Revision::where('post_id', '=', $id)->orderBy('revision', 'desc')->first();
 			if (isset($lastRevision)) $lastRevisionNum = $lastRevision->revision;
@@ -388,6 +389,11 @@ class EditController extends Controller {
 
 		$ret = "preferences saved";
 		if (Auth::admin()) {
+			// Post must be type=app and framework=workbench
+			if ($post->type->constant != 'app' || $post->framework->constant != 'workbench') {
+				return "ERROR: post must be type=app and framework=workbench";
+			}
+
 			$defaultSlug = trim(Input::get('default-slug'));
 			$defaultSlug = preg_replace("'//'", "/", $defaultSlug);
 			if ($defaultSlug == '/') $defaultSlug = '';
