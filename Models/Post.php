@@ -41,7 +41,17 @@ class Post extends Model
 	/**
 	 * Flag weather or not the current $this->content has been decrypted yet
 	 */
-	private $decrypted;
+	private $decrypted = false;
+
+	/**
+	 * Flag weather or not the post has already been prepared
+	 */
+	private $prepared = false;
+
+	/**
+	 * Flag weather or not the post has already been parsed
+	 */
+	private $parsed = false;
 
 	/**
 	 * Many-to-many badges relationship
@@ -223,46 +233,49 @@ class Post extends Model
 	 */
 	public function parse($data = null, $format = null)
 	{
-		# Setup the Parser
-		if (is_null($format)) $format = strtolower($this->format->constant);
-		if ($format == 'wiki' || $format == 'htmlw' || $format == 'phpw') {
+		if (!$this->parsed && is_null($data)) {
+			# Setup the Parser
+			if (is_null($format)) $format = strtolower($this->format->constant);
+			if ($format == 'wiki' || $format == 'htmlw' || $format == 'phpw') {
 
-			if ($format == 'wiki') {
-				$parser = new WikiParser();
-			} elseif ($format == 'htmlw') {
-				$parser = new HtmlWParser();
-			} elseif ($format == 'phpw') {
-				$parser = new PhpWParser();
+				if ($format == 'wiki') {
+					$parser = new WikiParser();
+				} elseif ($format == 'htmlw') {
+					$parser = new HtmlWParser();
+				} elseif ($format == 'phpw') {
+					$parser = new PhpWParser();
+				}
+				$parser->userID = Auth::user()->id;
+				$parser->postID = $this->id;
+				$parser->postCreator = $this->created_by;
+				$parser->isAuthenticated = Auth::check();
+				$parser->isAdmin = Auth::admin();
+
+			} elseif ($format == 'php') {
+				$parser = new PhpParser();
+
+			} elseif ($format == 'html') {
+				$parser = new HtmlParser();
+
+			} elseif ($format == 'text') {
+				$parser = new TextParser();
+
+			} elseif ($format == 'md' || $format == 'markdown') {
+				$parser = new MarkdownParser();
 			}
-			$parser->userID = Auth::user()->id;
-			$parser->postID = $this->id;
-			$parser->postCreator = $this->created_by;
-			$parser->isAuthenticated = Auth::check();
-			$parser->isAdmin = Auth::admin();
 
-		} elseif ($format == 'php') {
-			$parser = new PhpParser();
+			// Decrypt content if not already decrypted
+			if (!isset($data) && !$this->decrypted) {
+				$this->decrypt();
+			}
 
-		} elseif ($format == 'html') {
-			$parser = new HtmlParser();
-
-		} elseif ($format == 'text') {
-			$parser = new TextParser();
-
-		} elseif ($format == 'md' || $format == 'markdown') {
-			$parser = new MarkdownParser();
-		}
-
-		// Decrypt content if not already decrypted
-		if (!isset($data) && !$this->decrypted) {
-			$this->decrypt();
-		}
-
-		// Parse Post Content
-		if (isset($data)) {
-			return $parser->parse($data);
-		} else {
-			$this->content = $parser->parse($this->content);
+			// Parse Post Content
+			$this->parsed = true;
+			if (isset($data)) {
+				return $parser->parse($data);
+			} else {
+				$this->content = $parser->parse($this->content);
+			}
 		}
 	}
 
@@ -276,32 +289,36 @@ class Post extends Model
 	 */
 	public function prepare($includeGlobals = true)
 	{
-		// Parse Post
-		$this->parse();
+		if (!$this->prepared) {
+			// Parse Post
+			$this->parse();
 
-		if ($includeGlobals) {
-			// Add User Global Content
-			if (isset(Auth::user()->global_post_id)) {
-				if ($this->id != Auth::user()->global_post_id) {
-					$userGlobal = Post::find(Auth::user()->global_post_id);
-					if (isset($userGlobal)) {
-						$userGlobal->parse();
-						$this->content = $userGlobal->content . $this->content;
+			if ($includeGlobals) {
+				// Add User Global Content
+				if (isset(Auth::user()->global_post_id)) {
+					if ($this->id != Auth::user()->global_post_id) {
+						$userGlobal = Post::find(Auth::user()->global_post_id);
+						if (isset($userGlobal)) {
+							$userGlobal->parse();
+							$this->content = $userGlobal->content . $this->content;
+						}
+					}
+				}
+
+				// Add Site Global Content
+				$globalID = Config::get('mrcore.wiki.global');
+				if ($globalID > 0) {
+					if ($this->id != $globalID) {
+						$global = Post::find($globalID);
+						if (isset($global)) {
+							$global->parse();
+							$this->content = $global->content . $this->content;
+						}
 					}
 				}
 			}
 
-			// Add Site Global Content
-			$globalID = Config::get('mrcore.wiki.global');
-			if ($globalID > 0) {
-				if ($this->id != $globalID) {
-					$global = Post::find($globalID);
-					if (isset($global)) {
-						$global->parse();
-						$this->content = $global->content . $this->content;
-					}
-				}
-			}
+			$this->prepared = true;
 		}
 		return $this;
 	}
