@@ -19,7 +19,7 @@
 		<!-- fix later, this should be a view composer or something -->
 		<!-- this is just to show the site/user globals -->
 		<!--<form method="post">
-		<div><div><div><div><div><div>{ $postContent }</div></div></div></div></div></div>
+		{ $postContent }
 		</form>-->
 
 		<div class="search-filter col-sm-3">

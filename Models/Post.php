@@ -13,7 +13,7 @@ use Mrcore\Wiki\Support\Crypt;
 use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Mrcore\Wiki\Support\Indexer;
-use Mrcore\Parser\Wiki as WikiParser;
+use Mrcore\Parser\Mrcore as WikiParser;
 use Mrcore\Parser\Php as PhpParser;
 use Mrcore\Parser\WikiPhp as PhpWParser;
 use Mrcore\Parser\Html as HtmlParser;
