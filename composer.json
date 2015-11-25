@@ -1,6 +1,6 @@
 {
 	"name": "mrcore/wiki",
-	"type": "library",
+	"type": "laravel-library",
 	"description": "Mrcore Wiki Module",
 	"keywords": ["mrcore", "framework", "wiki", "laravel"],
 	"homepage": "http://github.com/mreschke/mrcore-modules-wiki",
