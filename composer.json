@@ -21,10 +21,10 @@
 		"camspiers/porter-stemmer": "1.0.0",
 		"cogpowered/finediff": "~0.0",
 
-		"mrcore/foundation": "*",
-		"mrcore/auth": "*",
-		"mrcore/parser": "*",
-		"mrcore/bootswatch-theme": "*"
+		"mrcore/foundation": "~1.0",
+		"mrcore/auth": "~1.0",
+		"mrcore/parser": "~1.0",
+		"mrcore/bootswatch-theme": "~1.0"
 	},
 	"autoload": {
 		"classmap": [
