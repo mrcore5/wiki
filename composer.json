@@ -21,6 +21,8 @@
 		"camspiers/porter-stemmer": "1.0.0",
 		"cogpowered/finediff": "~0.0",
 
+		"composer/installers": "~1.0",
+
 		"mrcore/foundation": "*",
 		"mrcore/auth": "*",
 		"mrcore/parser": "*",
