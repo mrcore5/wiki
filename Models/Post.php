@@ -13,7 +13,7 @@ use Mrcore\Wiki\Support\Crypt;
 use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Mrcore\Wiki\Support\Indexer;
-use Mrcore\Parser\Wiki as WikiParser;
+use Mrcore\Parser\Mrcore as WikiParser;
 use Mrcore\Parser\Php as PhpParser;
 use Mrcore\Parser\WikiPhp as PhpWParser;
 use Mrcore\Parser\Html as HtmlParser;
@@ -148,7 +148,7 @@ class Post extends Model
 	public static function all($columns = array('*'))
 	{
 		#dd($this->where());
-		return Cache::remember(strtolower(get_class()).":all", function()  {
+		return Cache::remember(strtolower(get_class()).":all", function() use($columns) {
 			return static::orderBy('constant')->get($columns);
 		});
 	}
@@ -233,7 +233,7 @@ class Post extends Model
 	 */
 	public function parse($data = null, $format = null)
 	{
-		if (!$this->parsed && is_null($data)) {
+		if (!$this->parsed || is_null($data)) {
 			# Setup the Parser
 			if (is_null($format)) $format = strtolower($this->format->constant);
 			if ($format == 'wiki' || $format == 'htmlw' || $format == 'phpw') {

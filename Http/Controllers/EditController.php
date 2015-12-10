@@ -104,8 +104,6 @@ class EditController extends Controller {
 		// Get Post Permissions
 		$postPerms = PostPermission::where('post_id', '=', $id)->get();
 
-
-
 		// Get Post Routes
 		$route = Router::findDefaultByPost($id);
 		if ($route->static) {

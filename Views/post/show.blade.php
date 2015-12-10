@@ -18,12 +18,7 @@
 				@endif
 
 				<div class="post-content {{ $post->format->constant }}">
-				@if ($post->format->constant == 'wiki')
-
-					<div><div><div><div><div><div>{!! $post->content !!}</div></div></div></div></div></div>
-				@else
 					{!! $post->content !!}
-				@endif
 				</div>
 
 			</form>

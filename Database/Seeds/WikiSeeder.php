@@ -6,33 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 class WikiSeeder extends Seeder
 {
 
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
+	/**
+	 * Run the database seeds.
+	 *
+	 * @return void
+	 */
+	public function run()
+	{
+		// Production saftey
+		if (App::environment() === 'production') {
+			exit('You cannot run the seeder in production');
+		}
 
-        if (App::environment() === 'production') {
-            exit('You cannot run the seeder in production');
-        }
+		// Allow mass assignment
+		Model::unguard();
 
-        Model::unguard();
+		// Order is critical
+		$this->call('WikiPostItemsSeeder');
+		$this->call('WikiPostSeeder');
+		$this->call('WikiBadgeSeeder');
+		$this->call('WikiTagSeeder');
+		$this->call('WikiRouterSeeder');
 
-		// Order is Critical
-		$this->call('WikiUserSeeder');
-        $this->call('WikiPostItemsSeeder');
-        $this->call('WikiPostSeeder');
-        $this->call('WikiRoleSeeder');
-        $this->call('WikiPermissionSeeder');
-        $this->call('WikiUserPermissionSeeder');
-        $this->call('WikiPostPermissionSeeder');
-        $this->call('WikiBadgeSeeder');
-        $this->call('WikiTagSeeder');
-        $this->call('WikiRouterSeeder');
-
-    }
+	}
 
 }
-

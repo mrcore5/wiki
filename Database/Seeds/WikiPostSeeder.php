@@ -5,13 +5,14 @@ use Mrcore\Wiki\Models\Router;
 use Mrcore\Wiki\Support\Crypt;
 use Mreschke\Helpers\String as Str;
 use Illuminate\Database\Seeder;
+use Mrcore\Wiki\Models\PostPermission;
 
 class WikiPostSeeder extends Seeder
 {
 	public function run()
 	{
 
-		DB::table('posts')->delete();
+		#DB::table('posts')->delete();
 
 		#1 Home
 		#---------------------------------------------------------------
@@ -39,6 +40,7 @@ class WikiPostSeeder extends Seeder
 			'updated_by' => 2,
 		));
 		Router::create(array('slug' => 'home', 'post_id' => 1, 'static' => true));
+		PostPermission::create(array('post_id' => 1, 'role_id' => 1, 'permission_id' => 7)); # Public Read
 
 
 

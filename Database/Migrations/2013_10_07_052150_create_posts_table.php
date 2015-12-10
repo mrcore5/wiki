@@ -32,7 +32,7 @@ class CreatePostsTable extends Migration {
 
 		});
 
-		
+
 		// Create post types table
 		Schema::create('types', function ($table)
 		{
@@ -49,7 +49,7 @@ class CreatePostsTable extends Migration {
 			$table->string('constant', 50)->unique();
 		});
 
-		
+
 		// Create post frameworks table
 		Schema::create('frameworks', function ($table)
 		{
@@ -173,14 +173,14 @@ class CreatePostsTable extends Migration {
 			// MySQL InnoDB Engine
 			$table->engine = 'InnoDB';
 
-            $table->integer('post_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+			$table->integer('post_id')->unsigned();
+			$table->integer('user_id')->unsigned();
 			$table->primary(array('post_id', 'user_id'));
-            
-            $table->foreign('post_id')->references('id')->on('posts');
-            $table->foreign('user_id')->references('id')->on('users');
 
-            $table->dateTime('locked_at');
+			$table->foreign('post_id')->references('id')->on('posts');
+			$table->foreign('user_id')->references('id')->on('users');
+
+			$table->dateTime('locked_at');
 		});
 
 
@@ -190,13 +190,13 @@ class CreatePostsTable extends Migration {
 			// MySQL InnoDB Engine
 			$table->engine = 'InnoDB';
 
-            $table->integer('post_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+			$table->integer('post_id')->unsigned();
+			$table->integer('user_id')->unsigned();
 			$table->primary(array('post_id', 'user_id'));
-            
-            $table->foreign('post_id')->references('id')->on('posts');
-            $table->foreign('user_id')->references('id')->on('users');
-            
+
+			$table->foreign('post_id')->references('id')->on('posts');
+			$table->foreign('user_id')->references('id')->on('users');
+
 		});
 
 
@@ -206,15 +206,33 @@ class CreatePostsTable extends Migration {
 			// MySQL InnoDB Engine
 			$table->engine = 'InnoDB';
 
-            $table->integer('post_id')->unsigned();
-            $table->string('word', 32);
+			$table->integer('post_id')->unsigned();
+			$table->string('word', 32);
 			$table->primary(array('post_id', 'word'));
-            
-            $table->foreign('post_id')->references('id')->on('posts');
 
-            $table->integer('weight');
+			$table->foreign('post_id')->references('id')->on('posts');
+
+			$table->integer('weight');
 		});
 
+		// Create post role permissions table
+		// Links posts to permission items
+		Schema::create('post_permissions', function ($table)
+		{
+			// MySQL InnoDB Engine
+			$table->engine = 'InnoDB';
+
+			$table->integer('post_id')->unsigned();
+			$table->integer('permission_id')->unsigned();
+			$table->integer('role_id')->unsigned();
+
+			$table->primary(array('post_id', 'permission_id', 'role_id'));
+
+			$table->foreign('post_id')->references('id')->on('posts');
+			$table->foreign('permission_id')->references('id')->on('permissions');
+			$table->foreign('role_id')->references('id')->on('roles');
+
+		});
 	}
 
 	/**
@@ -224,6 +242,7 @@ class CreatePostsTable extends Migration {
 	 */
 	public function down()
 	{
+		Schema::drop('post_permissions');
 		Schema::drop('post_indexes');
 		Schema::drop('post_reads');
 		Schema::drop('post_locks');
