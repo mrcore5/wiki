@@ -2,9 +2,7 @@
 	@parent
    <style>
 	#nav-title {
-		border-bottom-width:1px;
-		border-bottom-style: solid;
-		margin-bottom:5px;
+		margin-bottom:0px;
 		margin-top:0px;
 		font-weight:bold;
 	}
@@ -14,8 +12,9 @@
 		padding:0px;
 		border-right-width:2px;
 		border-right-style: solid;
-		border-bottom-width:2px;
+		border-bottom-width:0px;
 		border-bottom-style: solid;
+		margin-bottom:0px;
 	}
 
 	#nav-list .nav-item {
@@ -89,16 +88,6 @@
 		padding-left:0px;
 	}
 
-	 .nav-hover ul {
-		margin-bottom:0px;
-	 }
-
-	 .nav-hover #nav-title {
-		height:35px;
-		padding-left:10px;
-		padding-top:5px;
-	 }
-
 	 .nav-hover #app-navigation-uncollapsed {
 		display:none;
 	 }
@@ -108,32 +97,37 @@
 
 @section('navigation')
 	<div id="navigation">
-		<h4 id="nav-title" class="text-primary theme-border-color-1">
-			{{ $navTitle }}
-			<div id="app-navigation-uncollapsed" class="theme-text-color-1"><i class="fa fa-bars"></i></div>
-		</h4>
-		<ul id="nav-list" class="theme-bg-color-4 theme-border-color-3">
-			@foreach ($navItems as $item)
-				<li>
-					<div class="nav-item @if ($page->key == $item['key']) active @endif">
-					<a @if (isset($item['url'])) href="{{ URL::to($item['url']) }}" @endif data-toggle="collapse" data-target="#toggleNav-{{$item['key']}}">
-					{!! $item['display'] !!}
-					</a>
-					</div>
-					@if (isset($item['subnav']))
-					<div class="subnav-container collapse @if ($page->key == $item['key']) in @endif" id="toggleNav-{{$item['key']}}">
-						<ul class="subnav-list theme-border-color-3 theme-bg-color-1">
-						@foreach ($item['subnav'] as $subnav)
-							<li @if (isset($page->subkey) && $page->subkey == $subnav['key']) class="active" @endif>
-								<a href="{{ URL::to($subnav['url']) }}">{{ $subnav['display'] }}</a>
-							</li>
-						@endforeach
-						</ul>
-					</div>
-					@endif
-				</li>
-			@endforeach
-		</ul>
+		<div class="panel panel-default" style="border-right:0px">
+			<div class="panel-heading">
+				<h4 id="nav-title" class="text-primary">
+					{{ $navTitle }}
+					<div id="app-navigation-uncollapsed" class="theme-text-color-1"><i class="fa fa-bars"></i></div>
+				</h4></div>
+			<div class="panel-body" style="padding:0px;">
+				<ul id="nav-list" class="theme-bg-color-4 theme-border-color-3">
+				@foreach ($navItems as $item)
+					<li>
+						<div class="nav-item @if ($page->key == $item['key']) active @endif">
+						<a @if (isset($item['url'])) href="{{ URL::to($item['url']) }}" @endif data-toggle="collapse" data-target="#toggleNav-{{$item['key']}}">
+						{!! $item['display'] !!}
+						</a>
+						</div>
+						@if (isset($item['subnav']))
+						<div class="subnav-container collapse @if ($page->key == $item['key']) in @endif" id="toggleNav-{{$item['key']}}">
+							<ul class="subnav-list theme-border-color-3 theme-bg-color-1">
+							@foreach ($item['subnav'] as $subnav)
+								<li @if (isset($page->subkey) && $page->subkey == $subnav['key']) class="active" @endif>
+									<a href="{{ URL::to($subnav['url']) }}">{{ $subnav['display'] }}</a>
+								</li>
+							@endforeach
+							</ul>
+						</div>
+						@endif
+					</li>
+				@endforeach
+			</ul>
+			</div>
+		</div>
 	</div>
 @stop
 

@@ -20,7 +20,7 @@
         display:inline-block;
         text-align:center;
         padding:5px;
-        width:120px;
+        min-width:120px;
     }
 
     #interior-nav-list .fa {
@@ -36,12 +36,10 @@
             @foreach ($interiorNav as $item)
                 <a href="{{ URL::to($item['url']) }}" class="theme-border-color-1 @if (isset($page->interiorKey) && $page->interiorKey == $item['key']) active @endif">
                     <li>
-                        <span class="fa {{ $item['icon'] }}"></span><br />
-                        {!! $item['display'] !!}
+                        <span class="fa {{ $item['icon'] }}"></span>&nbsp;&nbsp; {!! $item['display'] !!}
                     </li>
                 </a>
             @endforeach
         </ul>
     @endif
 @stop
-

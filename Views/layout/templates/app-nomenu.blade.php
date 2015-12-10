@@ -4,25 +4,27 @@
 	@parent
 	<style>
 	 #page-title {
-		border-bottom-width:1px;
-		border-bottom-style: solid;
 		margin-bottom:0px;
 		margin-top:0px;
 		font-weight:bold;
 	}
 
-	#page-subtitle {
+	.panel-subheading {
 		margin:0px;
 		padding:10px;
+		padding-left:15px;
 		border-bottom-width:1px;
 		border-bottom-style: solid;
-		margin-bottom:10px;
+		font-weight:bold;
+		font-size:90%;
 	}
 
-	#page-title-text {
+	#page-subtitle {
 		display:inline;
-		float:right;
-		font-size: 70%;
+	}
+
+	#page-actions {
+		margin-top:-5px;
 	}
 
 	#page-help {
@@ -32,22 +34,36 @@
 		width:25px;
 	}
 
+	.panel-body-inner {
+		margin-left:-15px;
+		margin-right:-15px;
+	}
+
+	.popover {
+		min-width:250px;
+	}
+
 	#page-content {
-		border-top-width:1px;
-		border-top-style: solid;
 		padding-top:10px;
 	}
 
 	.action-bar {
+		display:inline;
 		text-align:right;
 	}
 
 	.action-bar-items {
 		list-style: none;
+		margin:0px;
 	}
 
 	.action-item {
 		display:inline-block;
+	}
+
+	.action-item .dropdown-menu li {
+		font-size:12px;
+		margin:4px;
 	}
 
 	.action-item a, .action-item div {
@@ -56,13 +72,17 @@
 	}
 
 	.section-bar {
-		margin:0px;
-		border-left:4px solid #336699;
-		background-color:#fbfbfb;
-		padding:7px;
-		border-bottom:1px solid #dddddd;
-		margin-bottom:15px;
-		color:#555555;
+		margin-left:-15px;
+		margin-right:-15px;
+		border-top:1px solid;
+		border-bottom:1px solid;
+		border-radius: 0px;
+		margin-bottom:10px;
+	}
+
+	.action-item .dropdown-menu li a:hover {
+		background-color:transparent;
+		cursor:pointer;
 	}
 	</style>
 @stop
@@ -75,14 +95,25 @@
 			<div id="app-layout-content" class="col-md-12">
 				<!-- Page Content -->
 				<div id="main-content">
-					<h4 id="page-title" class="text-primary theme-border-color-1">
-						{{ $page->title }} <div id="page-title-text">{{ $page->displayText or '' }}</div>
-					</h4>
-					@if (isset($page->subtitle))
-						<div id="page-subtitle" class="theme-bg-color-4 theme-border-color-3">{{ $page->subtitle }}</div>
-					@endif
-					<!-- Content -->
-					@yield('wb-content')
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 id="page-title" class="text-primary">
+								{{ $page->title }}
+							</h4>
+						</div>
+						<div class="panel-subheading theme-bg-color-4 theme-border-color-3">
+							@if (isset($page->subtitle))
+								<div id="page-subtitle" class="theme-bg-color-4 theme-border-color-3">{{ $page->subtitle }}</div>
+							@endif
+							<div id="page-actions" class="pull-right">
+								@yield('page-actions')
+							</div>
+						</div>
+						<div class="panel-body">
+							<!-- Content -->
+							@yield('wb-content')
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
