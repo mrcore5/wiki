@@ -148,7 +148,7 @@ class Post extends Model
 	public static function all($columns = array('*'))
 	{
 		#dd($this->where());
-		return Cache::remember(strtolower(get_class()).":all", function()  {
+		return Cache::remember(strtolower(get_class()).":all", function() use($columns) {
 			return static::orderBy('constant')->get($columns);
 		});
 	}
