@@ -17,6 +17,7 @@
 		border-bottom-style: solid;
 		font-weight:bold;
 		font-size:90%;
+		min-height:40px;
 	}
 
 	#page-subtitle {
@@ -25,6 +26,10 @@
 
 	#page-actions {
 		margin-top:-5px;
+	}
+
+	#page-actions select {
+		max-height:35px;
 	}
 
 	#page-help {
@@ -101,14 +106,16 @@
 								{{ $page->title }}
 							</h4>
 						</div>
-						<div class="panel-subheading theme-bg-color-4 theme-border-color-3">
-							@if (isset($page->subtitle))
-								<div id="page-subtitle" class="theme-bg-color-4 theme-border-color-3">{{ $page->subtitle }}</div>
-							@endif
-							<div id="page-actions" class="pull-right">
-								@yield('page-actions')
+						@if ($__env->yieldContent('page-subtitle') || $__env->yieldContent('page-actions'))
+							<div class="panel-subheading theme-bg-color-4 theme-border-color-3">
+								<div id="page-subtitle">
+									@yield('page-subtitle')
+								</div>
+								<div id="page-actions" class="pull-right">
+									@yield('page-actions')
+								</div>
 							</div>
-						</div>
+						@endif
 						<div class="panel-body">
 							<!-- Content -->
 							@yield('wb-content')
