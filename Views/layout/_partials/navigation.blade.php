@@ -1,95 +1,101 @@
 @section('css')
 	@parent
-   <style>
+	<style>
+	#navigation .panel-body {
+		padding:0px;
+	}
+	#navigation .panel {
+		margin-bottom: 0px !important;
+	}
 	#nav-title {
-		margin-bottom:0px;
-		margin-top:0px;
-		font-weight:bold;
+		margin-bottom: 0px;
+		margin-top: 0px;
+		font-weight: bold;
 	}
 
 	#nav-list {
-		list-style:none;
-		padding:0px;
-		border-right-width:2px;
+		list-style: none;
+		padding: 0px;
+		border-right-width: 0px;
 		border-right-style: solid;
-		border-bottom-width:0px;
+		border-bottom-width: 0px;
 		border-bottom-style: solid;
-		margin-bottom:0px;
+		margin-bottom: 0px;
 	}
 
 	#nav-list .nav-item {
-		padding:10px;
+		padding: 10px;
 		cursor: pointer;
 	}
 
 	#nav-list a {
-		display:block;
+		display: block;
 	}
 
 	#nav-list .nav-item:hover, #nav-list .nav-item.active {
-		font-weight:bold;
+		font-weight: bold;
 	}
 
 	#nav-list a:hover {
-		text-decoration:none;
+		text-decoration: none;
 	}
 
 	.subnav-container {
-		padding:5px;
+		padding: 5px;
 	}
 
 	.subnav-list {
-		list-style:none;
-		padding:0px;
-		margin:0px;
-		border-width:1px;
+		list-style: none;
+		padding: 0px;
+		margin: 0px;
+		border-width: 1px;
 		border-style: solid;
 	}
 
 	.subnav-list li {
-		margin-bottom:5px;
-		margin-left:4px;
-		border:0px;
-		padding:5px;
+		margin-bottom: 5px;
+		margin-left: 4px;
+		border: 0px;
+		padding: 5px;
 		cursor: pointer;
 	}
 
 	.subnav-list li:hover {
-		margin-left:0px;
+		margin-left: 0px;
 	}
 
 	 .subnav-list li.active {
-		margin-left:0px;
+		margin-left: 0px;
 	}
 
 	 #app-navigation-uncollapsed, #app-navigation-collapsed {
-		z-index:1000;
-		cursor:pointer;
+		z-index: 1000;
+		cursor: pointer;
 	 }
 
 	 #app-navigation-uncollapsed {
-		display:inline;
-		float:right;
+		display: inline;
+		float: right;
 	 }
 
 	 #app-navigation-collapsed {
-		display:none;
-		padding-right:5px;
+		display: none;
+		padding-right: 5px;
 	 }
 
 	.nav-hover {
-		position:absolute;
-		z-index:10000;
-		display:block !important;
+		position: absolute;
+		z-index: 10000;
+		display: block !important;
 		-webkit-box-shadow: 0px 6px 31px -5px rgba(51,51,51,1);
 		-moz-box-shadow: 0px 6px 31px -5px rgba(51,51,51,1);
 		box-shadow: 0px 6px 31px -5px rgba(51,51,51,1);
-		padding-right:0px;
-		padding-left:0px;
+		padding-right: 0px;
+		padding-left: 0px;
 	}
 
 	 .nav-hover #app-navigation-uncollapsed {
-		display:none;
+		display: none;
 	 }
 
 	</style>
@@ -97,13 +103,13 @@
 
 @section('navigation')
 	<div id="navigation">
-		<div class="panel panel-default" style="border-right:0px">
+		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4 id="nav-title" class="text-primary">
 					{{ $navTitle }}
 					<div id="app-navigation-uncollapsed" class="theme-text-color-1"><i class="fa fa-bars"></i></div>
 				</h4></div>
-			<div class="panel-body" style="padding:0px;">
+			<div class="panel-body">
 				<ul id="nav-list" class="theme-bg-color-4 theme-border-color-3">
 				@foreach ($navItems as $item)
 					<li>
@@ -182,7 +188,7 @@
 		$(window).on('mousemove', mouseMoveHandler);
 
 		function mouseMoveHandler(e) {
-			if ((e.pageX < 30 && e.pageY > 200) || menu.is(':hover')) {
+			if ((e.pageX < 20 && e.pageY > 0 && e.pageY < 60) || menu.is(':hover')) {
 				if (!menu.is(':visible')) {
 					// Show the menu if mouse is within 20 pixels
 					// from the left or we are hovering over it
