@@ -188,7 +188,7 @@
 		$(window).on('mousemove', mouseMoveHandler);
 
 		function mouseMoveHandler(e) {
-			if ((e.pageX < 20 && e.pageY > 0 && e.pageY < 60) || menu.is(':hover')) {
+			if ((e.pageX < 20 && e.pageY > 0 && e.pageY < 200) || menu.is(':hover')) {
 				if (!menu.is(':visible')) {
 					// Show the menu if mouse is within 20 pixels
 					// from the left or we are hovering over it
