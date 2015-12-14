@@ -1,5 +1,6 @@
 @include('layout._partials.navigation')
 @include('layout._partials.show-help')
+@include('layout._partials.spinner')
 @include('layout.templates.app-css')
 
 @section('css')
@@ -49,5 +50,5 @@
 	</div>
 	@endif
 
-	@yield('show-help-modal')
+    @yield('utilities')
 @stop

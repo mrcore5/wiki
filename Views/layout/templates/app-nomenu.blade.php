@@ -1,4 +1,5 @@
 @include('layout._partials.show-help')
+@include('layout._partials.spinner')
 @include('layout.templates.app-css')
 
 @section('css')
@@ -19,7 +20,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 id="page-title" class="text-primary">
-								{{ $page->title }}
+								@yield('page-title')
 							</h4>
 						</div>
 						@if ($__env->yieldContent('page-subtitle') || $__env->yieldContent('page-actions'))
@@ -44,5 +45,7 @@
 		</div>
 		@endif
 
-	@yield('show-help-modal')
+    @yield('utilities')
 @stop
+
+

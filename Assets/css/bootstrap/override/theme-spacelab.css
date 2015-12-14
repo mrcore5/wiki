@@ -1,7 +1,6 @@
 /*subtheme specific overrides*/
-
 .navbar-default {
-	background-color:#395c82;
+	background-color: #395c82;
 }
 
 /*box icon*/
@@ -11,90 +10,69 @@
 }
 
 /*some subthemes add extra padding/height to their inputs */
-.wb-subheader select,
-.wb-subheader input,
-.wb-subheader button {
-	margin-top:2px;
-	display:inline;
+.wb-subheader select, .wb-subheader input, .wb-subheader button {
+	margin-top: 2px;
+	display: inline;
 }
-
-.wb-subheader select,
-.wb-subheader input {
-	height:36px;
+.wb-subheader select, .wb-subheader input {
+	height: 36px;
 }
-
 .text-primary-alt {
 	color: #ffffff;
 }
-
 .navbar-default a {
-	color:#ffffff;
+	color: #ffffff;
 }
-
 .theme-bg-color-1 {
-	background-color:#f5f5f5;
+	background-color: #f5f5f5;
 }
-
 .theme-bg-color-2 {
-	background-color:#dddddd;
+	background-color: #dddddd;
 }
-
 .theme-bg-color-3 {
-	background-color:#fafafa;
+	background-color: #fafafa;
 }
-
 .theme-bg-color-4 {
-	background-color:#fdfdfd;
+	background-color: #fdfdfd;
 }
-
 .theme-accent-border {
-	border-bottom:1px solid #446e9b;
+	border-bottom: 1px solid #446e9b;
 }
-
 .theme-border-primary {
 	border-color: #446e9b;
 }
-
 .theme-border-color-1 {
-	border-color:#dddddd;
+	border-color: #dddddd;
 }
-
 .theme-border-color-2 {
-	border-color:#bbbbbb;
+	border-color: #bbbbbb;
 }
-
 .theme-border-color-3 {
-	border-color:#efefef;
+	border-color: #efefef;
 }
-
 .theme-text-color-1 {
-	color:#bbbbbb;
+	color: #bbbbbb;
 }
 
 /*app template navigation*/
 #nav-list .nav-item:hover, #nav-list .nav-item.active {
-    border-right:4px solid #446e9b;
-    background-color:#f5f5f5;
+	border-right: 4px solid #446e9b;
+	background-color: #f5f5f5;
 }
-
 .subnav-list li:hover {
-    border-left:4px solid #446e9b;
-    background-color:#dddddd;
+	border-left: 4px solid #446e9b;
+	background-color: #dddddd;
 }
-
 .subnav-list li.active {
-    border-left:4px solid #446e9b;
-    background-color:#dddddd;
+	border-left: 4px solid #446e9b;
+	background-color: #dddddd;
 }
-
 .nav-hover {
-	background-color:#ffffff;
+	background-color: #ffffff;
 }
-
 #interior-nav-list a:hover, #interior-nav-list a.active {
-    border-bottom:2px solid #446e9b;
+	border-bottom: 2px solid #446e9b;
 }
-
 #interior-nav-list a:hover li, #interior-nav-list a.active li {
-    color: #446e9b;
+	color: #446e9b;
 }

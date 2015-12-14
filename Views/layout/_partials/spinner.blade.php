@@ -2,7 +2,7 @@
     @parent
     <style type="text/css">
         #spinner {
-            display:none;
+            display: none;
         }
 
         #spinner-overlay {
@@ -34,14 +34,17 @@
     </style>
 @stop
 
-<!-- loading spinner -->
-<div id="spinner">
-    <div id="spinner-overlay"></div>
-    <div id="spinner-content">
-        <img src="{{ asset('images/ajax-loader2.gif') }}" />
-        <div id="spinner-text"></div>
+@section('utilities')
+    @parent
+    <!-- loading spinner -->
+    <div id="spinner">
+        <div id="spinner-overlay"></div>
+        <div id="spinner-content">
+            <img src="{{ asset('images/ajax-loader2.gif') }}" />
+            <div id="spinner-text"></div>
+        </div>
     </div>
-</div>
+@stop
 
 @section('scripts')
     @parent

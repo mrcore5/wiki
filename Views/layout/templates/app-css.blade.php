@@ -1,4 +1,5 @@
 @section('css')
+	@parent
 	<style>
 	#page-title {
 		margin-bottom: 0px;
