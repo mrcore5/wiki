@@ -1,4 +1,4 @@
-@section('css')
+@section('style')
 	@parent
 	<style>
 
