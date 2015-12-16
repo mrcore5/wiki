@@ -46,7 +46,7 @@
     </div>
 @stop
 
-@section('scripts')
+@section('script')
     @parent
     <script type="text/javascript">
         var spinner = new function() {
