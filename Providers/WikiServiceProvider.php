@@ -5,7 +5,7 @@ use Gate;
 use Event;
 use Layout;
 use Module;
-use Mrcore\Wiki\Auth\Guard;
+use Mrcore\Wiki\Auth\Guard as WikiGuard;
 use Mrcore\Wiki\Models\Post;
 use Illuminate\Routing\Router;
 use Illuminate\Contracts\Http\Kernel;
@@ -61,8 +61,8 @@ class WikiServiceProvider extends ServiceProvider {
 		// Register facades
 		$facade = AliasLoader::getInstance();
 		$facade->alias('Mrcore', \Mrcore\Wiki\Facades\Mrcore::class);
-		$facade->alias('Form', \Collective\Html\FormFacade::class);
-		$facade->alias('Html', \Collective\Html\HtmlFacade::class);
+		$facade->alias('Form', \Illuminate\Html\FormFacade::class);
+		$facade->alias('Html', \Illuminate\Html\HtmlFacade::class);
 
 		// Register configs
 		$this->registerConfigs();
@@ -76,7 +76,7 @@ class WikiServiceProvider extends ServiceProvider {
 		$this->app->alias(\Mrcore\Wiki\Api\User::class, \Mrcore\Wiki\Api\UserInterface::class);
 
 		// Register other service providers
-		$this->app->register(\Collective\Html\HtmlServiceProvider::class);
+		$this->app->register(\Illuminate\Html\HtmlServiceProvider::class);
 
 		// Extend both auth guard and UserProvider
 		$this->extendAuth();
@@ -153,15 +153,15 @@ class WikiServiceProvider extends ServiceProvider {
 	protected function registerListeners()
 	{
 		// Login event listener
-		Event::listen('Illuminate\Auth\Events\Login', function($user) {
+		Event::listen('auth.login', function($auth) {
 			$handler = app('Mrcore\Wiki\Handlers\Events\UserEventHandler');
-			$handler->onUserLoggedIn($user);
+			$handler->onUserLoggedIn($auth);
 		});
 
 		// Logout event listener
-		Event::listen('Illuminate\Auth\Events\Logout', function($user) {
+		Event::listen('auth.logout', function($auth) {
 			$handler = app('Mrcore\Wiki\Handlers\Events\UserEventHandler');
-			$handler->onUserLoggedOut($user);
+			$handler->onUserLoggedOut($auth);
 		});
 	}
 
@@ -230,10 +230,24 @@ class WikiServiceProvider extends ServiceProvider {
 	 */
 	private function extendAuth()
 	{
+
 		// Extend both Guard and EloquentUserProvider
 		// This makes my own 'mrcore' auth provider in config/app.php which
 		// enabled custom Auth::funtions() and caching on the user provider!
-		Auth::extend('mrcore', function() {
+
+		// Custom auth guard
+		Auth::extend('mrcore', function($app, $name, array $config) {
+			$hash = $this->app->make('hash');
+			$model = config('auth.providers.users.model');
+			$provider = new WikiUserProvider($hash, $model);
+
+			$session = $this->app->make('session.store');
+			$request = $this->app->make('request');
+			return new WikiGuard('mrcore', $provider, $session, $request);
+		});
+
+
+		/*Auth::extend('mrcore', function() {
 			// Guard extension found at https://laracasts.com/forum/?p=910-how-to-extend-auth/0
 			$hash = $this->app->make('hash');
 			$model = config('auth.model');
@@ -245,7 +259,9 @@ class WikiServiceProvider extends ServiceProvider {
 
 			// Fire up my custom Auth Provider as an extension to Laravels
 			return new Guard($provider, $session);
-		});
+			#return $provider;
+		});*/
+
 	}
 
 }

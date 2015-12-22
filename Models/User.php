@@ -4,11 +4,19 @@ use DB;
 use Auth;
 use Config;
 use Session;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Mrcore\Foundation\Support\Cache;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Authenticatable
+class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
+
+	use Authenticatable, Authorizable, CanResetPassword;
 
 	/**
 	 * The database table used by the model.
@@ -23,6 +31,55 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $hidden = ['password', 'remember_token'];
+
+	/**
+	 * Get the unique identifier for the user.
+	 *
+	 * @return mixed
+	 */
+	public function getAuthIdentifier()
+	{
+		return $this->getKey();
+	}
+
+	/**
+	 * Get the password for the user.
+	 *
+	 * @return string
+	 */
+	public function getAuthPassword()
+	{
+		return $this->password;
+	}
+
+	/**
+	 * Get the remember me token for the user.
+	 *
+	 * @return string
+	 */
+	public function getRememberToken()
+	{
+	    return $this->remember_token;
+	}
+
+	/**
+	 * Set the remember me token for the user.
+	 *
+	 */
+	public function setRememberToken($value)
+	{
+	    $this->remember_token = $value;
+	}
+
+	/**
+	 * Get the remember me token name
+	 *
+	 * @return string
+	 */
+	public function getRememberTokenName()
+	{
+	    return 'remember_token';
+	}
 
 	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.

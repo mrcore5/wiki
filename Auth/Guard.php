@@ -2,8 +2,9 @@
 
 use Config;
 use Session;
+use Illuminate\Auth\SessionGuard;
 
-class Guard extends \Illuminate\Auth\Guard {
+class Guard extends SessionGuard {
 
 	/**
 	 * Determine if the current user is authenticated.
@@ -21,7 +22,7 @@ class Guard extends \Illuminate\Auth\Guard {
 			return ($user->id != Config::get('mrcore.wiki.anonymous'));
 		}
 		return false;
-		
+
 		#return ! is_null($this->user());
 	}
 
