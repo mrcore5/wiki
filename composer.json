@@ -16,11 +16,11 @@
 		}
 	],
 	"require": {
-		"illuminate/html": "~5.0",
+		"laravelcollective/html": "~5.2@dev",
 		"sabre/dav": "~1.8.7",
 		"camspiers/porter-stemmer": "1.0.0",
 		"cogpowered/finediff": "~0.0",
-	
+
 		"mrcore/auth": "~1.0",
 		"mrcore/parser": "~1.0",
 		"mrcore/bootswatch-theme": "~1.0"

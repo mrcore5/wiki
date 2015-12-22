@@ -153,13 +153,13 @@ class WikiServiceProvider extends ServiceProvider {
 	protected function registerListeners()
 	{
 		// Login event listener
-		Event::listen('auth.login', function($user) {
+		Event::listen('Illuminate\Auth\Events\Login', function($user) {
 			$handler = app('Mrcore\Wiki\Handlers\Events\UserEventHandler');
 			$handler->onUserLoggedIn($user);
 		});
 
 		// Logout event listener
-		Event::listen('auth.logout', function($user) {
+		Event::listen('Illuminate\Auth\Events\Logout', function($user) {
 			$handler = app('Mrcore\Wiki\Handlers\Events\UserEventHandler');
 			$handler->onUserLoggedOut($user);
 		});

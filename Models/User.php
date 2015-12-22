@@ -4,19 +4,11 @@ use DB;
 use Auth;
 use Config;
 use Session;
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Mrcore\Foundation\Support\Cache;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+class User extends Authenticatable
 {
-
-	use Authenticatable, Authorizable, CanResetPassword;
 
 	/**
 	 * The database table used by the model.
@@ -33,55 +25,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 	protected $hidden = ['password', 'remember_token'];
 
 	/**
-	 * Get the unique identifier for the user.
-	 *
-	 * @return mixed
-	 */
-	public function getAuthIdentifier()
-	{
-		return $this->getKey();
-	}
-
-	/**
-	 * Get the password for the user.
-	 *
-	 * @return string
-	 */
-	public function getAuthPassword()
-	{
-		return $this->password;
-	}
-
-	/**
-	 * Get the remember me token for the user.
-	 *
-	 * @return string
-	 */
-	public function getRememberToken()
-	{
-	    return $this->remember_token;
-	}
-
-	/**
-	 * Set the remember me token for the user.
-	 *
-	 */
-	public function setRememberToken($value)
-	{
-	    $this->remember_token = $value;
-	}
-
-	/**
-	 * Get the remember me token name
-	 *
-	 * @return string
-	 */
-	public function getRememberTokenName()
-	{
-	    return 'remember_token';
-	}
-
-	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
 	 *
 	 * @param  mixed  $id
@@ -92,7 +35,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 	{
 		return Cache::remember(strtolower(get_class())."_$id", function() use($id, $columns) {
 			return static::query()->find($id, $columns);
-		});		
+		});
 	}
 
 	/**
@@ -106,7 +49,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 		} else {
 			$user = User::find(Config::get('mrcore.wiki.anonymous'));
 			Auth::login($user);
-			Auth::user()->login();			
+			Auth::user()->login();
 			#return self::find(Config::get('mrcore.wiki.anonymous'));
 			return Auth::user();
 		}
@@ -131,7 +74,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
 	/**
 	 * Get permissions for this user (not post permissions)
-	 * 
+	 *
 	 * @return simple array of permission constants
 	 */
 	public function getPermissions()
@@ -189,7 +132,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 		#obsolete?? don't care, I care about permissions
 		#required the function roles() to be enabled above, a many-to-many relationship
 		#or query it yourself (probably better since I won't really use this function much?)
-		
+
 		#make a hasPermission which simply checks the existing session(user.perms) array
 		#foreach ($this->roles as $role) {
 		#	if (strtolower($constant) == strtolower($role->constant)) {
