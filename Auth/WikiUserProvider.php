@@ -11,7 +11,7 @@ class WikiUserProvider extends EloquentUserProvider {
 	 * @param  mixed  $identifier
 	 * @return \Illuminate\Contracts\Auth\Authenticatable|null
 	 */
-	public function retrieveByIdXXXXXx($identifier)
+	public function retrieveById($identifier)
 	{
 		return Cache::remember('auth/userprovider/user:'.$identifier,
 			function() use($identifier) {
@@ -27,7 +27,7 @@ class WikiUserProvider extends EloquentUserProvider {
 	 * @param  string  $token
 	 * @return \Illuminate\Contracts\Auth\Authenticatable|null
 	 */
-	public function retrieveByTokenXXXXXXXXxx($identifier, $token)
+	public function retrieveByToken($identifier, $token)
 	{
 		$model = $this->createModel();
 

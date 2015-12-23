@@ -235,8 +235,8 @@ class WikiServiceProvider extends ServiceProvider {
 		// This makes my own 'mrcore' auth provider in config/app.php which
 		// enabled custom Auth::funtions() and caching on the user provider!
 
-		// Custom auth guard
-		Auth::extend('mrcore', function($app, $name, array $config) {
+		// Custom auth guard (fix later for Laravel 5.2)
+		/*Auth::extend('mrcore', function($app, $name, array $config) {
 			$hash = $this->app->make('hash');
 			$model = config('auth.providers.users.model');
 			$provider = new WikiUserProvider($hash, $model);
@@ -244,10 +244,11 @@ class WikiServiceProvider extends ServiceProvider {
 			$session = $this->app->make('session.store');
 			$request = $this->app->make('request');
 			return new WikiGuard('mrcore', $provider, $session, $request);
-		});
+		});*/
 
 
-		/*Auth::extend('mrcore', function() {
+		// Laravel 5.1
+		Auth::extend('mrcore', function() {
 			// Guard extension found at https://laracasts.com/forum/?p=910-how-to-extend-auth/0
 			$hash = $this->app->make('hash');
 			$model = config('auth.model');
@@ -258,9 +259,9 @@ class WikiServiceProvider extends ServiceProvider {
 			$provider = new WikiUserProvider($hash, $model);
 
 			// Fire up my custom Auth Provider as an extension to Laravels
-			return new Guard($provider, $session);
+			return new WikiGuard($provider, $session);
 			#return $provider;
-		});*/
+		});
 
 	}
 

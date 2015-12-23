@@ -4,7 +4,7 @@ use Config;
 use Session;
 use Illuminate\Auth\SessionGuard;
 
-class Guard extends SessionGuard {
+class Guard extends \Illuminate\Auth\Guard { #SessionGuard {
 
 	/**
 	 * Determine if the current user is authenticated.
