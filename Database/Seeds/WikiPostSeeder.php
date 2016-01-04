@@ -3,7 +3,7 @@
 use Mrcore\Wiki\Models\Post;
 use Mrcore\Wiki\Models\Router;
 use Mrcore\Wiki\Support\Crypt;
-use Mreschke\Helpers\String as Str;
+use Mreschke\Helpers\Str;
 use Illuminate\Database\Seeder;
 use Mrcore\Wiki\Models\PostPermission;
 

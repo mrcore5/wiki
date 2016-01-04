@@ -8,7 +8,7 @@ use Config;
 use Session;
 use Request;
 use Mrcore\Wiki\Models\User;
-use Mreschke\Helpers\String;
+use Mreschke\Helpers\Str;
 use Mrcore\Wiki\Support\Crypt;
 use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
@@ -911,7 +911,7 @@ class Post extends Model
 
 		if (Input::has('uuid') && $this->shared) {
 			$uuid = Input::get('uuid');
-			if (strlen($uuid) == 32) $uuid = String::uuidToGuid($uuid);
+			if (strlen($uuid) == 32) $uuid = Str::uuidToGuid($uuid);
 			if (strtolower($uuid) == strtolower($this->uuid)) {
 				// UUID match and public sharing url enabled
 				$uuids = Session::get('uuids');

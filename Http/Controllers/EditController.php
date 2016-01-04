@@ -11,7 +11,7 @@ use Request;
 use Response;
 use Redirect;
 use Carbon\Carbon;
-use Mreschke\Helpers\String;
+use Mreschke\Helpers\Str;
 use Mrcore\Wiki\Models\Tag;
 use Mrcore\Wiki\Models\User;
 use Mrcore\Wiki\Models\Mode;
@@ -537,7 +537,7 @@ class EditController extends Controller {
 
 		// Start new post
 		$post = new Post;
-		$post->uuid = String::getGuid();
+		$post->uuid = Str::getGuid();
 		$post->title = Input::get('title');
 		$post->slug = Input::get('slug');
 		$post->content = Crypt::encrypt('');

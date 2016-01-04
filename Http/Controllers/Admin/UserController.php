@@ -10,7 +10,7 @@ use stdClass;
 use Response;
 use Carbon\Carbon;
 use Mrcore\Wiki\Models\User;
-use Mreschke\Helpers\String;
+use Mreschke\Helpers\Str;
 use Mrcore\Wiki\Models\Role;
 use Mrcore\Wiki\Models\UserRole;
 use Mrcore\Wiki\Models\Permission;
@@ -120,7 +120,7 @@ class UserController extends Controller {
 		$user->alias = $alias;
 		$user->first = $first;
 		$user->last = $last;
-		$user->uuid = String::getGuid();
+		$user->uuid = Str::getGuid();
 		$user->global_post_id = ($global_post_id) ?: null;
 		$user->home_post_id = ($home_post_id) ?: null;
 		$user->disabled = (isset($disabled)) ?: 0;
