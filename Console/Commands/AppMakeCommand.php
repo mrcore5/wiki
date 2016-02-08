@@ -73,7 +73,6 @@ class AppMakeCommand extends Command {
 		exec("mv $path/Http/Controllers/AppstubController.php $path/Http/Controllers/".studly_case($this->package)."Controller.php");
 		exec("mv $path/Facades/Appstub.php $path/Facades/".studly_case($this->package).".php");
 		exec("mv $path/Config/appstub.php $path/Config/$this->package.php");
-		exec("mv $path/appstub $path/$this->package");
 
 		// Composer update
 		exec("cd $path && composer update");
