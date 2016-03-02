@@ -8,10 +8,13 @@
 			</a>
 
 			<ul class="dropdown-menu">
+				<li class="dropdown-header">{{ Auth::user()->name }}</li>
+				<li class="divider"></li>
+
 				@if (Mrcore::user()->hasPermission('create'))
 					<li>
 						<a href="{{ URL::route('new') }}">
-							<!--<i class="fa fa-plus"></i>-->
+							<i class="fa fa-plus"></i>
 							New Post
 						</a>
 					</li>
@@ -22,13 +25,13 @@
 					<li class="dropdown-header">Administrator</li>
 					<li>
 						<a href="{{ URL::route('admin.badge.index') }}">
-							<!--<i class="fa fa-lock"></i>-->
+							<i class="fa fa-lock" style="padding-right: 3px; padding-left: 1px"></i>
 							Admin
 						</a>
 					</li>
 					<li>
 						<a href="{{ URL::route('router') }}">
-							<!--<i class="fa fa-link"></i>-->
+							<i class="fa fa-link"></i>
 							Router
 						</a>
 					</li>
@@ -36,7 +39,7 @@
 				@endif
 				<li>
 					<a href="/auth/logout">
-						<!--<i class="fa fa-power-off"></i>-->
+						<i class="fa fa-power-off"></i>
 						Sign Out
 					</a>
 				</li>

@@ -82,6 +82,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 	}
 
 	/**
+	 * Get the user's full name
+	 * @param  string $value
+	 * @return string
+	 */
+	public function getNameAttribute()
+	{
+		return $this->first.' '.$this->last;
+	}
+
+	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
 	 *
 	 * @param  mixed  $id
