@@ -25,7 +25,7 @@
 	}
 
 	#page-actions select {
-		max-height: 30px;
+		/*max-height: 30px;*/
 	}
 
 	#page-help {

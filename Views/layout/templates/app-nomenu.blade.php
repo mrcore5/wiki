@@ -31,6 +31,7 @@
 								<div id="page-actions" class="pull-right">
 									@yield('page-actions')
 								</div>
+								<div style="clear:both"></div>
 							</div>
 						@endif
 						<div class="panel-body">
