@@ -65,8 +65,8 @@ class WikiServiceProvider extends ServiceProvider {
 		// Register facades
 		$facade = AliasLoader::getInstance();
 		$facade->alias('Mrcore', \Mrcore\Wiki\Facades\Mrcore::class);
-		$facade->alias('Form', \Illuminate\Html\FormFacade::class);
-		$facade->alias('Html', \Illuminate\Html\HtmlFacade::class);
+		$facade->alias('Form', \Collective\Html\FormFacade::class);
+		$facade->alias('Html', \Collective\Html\HtmlFacade::class);
 		$facade->alias('Input', \Illuminate\Support\Facades\Input::class);
 
 		// Register configs
@@ -81,7 +81,7 @@ class WikiServiceProvider extends ServiceProvider {
 		$this->app->alias(\Mrcore\Wiki\Api\User::class, \Mrcore\Wiki\Api\UserInterface::class);
 
 		// Register other service providers
-		$this->app->register(\Illuminate\Html\HtmlServiceProvider::class);
+		$this->app->register(\Collective\Html\HtmlServiceProvider::class);
 
 		// Register artisan commands
 		$this->registerCommands();
