@@ -22,8 +22,8 @@
 		"cogpowered/finediff": "~0.0",
 
 		"mrcore/auth": "~2.0",
-		"mrcore/parser": "~1.0",
-		"mrcore/bootswatch-theme": "~1.0"
+		"mrcore/parser": "~2.0",
+		"mrcore/bootswatch-theme": "~2.0"
 	},
 	"autoload": {
 		"classmap": [
