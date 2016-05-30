@@ -4,21 +4,21 @@ use Auth;
 use Config;
 use Session;
 use Carbon\Carbon;
+use Mrcore\Auth\Models\User;
 use Illuminate\Events\Dispatcher;
-use Mrcore\Wiki\Models\User;
 
 class UserEventHandler {
 
 	/**
 	 * Handle user login events.
 	 */
-	public function onUserLoggedIn($user)
+	public function onUserLoggedIn($auth)
 	{
-		if ($user->id != Config::get('mrcore.wiki.anonymous')) {
+		if ($auth->user->id != Config::get('mrcore.wiki.anonymous')) {
 			// Save users permissions into session
 
 			// Convert user into wiki user model
-			$user = User::find($user->id);
+			$user = User::find($auth->user->id);
 			$perms = $user->getPermissions();
 
 			Session::put('user.admin', false);
@@ -40,7 +40,7 @@ class UserEventHandler {
 	/**
 	 * Handle user logout events.
 	 */
-	public function onUserLoggedOut($user)
+	public function onUserLoggedOut($auth)
 	{
 		// Application specific logout code here
 		Session::forget('user');

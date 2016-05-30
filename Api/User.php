@@ -108,11 +108,11 @@ class User implements UserInterface
 	public function isAuthenticated()
 	{
 		return Auth::check();
-	}	
+	}
 
 	public static function hasPermission($constant)
 	{
-		return \Mrcore\Wiki\Models\User::hasPermission($constant);
+		return \Mrcore\Auth\Models\User::hasPermission($constant);
 	}
 
 	/**

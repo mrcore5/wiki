@@ -9,12 +9,12 @@ use Hash;
 use stdClass;
 use Response;
 use Carbon\Carbon;
-use Mrcore\Wiki\Models\User;
 use Mreschke\Helpers\Str;
-use Mrcore\Wiki\Models\Role;
-use Mrcore\Wiki\Models\UserRole;
-use Mrcore\Wiki\Models\Permission;
-use Mrcore\Wiki\Models\UserPermission;
+use Mrcore\Auth\Models\User;
+use Mrcore\Auth\Models\Role;
+use Mrcore\Auth\Models\UserRole;
+use Mrcore\Auth\Models\Permission;
+use Mrcore\Auth\Models\UserPermission;
 use Mrcore\Wiki\Http\Controllers\Controller;
 
 class UserController extends Controller {
@@ -255,4 +255,3 @@ class UserController extends Controller {
 	}
 
 }
-

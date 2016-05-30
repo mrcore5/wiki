@@ -29,7 +29,7 @@ class Router extends Model
 	 */
 	public function creator()
 	{
-		return $this->hasOne('Mrcore\Wiki\Models\User', 'id', 'created_by');
+		return $this->hasOne('Mrcore\Auth\Models\User', 'id', 'created_by');
 	}
 
 	/**
@@ -38,8 +38,8 @@ class Router extends Model
 	 */
 	public function updater()
 	{
-		return $this->hasOne('Mrcore\Wiki\Models\User', 'id', 'updated_by');
-	}	
+		return $this->hasOne('Mrcore\Auth\Models\User', 'id', 'updated_by');
+	}
 
 	/**
 	 * Find default enalbed route by route id
@@ -104,7 +104,7 @@ class Router extends Model
 		if (isset($id)) Cache::forget(strtolower(get_class()).":$id");
 		if (isset($id)) Cache::forget(strtolower(get_class())."/post:$id");
 		if (isset($id)) Cache::forget(strtolower(get_class())."/slug:$id");
-	}	
+	}
 
 	/**
 	 * Increment route clicks (views)
@@ -122,7 +122,7 @@ class Router extends Model
 		// because if cache is enabled, then $this is a cahced copy, so incrementing
 		// a cached copy does nothing.  So to increment we need to run a separate query.
 		DB::table('router')->where('id', $this->id)->increment('clicks', 1);
-		
+
 		// If we are not using cache, the above will update our table
 		// and this will update our current object, for display
 		// just don't run a $this->save() if you will increment twice
@@ -139,5 +139,5 @@ class Router extends Model
 			->get();
 		return $routes;
 	}
-	
+
 }

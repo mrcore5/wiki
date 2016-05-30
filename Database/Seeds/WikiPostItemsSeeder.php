@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Database\Seeder;
-use Mrcore\Wiki\Models\Format;
 use Mrcore\Wiki\Models\Type;
-use Mrcore\Wiki\Models\Framework;
 use Mrcore\Wiki\Models\Mode;
+use Mrcore\Wiki\Models\Format;
+use Illuminate\Database\Seeder;
+use Mrcore\Wiki\Models\Framework;
 
 class WikiPostItemsSeeder extends Seeder
 {

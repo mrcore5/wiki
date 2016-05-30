@@ -6,7 +6,7 @@ use Request;
 use Input;
 use Response;
 use stdClass;
-use Mrcore\Wiki\Models\Role;
+use Mrcore\Auth\Models\Role;
 use Mrcore\Wiki\Http\Controllers\Controller;
 
 class RoleController extends Controller {
@@ -22,7 +22,7 @@ class RoleController extends Controller {
 		$data->name = 'Role';
 		$data->partial = '_roles';
 		$data->dataUrl = 'role/data';
-		
+
 		return View::make('admin.content', compact('data'));
 	}
 
@@ -93,7 +93,7 @@ class RoleController extends Controller {
 	public function destroy()
 	{
 		$id = Input::get('id');
-		
+
 		if ($id != 0) {
 			$role = Role::find($id);
 			$role->delete();
@@ -109,4 +109,3 @@ class RoleController extends Controller {
 	}
 
 }
-

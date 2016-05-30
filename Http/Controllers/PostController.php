@@ -1,5 +1,6 @@
 <?php namespace Mrcore\Wiki\Http\Controllers;
 
+use Auth;
 use View;
 use Input;
 use Layout;
@@ -19,23 +20,38 @@ class PostController extends Controller {
 	 */
 	public function showPost()
 	{
-		// Redirect router results here
+		// If not logged in, login as anonymous user
+		if (is_null(Auth::user())) Auth::loginUsingId(1);
+
+		// Redirect router results here (will never be 401 from router)
 		$router = Mrcore::router();
-		if (isset($router)) {
-			if ($router->responseCode == 404) {
-				return Response::notFound();
-			} elseif ($router->responseCode == 401) {
-				return Response::denied();
-			} elseif ($router->responseCode == 301) {
-				// Redirect to proper url
-				$url = $router->responseRedirect;
-				return Redirect::to($url);
-			}
+		if ($router->responseCode == 404) {
+			return Response::notFound();
+		} elseif ($router->responseCode == 301) {
+			// Redirect to proper url
+			$url = $router->responseRedirect;
+			return Redirect::to($url);
 		}
 
 		// Gets post, parse + globals
 		// If ajax, do NOT include globals
 		$post = Mrcore::post()->prepare(!Request::ajax());
+
+		// Check if post is deleted
+		if ($post->deleted && !Auth::admin()) return Response::denied();
+
+		// Check post permissions including UUID
+		if (!$post->uuidPermission()) return Response::denied();
+
+		// Update clicks for post and router table
+		$router->getModel()->incrementClicks();
+		$post->incrementClicks();
+
+		// Adjust $view for this $this->post
+		Layout::title($post->title);
+		if ($post->mode_id <> config('mrcore.wiki.default_mode')) {
+			Layout::mode($post->mode->constant);
+		}
 
 		// If post is a workbench and we get to this point then
 		// The custom workbench route was not found, meaning we

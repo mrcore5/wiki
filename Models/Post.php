@@ -7,8 +7,8 @@ use Input;
 use Config;
 use Session;
 use Request;
-use Mrcore\Wiki\Models\User;
 use Mreschke\Helpers\Str;
+use Mrcore\Auth\Models\User;
 use Mrcore\Wiki\Support\Crypt;
 use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
@@ -113,7 +113,7 @@ class Post extends Model
 	 */
 	public function creator()
 	{
-		return $this->hasOne('Mrcore\Wiki\Models\User', 'id', 'created_by');
+		return $this->hasOne('Mrcore\Auth\Models\User', 'id', 'created_by');
 	}
 
 	/**
@@ -122,7 +122,7 @@ class Post extends Model
 	 */
 	public function updater()
 	{
-		return $this->hasOne('Mrcore\Wiki\Models\User', 'id', 'updated_by');
+		return $this->hasOne('Mrcore\Auth\Models\User', 'id', 'updated_by');
 	}
 
 	/**

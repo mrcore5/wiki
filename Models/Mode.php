@@ -28,7 +28,7 @@ class Mode extends Model
 	public function posts()
 	{
 		return $this->hasMany('Mrcore\Wiki\Models\Post');
-	}	
+	}
 
 	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
@@ -41,7 +41,7 @@ class Mode extends Model
 	{
 		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
 			return static::query()->find($id, $columns);
-		});		
+		});
 	}
 
 	/**

@@ -20,6 +20,7 @@ if (!$homeExists) {
 	));
 }
 
+
 // Post create routes
 Route::get('/post/create', array(
 	'uses' => 'EditController@newPost',
@@ -101,7 +102,7 @@ if (Config::get('mrcore.wiki.webdav_base_url')) {
 		$verbs = array('GET', 'PUT', 'POST', 'DELETE',
 			'PROPFIND', 'PROPPATCH', 'MKCOL','COPY',
 			'MOVE', 'LOCK', 'UNLOCK', 'OPTIONS', 'USERINFO', 'HEAD');
-		
+
 		Route::match($verbs, '/{slug?}', array(
 			'before' => 'auth.digest', #cadaver works with basic auth, but FX filemanager only works with digest
 			'uses' => 'FileController@fileRouter',
@@ -155,8 +156,8 @@ Route::any('/search/{slug?}', array(
 
 // Admin Routes
 #Route::group(array('prefix' => 'admin', 'before' => 'auth.admin'), function() {
-Route::group(array('prefix' => 'admin', 'middleware' => 'auth.admin'), function() {
-	
+Route::group(['prefix' => 'admin', 'middleware' => ['auth.admin']], function() {
+
 	// Cannot get resource controllers action() to work
 	//<li><a href="{{ action('Mrcore\Wiki\Http\Controllers\UserController@index') }}">Users</a></li>
 	// Gives Call to a member function domain() on null
@@ -328,7 +329,7 @@ Route::get('/topic/{id}/{slug?}', array(
 /*
 if (Config::get('mrcore.webdav_base_url')) {
 	Route::any('/files/{slug?}', function($slug = null) {
-		
+
 		$url = '//'.Config::get('mrcore.file_base_url');
 		if ($slug) $url .= '/' . $slug;
 		if (Request::server('QUERY_STRING')) $url .= '?'.Request::server('QUERY_STRING');
@@ -342,9 +343,9 @@ Route::any('/file/{id?}/{slug?}', function($id = null, $slug = null) {
 */
 
 
-Route::any('/files/{slug?}', function($slug = null) {
+Route::any('/files/{slug?}', ['middleware' => 'web', function($slug = null) {
 	return Redirect::route('file', array('slug' => $slug));
-})->where('slug', '(.*)?');;
+}])->where('slug', '(.*)?');;
 
 
 # Add /admin/* and and /search and /net and ??

@@ -1,28 +1,10 @@
 <?php namespace Mrcore\Wiki\Http\Middleware;
 
+use Auth;
 use Closure;
 use Response;
-use Illuminate\Auth\Guard;
 
 class AuthenticateAdmin {
-
-	/**
-	 * The Guard implementation.
-	 *
-	 * @var Guard
-	 */
-	protected $auth;
-
-	/**
-	 * Create a new filter instance.
-	 *
-	 * @param  Guard  $auth
-	 * @return void
-	 */
-	public function __construct(Guard $auth)
-	{
-		$this->auth = $auth;
-	}
 
 	/**
 	 * Handle an incoming request.
@@ -33,7 +15,7 @@ class AuthenticateAdmin {
 	 */
 	public function handle($request, Closure $next)
 	{
-		if (!$this->auth->admin()) {
+		if (!Auth::admin()) {
 			return Response::denied();
 		}
 

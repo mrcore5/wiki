@@ -1,10 +1,9 @@
 <?php namespace Mrcore\Wiki\Auth;
 
-use Config;
 use Session;
 use Illuminate\Auth\SessionGuard;
 
-class Guard extends \Illuminate\Auth\Guard { #SessionGuard {
+class WikiSessionGuard extends SessionGuard {
 
 	/**
 	 * Determine if the current user is authenticated.
@@ -19,11 +18,9 @@ class Guard extends \Illuminate\Auth\Guard { #SessionGuard {
 		$user = $this->user();
 
 		if (isset($user)) {
-			return ($user->id != Config::get('mrcore.wiki.anonymous'));
+			return ($user->id != config('mrcore.wiki.anonymous'));
 		}
 		return false;
-
-		#return ! is_null($this->user());
 	}
 
 	/**
@@ -31,35 +28,10 @@ class Guard extends \Illuminate\Auth\Guard { #SessionGuard {
 	 *
 	 * @return boolean
 	 */
-	public static function admin()
+	public function admin()
 	{
 		if (Session::has('user.admin')) return Session::get('user.admin');
 		return false;
 	}
-
-
-	/**
-	 * Get the currently authenticated user.
-	 *
-	 * @return \Illuminate\Contracts\Auth\Authenticatable|null
-	 */
-	public function userXXX()
-	{
-		//don't call Auth::check or $this->check here, its recursive :)
-		//
-	}
-
-
-	/**
-	 * Get the ID for the currently authenticated user.
-	 *
-	 * @return int|null
-	 */
-	public function idXXX()
-	{
-		// for wiki return 1, anon if not logged in
-
-	}
-
 
 }

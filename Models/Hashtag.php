@@ -34,7 +34,7 @@ class Hashtag extends Model
 	public function route()
 	{
 		return $this->hasOne('Mrcore\Wiki\Models\Router', 'id', 'route_id');
-	}	
+	}
 
 	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
@@ -47,7 +47,7 @@ class Hashtag extends Model
 	{
 		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
 			return static::query()->find($id, $columns);
-		});		
+		});
 	}
 
 	/*
@@ -57,7 +57,7 @@ class Hashtag extends Model
 	public static function forgetCache($id = null)
 	{
 		if (isset($id)) Cache::forget(strtolower(get_class()).":$id");
-	}	
+	}
 
 	/**
 	 * Get hashtag for the given post ID

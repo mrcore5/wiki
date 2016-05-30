@@ -5,7 +5,7 @@
 		<div class="search-post">
 			<div class="search-detail-container hvr-glow theme-border-color-1 panel">
 				<div class="search-detail-image theme-bg-color-4 theme-border-color-1">
-					<img src="{{ asset('uploads/'.Mrcore\Wiki\Models\User::find($result->created_by)->avatar) }}" class="theme-border-color-2"  />
+					<img src="{{ asset('uploads/'.Mrcore\Auth\Models\User::find($result->created_by)->avatar) }}" class="theme-border-color-2"  />
 				</div>
 				<div style="position:relative;display:table-cell;width:100%">
 					<div class="search-detail-content">
@@ -64,7 +64,7 @@
 					<div style="float:right;">
 					<span class="search-post-creator">
 							post #{{ $result->id }}
-							by <b>{{ Mrcore\Wiki\Models\User::find($result->created_by)->alias }}</b>
+							by <b>{{ Mrcore\Auth\Models\User::find($result->created_by)->alias }}</b>
 							{{ date("M jS Y", strtotime($result->created_at)) }}
 							({{ $result->clicks }} views)
 						</span>

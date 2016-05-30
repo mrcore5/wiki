@@ -5,12 +5,12 @@ use Gate;
 use Event;
 use Layout;
 use Module;
-use Mrcore\Wiki\Auth\Guard as WikiGuard;
 use Mrcore\Wiki\Models\Post;
 use Illuminate\Routing\Router;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\AliasLoader;
 use Mrcore\Wiki\Auth\WikiUserProvider;
+use Mrcore\Wiki\Auth\WikiSessionGuard;
 use Illuminate\Support\ServiceProvider;
 
 class WikiServiceProvider extends ServiceProvider {
@@ -32,6 +32,9 @@ class WikiServiceProvider extends ServiceProvider {
 		// Mrcore Module Tracking
 		Module::trace(get_class(), __function__);
 
+		// Extend both auth guard and UserProvider
+		$this->extendAuth();
+
 		// Register resources
 		$this->registerResources();
 
@@ -46,6 +49,7 @@ class WikiServiceProvider extends ServiceProvider {
 
 		// Register mrcore layout overrides
 		$this->registerLayout();
+
 	}
 
 	/**
@@ -63,6 +67,7 @@ class WikiServiceProvider extends ServiceProvider {
 		$facade->alias('Mrcore', \Mrcore\Wiki\Facades\Mrcore::class);
 		$facade->alias('Form', \Illuminate\Html\FormFacade::class);
 		$facade->alias('Html', \Illuminate\Html\HtmlFacade::class);
+		$facade->alias('Input', \Illuminate\Support\Facades\Input::class);
 
 		// Register configs
 		$this->registerConfigs();
@@ -77,9 +82,6 @@ class WikiServiceProvider extends ServiceProvider {
 
 		// Register other service providers
 		$this->app->register(\Illuminate\Html\HtmlServiceProvider::class);
-
-		// Extend both auth guard and UserProvider
-		$this->extendAuth();
 
 		// Register artisan commands
 		$this->registerCommands();
@@ -153,13 +155,13 @@ class WikiServiceProvider extends ServiceProvider {
 	protected function registerListeners()
 	{
 		// Login event listener
-		Event::listen('auth.login', function($auth) {
+		Event::listen('Illuminate\Auth\Events\Login', function($auth) {
 			$handler = app('Mrcore\Wiki\Handlers\Events\UserEventHandler');
 			$handler->onUserLoggedIn($auth);
 		});
 
 		// Logout event listener
-		Event::listen('auth.logout', function($auth) {
+		Event::listen('Illuminate\Auth\Events\Logout', function($auth) {
 			$handler = app('Mrcore\Wiki\Handlers\Events\UserEventHandler');
 			$handler->onUserLoggedOut($auth);
 		});
@@ -230,38 +232,32 @@ class WikiServiceProvider extends ServiceProvider {
 	 */
 	private function extendAuth()
 	{
-
 		// Extend both Guard and EloquentUserProvider
-		// This makes my own 'mrcore' auth provider in config/app.php which
+		// This makes my own 'mrcore' web guard in config/auth.php which
 		// enabled custom Auth::funtions() and caching on the user provider!
 
-		// Custom auth guard (fix later for Laravel 5.2)
-		/*Auth::extend('mrcore', function($app, $name, array $config) {
-			$hash = $this->app->make('hash');
+		// Custom guard, which also uses a custom provider
+		Auth::extend('mrcore', function($app, $name, array $config) {
+
+			// Create custom wiki auth provider
+			$hash = $app->make('hash');
 			$model = config('auth.providers.users.model');
 			$provider = new WikiUserProvider($hash, $model);
 
-			$session = $this->app->make('session.store');
-			$request = $this->app->make('request');
-			return new WikiGuard('mrcore', $provider, $session, $request);
-		});*/
+			// Or if you don't want to create a custom user provider you can
+			// get the default one defined in your config like so:
+			#$provider = Auth::createUserProvider($config['provider']);
 
+			// Return our new auth guard and auth provider
+			// I copied this from Illuminate\Auth\AuthManager.php createSessionDriver
+			$guard = new WikiSessionGuard($name, $provider, $app['session.store']);
+			$guard->setCookieJar($app['cookie']);
+			$guard->setDispatcher($app['events']);
+			$guard->setRequest($app->refresh('request', $guard, 'setRequest'));
 
-		// Laravel 5.1
-		Auth::extend('mrcore', function() {
-			// Guard extension found at https://laracasts.com/forum/?p=910-how-to-extend-auth/0
-			$hash = $this->app->make('hash');
-			$model = config('auth.model');
-			$session = $this->app->make('session.store');
-
-			// Fire up standard EloquentUserProvider
-			#$provider = new \Illuminate\Auth\EloquentUserProvider($hash, $model);
-			$provider = new WikiUserProvider($hash, $model);
-
-			// Fire up my custom Auth Provider as an extension to Laravels
-			return new WikiGuard($provider, $session);
-			#return $provider;
+			return $guard;
 		});
+
 
 	}
 

@@ -35,7 +35,7 @@ class Comment extends Model
 	 */
 	public function creator()
 	{
-		return $this->hasOne('Mrcore\Wiki\Models\User', 'id', 'created_by');
+		return $this->hasOne('Mrcore\Auth\Models\User', 'id', 'created_by');
 	}
 
 	/**
@@ -44,8 +44,8 @@ class Comment extends Model
 	 */
 	public function updater()
 	{
-		return $this->hasOne('Mrcore\Wiki\Models\User', 'id', 'updated_by');
-	}	
+		return $this->hasOne('Mrcore\Auth\Models\User', 'id', 'updated_by');
+	}
 
 	/**
 	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
@@ -58,7 +58,7 @@ class Comment extends Model
 	{
 		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
 			return static::query()->find($id, $columns);
-		});		
+		});
 	}
 
 	/*

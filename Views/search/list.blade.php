@@ -17,7 +17,7 @@
 				<span class="search-post-creator">
 					<i class="fa fa-angle-double-right"></i>
 					post {{ $result->id }}
-					by {{ Mrcore\Wiki\Models\User::find($result->created_by)->alias }}
+					by {{ Mrcore\Auth\Models\User::find($result->created_by)->alias }}
 					{{ date("M jS Y", strtotime($result->created_at)) }}
 					({{ $result->clicks }} views)
 				</span>
