@@ -17,22 +17,13 @@ elixir(function(mix) {
     //mix.less('slate.less');
 
 	mix.styles([
-		"jquery.growl.css",
-		"dataTables.bootstrap.css",
 		"wiki.css",
-		"markdown.css",
+		"markdown.css"
 	], 'Assets/css/wiki-bundle.css', 'Assets/css');
 
 	mix.scripts([
-		"jquery-2.1.4.min.js",
-		"jquery.hotkeys.min.js",
-		"jquery.dataTables.1.10.7.min.js",
-		"jquery.dataTables.bootstrap.js",
-		"dataTables.js",
-		"bootstrap.min.js",
 		"prism.js",
-		"wiki.js",
-		"jquery.growl.js",
+		"wiki.js"
 	], 'Assets/js/wiki-bundle.js', 'Assets/js');
 
 });

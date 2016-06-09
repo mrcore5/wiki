@@ -1,3 +1,0 @@
-@section('header-left')
-	
-@stop

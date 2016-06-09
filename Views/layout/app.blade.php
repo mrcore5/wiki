@@ -2,8 +2,6 @@
 
 @section('css')
 	@parent
-	<style>
-	</style>
 @stop
 
 
