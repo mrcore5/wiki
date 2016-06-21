@@ -65,7 +65,7 @@ class UserController extends Controller {
 		$userRoles = UserRole::where('user_id', $userID)->get();
 		foreach ($roles as $role) {
 			$role->set = false;
-			if (sizeOf($userRoles->where('role_id', $role->id)) > 0) {
+			if (sizeOf($userRoles->where('role_id', (string) $role->id)) > 0) {
 				$role->set = true;
 			}
 		}
@@ -73,7 +73,7 @@ class UserController extends Controller {
 		$userPermissions = UserPermission::where('user_id', $userID)->get();
 		foreach ($permissions as $permission) {
 			$permission->set = false;
-			if (sizeOf($userPermissions->where('permission_id', $permission->id)) > 0) {
+			if (sizeOf($userPermissions->where('permission_id', (string) $permission->id)) > 0) {
 				$permission->set = true;
 			}
 		}
