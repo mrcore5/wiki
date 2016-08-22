@@ -22,7 +22,6 @@ elixir(function(mix) {
 	], 'Assets/css/wiki-bundle.css', 'Assets/css');
 
 	mix.scripts([
-		"prism.js",
 		"wiki.js"
 	], 'Assets/js/wiki-bundle.js', 'Assets/js');
 
