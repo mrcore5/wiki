@@ -1,6 +1,7 @@
 @section('scripts')
 
 	{{-- Standard scripts --}}
+	<script src="{{ asset('js/theme-bundle.js') }}"></script>
 	<script src="{{ asset('js/wiki-bundle.js') }}"></script>
 
 	{{-- Layout script file array --}}
