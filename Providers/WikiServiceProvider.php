@@ -207,8 +207,6 @@ class WikiServiceProvider extends ServiceProvider {
 		$this->commands([
 			\Mrcore\Wiki\Console\Commands\AppCommand::class,
 			\Mrcore\Wiki\Console\Commands\IndexPosts::class,
-			\Mrcore\Wiki\Console\Commands\AppGitCommand::class,
-			\Mrcore\Wiki\Console\Commands\AppMakeCommand::class
 		]);
 	}
 
