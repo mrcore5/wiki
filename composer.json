@@ -32,5 +32,6 @@
 		"psr-4": {
 			"Mrcore\\Wiki\\": ""
 		}
-	}
+	},
+	"minimum-stability": "dev"
 }
