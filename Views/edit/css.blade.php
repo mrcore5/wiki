@@ -1,7 +1,5 @@
 @section('css')
 <!--<link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet" />-->
-<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/select2-bootstrap.min.css') }}" />
 
 <style type="text/css" media="screen">
 	body {

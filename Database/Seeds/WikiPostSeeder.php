@@ -1,4 +1,4 @@
-<?php
+<?php namespace Mrcore\Wiki\Database\Seeds;
 
 use Mreschke\Helpers\Str;
 use Mrcore\Wiki\Models\Post;

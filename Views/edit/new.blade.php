@@ -5,9 +5,6 @@
 @stop
 
 @section('css')
-<!--<link href="{{ asset('css/chosen.min.css') }}" rel="stylesheet" />-->
-<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/select2-bootstrap.min.css') }}" />
 <style>
 	.chosen-container-multi .chosen-choices li.search-field input[type="text"] {
 		height: 26px
@@ -68,7 +65,7 @@
 			'class' => 'col-sm-3 control-label'
 		)) !!}
 		<div class="col-sm-6">
-		
+
 			{!! Form::select('tags[]', $tags, null, array(
 				'class' => 'select2-tags required form-control',
 				'data-placeholder' => 'Choose a Tag...',
@@ -149,10 +146,7 @@
 
 @section('script')
 
-
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-<!--<script src="{{ asset('js/jquery.chosen.min.js') }}"></script>-->
-<script src="{{ asset('js/select2.min.js') }}"></script>
 <script>
 $(function() {
 

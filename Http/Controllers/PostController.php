@@ -11,14 +11,69 @@ use Redirect;
 use Mrcore\Wiki\Models\Post;
 use Mrcore\Wiki\Models\Revision;
 
-class PostController extends Controller {
-
+class PostController extends Controller
+{
 	/**
 	 * Display a single post, defaults to home page if no $id
 	 *
 	 * @return Response
 	 */
 	public function showPost()
+	{
+		// Redirect router results here
+		$router = Mrcore::router();
+		if (isset($router)) {
+			if ($router->responseCode == 404) {
+				return Response::notFound();
+			} elseif ($router->responseCode == 401) {
+				return Response::denied();
+			} elseif ($router->responseCode == 301) {
+				// Redirect to proper url
+				$url = $router->responseRedirect;
+				return Redirect::to($url);
+			}
+		}
+
+		// Gets post, parse + globals
+		// If ajax, do NOT include globals
+		$post = Mrcore::post()->prepare(!Request::ajax());
+
+		// If post is a workbench and we get to this point then
+		// The custom workbench route was not found, meaning we
+		// want to return 404 for this url
+		#if ($post->workbench) {
+		#      	return Response::notFound();
+		#}
+
+		# Set bootstrap container based on post type
+		if ($post->type->constant == 'app') {
+			// Apps have no container (full screen), all others are system default
+			Layout::container(false);
+		}
+
+		// Show Post View
+		$content = View::make('post.show', compact(
+			'post', 'container'
+		));
+
+		if (Layout::modeIs('raw') && strtolower($post->format->constant) == 'text') {
+			// Raw mode with text format, force return to text/plain
+			// or else it shows as text/html
+			$response = Response::make($content, 200);
+			$response->header('Content-Type', 'text/plain');
+			return $response;
+		} else {
+			return $content;
+		}
+
+	}
+
+	/**
+	 * Display a single post, defaults to home page if no $id
+	 *
+	 * @return Response
+	 */
+	public function showPost_53()
 	{
 		// If not logged in, login as anonymous user
 		if (is_null(Auth::user())) Auth::loginUsingId(1);

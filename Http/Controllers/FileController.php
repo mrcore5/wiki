@@ -213,21 +213,22 @@ class FileController extends Controller {
 			header("Cache-control: private");
 		} else {
 			// Inline Stream with cache
-			$headers = apache_request_headers();
 			header("Content-type: $mimetype");
 			header('Content-Disposition: inline; filename="'.$filename.'"');
 
 			// Checking if the client is validating his cache and if it is current.
-			if (isset($headers['If-Modified-Since']) && (strtoupper($headers['If-Modified-Since']) == strtoupper(gmdate('D, d M Y H:i:s', filemtime($abs)).' GMT'))) {
+			$expires = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? strtoupper($_SERVER['HTTP_IF_MODIFIED_SINCE']) : 'now'; //FRI, 22 MAY 2015 19:02:08 GMT
+			$fileModified = strtoupper(gmdate('D, d M Y H:i:s', filemtime($abs)).' GMT');                                 //FRI, 22 MAY 2015 19:02:08 GMT
+			if ($expires == $fileModified) {
 				// Client's cache IS current, so we just respond '304 Not Modified'.
-				#header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($abs)).' GMT', true, 304);
 				header('HTTP/1.1 304 Not Modified');
 				exit();
 			} else {
 				// Image not cached or cache outdated, we respond '200 OK' and output the image.
 				header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($abs)).' GMT', true, 200);
 			}
-			header("Cache-control: public"); //required for If-Modified-Since header to exist from browser
+			#this control doesn't seem to matter
+			#header("Cache-control: public"); //required for If-Modified-Since header to exist from browser
 		}
 		header("Content-length: $size");
 

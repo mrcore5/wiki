@@ -1,4 +1,4 @@
-<?php
+<?php namespace Mrcore\Wiki\Database\Seeds;
 
 use Mrcore\Wiki\Models\Type;
 use Mrcore\Wiki\Models\Mode;

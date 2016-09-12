@@ -1,4 +1,4 @@
-<?php
+<?php namespace Mrcore\Wiki\Database\Seeds;
 
 use Mrcore\Wiki\Models\Badge;
 use Illuminate\Database\Seeder;

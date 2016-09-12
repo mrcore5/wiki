@@ -20,9 +20,11 @@ use Mrcore\Parser\Html as HtmlParser;
 use Mrcore\Parser\WikiHtml as HtmlWParser;
 use Mrcore\Parser\Text as TextParser;
 use Mrcore\Parser\Markdown as MarkdownParser;
+use Mrcore\Wiki\Traits\CachesModel;
 
 class Post extends Model
 {
+	use CachesModel;
 
 	/**
 	 * The database table used by the model.
@@ -125,34 +127,6 @@ class Post extends Model
 		return $this->hasOne('Mrcore\Auth\Models\User', 'id', 'updated_by');
 	}
 
-	/**
-	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
-	 *
-	 * @param  mixed  $id
-	 * @param  array  $columns
-	 * @return \Illuminate\Database\Eloquent\Model|static|null
-	 */
-	public static function find($id, $columns = array('*'))
-	{
-		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
-			return static::query()->find($id, $columns);
-		});
-	}
-
-	/**
-	 * Get all of the models from the database.
-	 *
-	 * @param  array  $columns
-	 * @return \Illuminate\Database\Eloquent\Collection|static[]
-	 */
-	public static function all($columns = array('*'))
-	{
-		#dd($this->where());
-		return Cache::remember(strtolower(get_class()).":all", function() use($columns) {
-			return static::orderBy('constant')->get($columns);
-		});
-	}
-
 	/*
 	 * Clear all cache
 	 *
@@ -217,7 +191,7 @@ class Post extends Model
 	{
 		return Cache::remember(strtolower(get_class()).'/titles:all', function()
 		{
-			return Post::where('deleted', false)->get()->lists('id', 'title')->all();
+			return Post::where('deleted', false)->get()->pluck('id', 'title')->all();
 		});
 	}
 

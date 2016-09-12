@@ -3,7 +3,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ext-language_tools.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ext-spellcheck.js"></script>
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('js/select2.min.js') }}"></script>
 <script>
 $(function() {
 

@@ -1,5 +1,6 @@
-<?php
+<?php namespace Mrcore\Wiki\Database\Seeds;
 
+use DB;
 use Mrcore\Wiki\Models\Tag;
 use Illuminate\Database\Seeder;
 use Mrcore\Wiki\Models\PostTag;

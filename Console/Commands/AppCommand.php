@@ -23,7 +23,7 @@ class AppCommand extends Command
 		$this->ns = 'Mrcore\Wiki';
 		$this->path = ['vendor/mrcore/wiki', '../Modules/Wiki'];
 		$this->connection = 'mysql';
-		$this->seeder = 'WikiSeeder';
+		$this->seeder = 'Mrcore\Wiki\Database\Seeds\WikiSeeder';
 		parent::__construct();
 	}
 

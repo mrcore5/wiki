@@ -70,24 +70,24 @@ class EditController extends Controller {
 		}
 
 		// Get all formats
-		$formats = Format::all(['name', 'id'])->lists('name', 'id')->all();
+		$formats = Format::all(['name', 'id'])->pluck('name', 'id')->all();
 
 		// Get all types
-		$types = Type::all(['name', 'id'])->lists('name', 'id')->all();
+		$types = Type::all(['name', 'id'])->pluck('name', 'id')->all();
 
 		// Get all frameworks
-		$frameworks = Framework::all(['name', 'id'])->lists('name', 'id')->all();
+		$frameworks = Framework::all(['name', 'id'])->pluck('name', 'id')->all();
 
 		// Get all modes
-		$modes = Mode::all(['name', 'id'])->lists('name', 'id')->all();
+		$modes = Mode::all(['name', 'id'])->pluck('name', 'id')->all();
 
 		// Get all badges
-		$badges = Badge::all(['name', 'id'])->lists('name', 'id')->all();
-		$postBadges = $post->badges->lists('id')->all();
+		$badges = Badge::all(['name', 'id'])->pluck('name', 'id')->all();
+		$postBadges = $post->badges->pluck('id')->all();
 
 		// Get all tags
-		$tags = Tag::all(['name', 'id'])->lists('name', 'id')->all();
-		$postTags = $post->tags->lists('id')->all();
+		$tags = Tag::all(['name', 'id'])->pluck('name', 'id')->all();
+		$postTags = $post->tags->pluck('id')->all();
 
 		// Get hashtag
 		$hashtag = Hashtag::findByPost($id);
@@ -495,19 +495,19 @@ class EditController extends Controller {
 		if (!User::hasPermission('create')) return Response::denied();
 
 		// Get all formats
-		$formats = Format::all(['name', 'id'])->lists('name', 'id')->all();
+		$formats = Format::all(['name', 'id'])->pluck('name', 'id')->all();
 
 		// Get all types
-		$types = Type::all(['name', 'id'])->lists('name', 'id')->all();
+		$types = Type::all(['name', 'id'])->pluck('name', 'id')->all();
 
 		// Get all frameworks
-		$frameworks = Framework::all(['name', 'id'])->lists('name', 'id')->all();
+		$frameworks = Framework::all(['name', 'id'])->pluck('name', 'id')->all();
 
 		// Get all badges
-		$badges = Badge::all(['name', 'id'])->lists('name', 'id')->all();
+		$badges = Badge::all(['name', 'id'])->pluck('name', 'id')->all();
 
 		// Get all tags
-		$tags = Tag::all(['name', 'id'])->lists('name', 'id')->all();
+		$tags = Tag::all(['name', 'id'])->pluck('name', 'id')->all();
 
 		return View::make('edit.new', array(
 			'formats' => $formats,

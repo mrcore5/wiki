@@ -1,10 +1,12 @@
 <?php namespace Mrcore\Wiki\Models;
 
+use Mrcore\Wiki\Traits\CachesModel;
 use Mrcore\Foundation\Support\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
+	use CachesModel;
 
 	/**
 	 * The database table used by the model.
@@ -45,20 +47,6 @@ class Comment extends Model
 	public function updater()
 	{
 		return $this->hasOne('Mrcore\Auth\Models\User', 'id', 'updated_by');
-	}
-
-	/**
-	 * Find a model by its primary key.  Mrcore cacheable eloquent override.
-	 *
-	 * @param  mixed  $id
-	 * @param  array  $columns
-	 * @return \Illuminate\Database\Eloquent\Model|static|null
-	 */
-	public static function find($id, $columns = array('*'))
-	{
-		return Cache::remember(strtolower(get_class()).":$id", function() use($id, $columns) {
-			return static::query()->find($id, $columns);
-		});
 	}
 
 	/*
