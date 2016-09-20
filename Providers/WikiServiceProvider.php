@@ -279,18 +279,15 @@ class WikiServiceProvider extends ServiceProvider {
 		See https://github.com/laravel/framework/issues/15352
 		See https://github.com/laravel/framework/issues/15072
 		*/
-		$kernel->pushMiddleware(\App\Http\Middleware\EncryptCookies::class);
-		$kernel->pushMiddleware(\Illuminate\Session\Middleware\StartSession::class);
+		#$kernel->pushMiddleware(\App\Http\Middleware\EncryptCookies::class);
+		#$kernel->pushMiddleware(\Illuminate\Session\Middleware\StartSession::class);
 
 		// So now my AnalyzeRoute has Auth:: access!
 		$kernel->pushMiddleware(\Mrcore\Wiki\Http\Middleware\AnalyzeRoute::class);
 
-		#dump($kernel);
-
 		// Register route based middleware
 		$router->middleware('auth.admin', \Mrcore\Wiki\Http\Middleware\AuthenticateAdmin::class);
-		#$router->middleware('mrcore.app', \Mrcore\Wiki\Http\Middleware\AuthenticateMrcoreAp::class);
-
+		
 	}
 
 	/**

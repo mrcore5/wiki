@@ -18,8 +18,10 @@ class PostController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function showPost()
+	public function showPost_51()
 	{
+		// This is showPost for laravel 5.1
+
 		// Redirect router results here
 		$router = Mrcore::router();
 		if (isset($router)) {
@@ -73,53 +75,16 @@ class PostController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function showPost_53()
+	public function showPost()
 	{
-		// If not logged in, login as anonymous user
-		if (is_null(Auth::user())) Auth::loginUsingId(1);
+		// This is showPost for laravel 5.3
+		// Auth is done in Foundation\Http\Middleware\AuthenticateApp
 
-		// Redirect router results here (will never be 401 from router)
 		$router = Mrcore::router();
-		if ($router->responseCode == 404) {
-			return Response::notFound();
-		} elseif ($router->responseCode == 301) {
-			// Redirect to proper url
-			$url = $router->responseRedirect;
-			return Redirect::to($url);
-		}
-
-		// Gets post, parse + globals
-		// If ajax, do NOT include globals
+		if (!isset($router)) abort(404);
+		if ($router->responseCode == 404) abort(404);
+		if ($router->responseCode == 301) return redirect($router->responseRedirect);
 		$post = Mrcore::post()->prepare(!Request::ajax());
-
-		// Check if post is deleted
-		if ($post->deleted && !Auth::admin()) return Response::denied();
-
-		// Check post permissions including UUID
-		if (!$post->uuidPermission()) return Response::denied();
-
-		// Update clicks for post and router table
-		$router->getModel()->incrementClicks();
-		$post->incrementClicks();
-
-		// Adjust $view for this $this->post
-		Layout::title($post->title);
-		if ($post->mode_id <> config('mrcore.wiki.default_mode')) {
-			Layout::mode($post->mode->constant);
-		}
-
-		// If post is a workbench and we get to this point then
-		// The custom workbench route was not found, meaning we
-		// want to return 404 for this url
-		#if ($post->workbench) {
-		#	return Response::notFound();
-		#}
-
-		# Set bootstrap container based on post type
-		if ($post->type->constant == 'app') {
-			// Apps have no container (full screen), all others are system default
-			Layout::container(false);
-		}
 
 		// Show Post View
 		$content = View::make('post.show', compact(

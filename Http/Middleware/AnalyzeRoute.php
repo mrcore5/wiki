@@ -30,7 +30,9 @@ class AnalyzeRoute {
 
 		// If not loggedin, login first time automatically as mrcore anonymous user
 		// CANNOT use Auth::check() here becuase I overrode it to return false if using anonymous
-		if (is_null(Auth::user())) Auth::loginUsingId(1);
+		#if (is_null(Auth::user())) Auth::loginUsingId(1);
+		// COMMENT this out for laravel 5.3 tests
+		
 
 		// Analyze Route
 		$this->analyzeRoute();
@@ -41,8 +43,12 @@ class AnalyzeRoute {
 	}
 
 
-	private function analyzeRoute_53()
+	private function analyzeRoute()
 	{
+		// This is the function for laravel 5.3, it does NOT have
+		// auth:: available yet.
+
+
 		// In laravel 5.2, Auth:: is NULL at this point because
 		// its now middleware, so this does NOT check any authentication.
 		// Authentication happens later in PostController.
@@ -112,8 +118,10 @@ class AnalyzeRoute {
 
 
 
-	private function analyzeRoute()
+	private function analyzeRoute_51()
 	{
+		// This is the function for laravel 5.1
+
 		// This worked in laravel 5.1 because Auth::user() was ALREADY
 		// available at this time.  But in laravel 5.2 taylor changed
 		// the entire auth system, and Auth::user() is NULL at the provider

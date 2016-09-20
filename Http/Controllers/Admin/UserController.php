@@ -1,6 +1,7 @@
 <?php namespace Mrcore\Wiki\Http\Controllers\Admin;
 
 use DB;
+use Auth;
 use View;
 use Input;
 use Config;
@@ -121,9 +122,14 @@ class UserController extends Controller {
 		$user->first = $first;
 		$user->last = $last;
 		$user->uuid = Str::getGuid();
+		$user->login_at = '1900-01-01 00:00:00';
 		$user->global_post_id = ($global_post_id) ?: null;
 		$user->home_post_id = ($home_post_id) ?: null;
 		$user->disabled = (isset($disabled)) ?: 0;
+		$user->created_by = Auth::user()->id;
+		$user->updated_by = Auth::user()->id;
+		$user->created_at = Carbon::now();
+		$user->updated_at = Carbon::now();
 		$user->save();
 		$user->id;
 
