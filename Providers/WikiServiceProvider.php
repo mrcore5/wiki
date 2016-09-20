@@ -287,6 +287,11 @@ class WikiServiceProvider extends ServiceProvider {
 
 		// Register route based middleware
 		$router->middleware('auth.admin', \Mrcore\Wiki\Http\Middleware\AuthenticateAdmin::class);
+
+		// Authenticate mrcore applications and modules
+		// Enable if you are testing laravel 5.3 new auth stuff
+		$router->pushMiddlewareToGroup('web', \Mrcore\Wiki\Http\Middleware\AuthenticateApp::class);
+
 		
 	}
 
