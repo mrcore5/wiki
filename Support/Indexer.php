@@ -6,8 +6,8 @@ use Porter;
  Word indexer class
  mReschke 2010-09-09
 */
-class Indexer {
-
+class Indexer
+{
     public $header;
     public $items;
     public $topic_id;
@@ -20,7 +20,8 @@ class Indexer {
      These are stemmed and stop words removed
      mReschke 2010-09-09
     */
-    public static function getWords($title, $body, $badges, $tags) {
+    public static function getWords($title, $body, $badges, $tags)
+    {
         $titleWeight = 10;
         $badgeWeight = 4;
         $tagWeight = 2;
@@ -28,7 +29,7 @@ class Indexer {
         //This repeats the string x times
         //So if titleWeight is 10, then $text will be the title printed 10 times
         //Then a word count of $text will pickup the title words 10 times, giving more weight
-        
+
         //Strip out <php></php> content from body, don't want to index words within those tags
         $body = preg_replace('"<php>.*?</php>"sim', '', $body); //Beautiful multi line strip
         $body = preg_replace('"<phpw>.*?</phpw>"sim', '', $body); //Beautiful multi line strip
@@ -80,9 +81,10 @@ class Indexer {
      Ex: converts children to child, etc...
      mReschke 2010-09-09
     */
-    public static function stemText($text) {
+    public static function stemText($text)
+    {
         //Ideas from Symfony's Askeet: http://www.symfony-project.org/askeet/1_0/en/21
-    
+
         // split text into array of $words
         //str_word_count keeps - (like go-to-town as one word)
         //It also kept ' in certial situations
@@ -100,7 +102,7 @@ class Indexer {
         #$data = preg_replace('"\/\/"', '', $data); //Strip //
         # "(\&|\"")"
         #(`|~|!|@|#|$|%|^|&|*|\(|\)|-|_|=|+|\|\||]|}|[|{|'|"|;|:|/|?|.|>|,|<|}|]
-        
+
         //Get words into array (I also get numbers, but later trim if if_numeric, that way I get things like 4runner or 45x43)
         $words = str_word_count(strtolower($text), 1, "1234567890");
         
@@ -115,7 +117,6 @@ class Indexer {
                 continue;
             }
             $stemmedWords[] = Porter::Stem($word);
-            
         }
         return $stemmedWords;
     }
@@ -125,23 +126,23 @@ class Indexer {
      Removes all stop words from the $words array
      mReschke 2010-09-09
     */
-    public static function removeStopWords($words) {
+    public static function removeStopWords($words)
+    {
         //Idea from Symfony's Askeet: http://www.symfony-project.org/askeet/1_0/en/21
         $stopWords = array(
-            'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 
-            'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 
-            'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 
-            'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are', 
-            'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 
-            'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 
-            'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 
-            'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 
-            'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 
-            'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 
-            'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 
+            'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours',
+            'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers',
+            'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves',
+            'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are',
+            'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does',
+            'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until',
+            'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into',
+            'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down',
+            'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here',
+            'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more',
+            'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so',
             'than', 'too', 'very', 'nbsp'
         );
         return array_diff($words, $stopWords);
     }
-
 }

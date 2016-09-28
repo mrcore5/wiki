@@ -2,30 +2,29 @@
 
 interface UserInterface
 {
-	public function id();
+    public function id();
 
-	public function uuid();
+    public function uuid();
 
-	public function email();
+    public function email();
 
-	public function first();
+    public function first();
 
-	public function last();
+    public function last();
 
-	public function name();
+    public function name();
 
-	public function alias();
+    public function alias();
 
-	public function avatar();
+    public function avatar();
 
-	public function globalPostID();
+    public function globalPostID();
 
-	public function homePostID();
+    public function homePostID();
 
-	/**
-	 * This if user is super admin
-	 * @return boolean
-	 */
-	public function isAdmin();
-
+    /**
+     * This if user is super admin
+     * @return boolean
+     */
+    public function isAdmin();
 }

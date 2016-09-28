@@ -2,15 +2,13 @@
 
 interface ConfigInterface
 {
+    public function host();
 
-	public function host();
+    public function base();
 
-	public function base();
+    public function baseUrl();
 
-	public function baseUrl();
+    public function files();
 
-	public function files();
-
-	public function filesBaseUrl();
-
+    public function filesBaseUrl();
 }

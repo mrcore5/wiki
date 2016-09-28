@@ -10,21 +10,20 @@ use Mrcore\Foundation\Console\Commands\AppCommand as Command;
  */
 class AppCommand extends Command
 {
-	protected $signature = 'mrcore:wiki:app';
+    protected $signature = 'mrcore:wiki:app';
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		$this->app = 'wiki';
-		$this->ns = 'Mrcore\Wiki';
-		$this->path = ['vendor/mrcore/wiki', '../Modules/Wiki'];
-		$this->connection = 'mysql';
-		$this->seeder = 'Mrcore\Wiki\Database\Seeds\WikiSeeder';
-		parent::__construct();
-	}
-
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->app = 'wiki';
+        $this->ns = 'Mrcore\Wiki';
+        $this->path = ['vendor/mrcore/wiki', '../Modules/Wiki'];
+        $this->connection = 'mysql';
+        $this->seeder = 'Mrcore\Wiki\Database\Seeds\WikiSeeder';
+        parent::__construct();
+    }
 }

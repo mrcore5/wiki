@@ -1,105 +1,103 @@
 <?php namespace Mrcore\Wiki\Http\Controllers;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		dd('x');
-		/*$userTable = $this->getUserDatatable();
-		if (Request::ajax()) {
-			Render::connection('vfi')->datatables('clientTable', $clientTable);
-		} else {
-			$post = Mrcore::post()->prepare();
-			return View::make('vfi::client.index', compact(
-				'post', 'clientTable'
-			));
-		}
-
-
-		return View::make('user.index', array(
-		));*/
-		#dd(Config::get('database.connections.mysql_dbal'));
-
-		#$sql = \App::make("Mreschke\Dbal\Mssql");
-		#$x = \Mysql::connection(Config::get('database.connections.mysql_dbal'))->query("SELECT * FROM users");
-		#dd($x->get());
-
-	}
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        dd('x');
+        /*$userTable = $this->getUserDatatable();
+        if (Request::ajax()) {
+            Render::connection('vfi')->datatables('clientTable', $clientTable);
+        } else {
+            $post = Mrcore::post()->prepare();
+            return View::make('vfi::client.index', compact(
+                'post', 'clientTable'
+            ));
+        }
 
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
+        return View::make('user.index', array(
+        ));*/
+        #dd(Config::get('database.connections.mysql_dbal'));
+
+        #$sql = \App::make("Mreschke\Dbal\Mssql");
+        #$x = \Mysql::connection(Config::get('database.connections.mysql_dbal'))->query("SELECT * FROM users");
+        #dd($x->get());
+    }
 
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        //
+    }
 
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function store()
+    {
+        //
+    }
 
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function show($id)
+    {
+        //
+    }
 
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        //
+    }
 
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update($id)
+    {
+        //
+    }
 
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
 }

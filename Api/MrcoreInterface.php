@@ -6,19 +6,17 @@
  */
 interface MrcoreInterface
 {
+    public function post();
 
-	public function post();
+    public function router();
 
-	public function router();
+    public function user();
 
-	public function user();
+    public function layout();
 
-	public function layout();
+    public function config();
 
-	public function config();
+    public function getInstance();
 
-	public function getInstance();
-
-	public function lifecycle();
-
+    public function lifecycle();
 }

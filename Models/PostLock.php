@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 class PostLock extends Model
 {
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'post_locks';
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'post_locks';
 
-	/**
-	 * This table does not use automatic timestamps
-	 *
-	 * @var boolean
-	 */
-	public $timestamps = false;
+    /**
+     * This table does not use automatic timestamps
+     *
+     * @var boolean
+     */
+    public $timestamps = false;
 }

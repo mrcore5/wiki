@@ -2,255 +2,242 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePostsTable extends Migration {
+class CreatePostsTable extends Migration
+{
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
 
-		// Create post formats table
-		Schema::create('formats', function ($table)
-		{
-			// MySQL InnoDB Engine
-			$table->engine = 'InnoDB';
+        // Create post formats table
+        Schema::create('formats', function ($table) {
+            // MySQL InnoDB Engine
+            $table->engine = 'InnoDB';
 
-			// Posts id, increments=auto_increment+primary key
-			$table->increments('id');
+            // Posts id, increments=auto_increment+primary key
+            $table->increments('id');
 
-			// Post format name
-			$table->string('name', 50);
+            // Post format name
+            $table->string('name', 50);
 
-			// Post format constant
-			$table->string('constant', 50)->unique();
+            // Post format constant
+            $table->string('constant', 50)->unique();
 
-			// Order
-			$table->smallInteger('order')->index();
+            // Order
+            $table->smallInteger('order')->index();
+        });
 
-		});
 
+        // Create post types table
+        Schema::create('types', function ($table) {
+            // MySQL InnoDB Engine
+            $table->engine = 'InnoDB';
 
-		// Create post types table
-		Schema::create('types', function ($table)
-		{
-			// MySQL InnoDB Engine
-			$table->engine = 'InnoDB';
+            // Posts id, increments=auto_increment+primary key
+            $table->increments('id');
 
-			// Posts id, increments=auto_increment+primary key
-			$table->increments('id');
+            // Post type name
+            $table->string('name', 50);
 
-			// Post type name
-			$table->string('name', 50);
+            // Post type constant
+            $table->string('constant', 50)->unique();
+        });
 
-			// Post type constant
-			$table->string('constant', 50)->unique();
-		});
 
+        // Create post frameworks table
+        Schema::create('frameworks', function ($table) {
+            // MySQL InnoDB Engine
+            $table->engine = 'InnoDB';
 
-		// Create post frameworks table
-		Schema::create('frameworks', function ($table)
-		{
-			// MySQL InnoDB Engine
-			$table->engine = 'InnoDB';
+            // Posts id, increments=auto_increment+primary key
+            $table->increments('id');
 
-			// Posts id, increments=auto_increment+primary key
-			$table->increments('id');
+            // Post type name
+            $table->string('name', 50);
 
-			// Post type name
-			$table->string('name', 50);
+            // Post type constant
+            $table->string('constant', 50)->unique();
+        });
 
-			// Post type constant
-			$table->string('constant', 50)->unique();
 
-		});
+        // Create post modes table
+        Schema::create('modes', function ($table) {
+            // MySQL InnoDB Engine
+            $table->engine = 'InnoDB';
 
+            // Posts id, increments=auto_increment+primary key
+            $table->increments('id');
 
-		// Create post modes table
-		Schema::create('modes', function ($table)
-		{
-			// MySQL InnoDB Engine
-			$table->engine = 'InnoDB';
+            // Post type name
+            $table->string('name', 50);
 
-			// Posts id, increments=auto_increment+primary key
-			$table->increments('id');
+            // Post type constant
+            $table->string('constant', 50)->unique();
+        });
 
-			// Post type name
-			$table->string('name', 50);
 
-			// Post type constant
-			$table->string('constant', 50)->unique();
-		});
+        // Create posts table
+        Schema::create('posts', function ($table) {
+            // MySQL InnoDB Engine
+            $table->engine = 'InnoDB';
 
+            // Posts id, increments=auto_increment+primary key
+            $table->increments('id');
 
-		// Create posts table
-		Schema::create('posts', function ($table)
-		{
-			// MySQL InnoDB Engine
-			$table->engine = 'InnoDB';
+            // Posts UUID
+            $table->string('uuid', 36)->unique();
 
-			// Posts id, increments=auto_increment+primary key
-			$table->increments('id');
+            // Posts title
+            $table->string('title', 100);
 
-			// Posts UUID
-			$table->string('uuid', 36)->unique();
+            // Posts slug
+            $table->string('slug', 100);
 
-			// Posts title
-			$table->string('title', 100);
+            // Posts content (longtext is 4,294,967,295 chars or 4gb)
+            // mediumtext is 16,777,215 or 16mb
+            // text is 65,535 chars or 64kb
+            $table->longtext('content');
 
-			// Posts slug
-			$table->string('slug', 100);
+            // Workbench
+            $table->string('workbench', 50)->nullable();
 
-			// Posts content (longtext is 4,294,967,295 chars or 4gb)
-			// mediumtext is 16,777,215 or 16mb
-			// text is 65,535 chars or 64kb
-			$table->longtext('content');
+            // Contains PHP code
+            $table->boolean('contains_script');
 
-			// Workbench
-			$table->string('workbench', 50)->nullable();
+            // Contains HTML code
+            $table->boolean('contains_html');
 
-			// Contains PHP code
-			$table->boolean('contains_script');
+            // Post format
+            $table->integer('format_id')->unsigned();
+            $table->foreign('format_id')->references('id')->on('formats');
 
-			// Contains HTML code
-			$table->boolean('contains_html');
+            // Post type
+            $table->integer('type_id')->unsigned();
+            $table->foreign('type_id')->references('id')->on('types');
 
-			// Post format
-			$table->integer('format_id')->unsigned();
-			$table->foreign('format_id')->references('id')->on('formats');
+            // Post framework
+            $table->integer('framework_id')->unsigned()->nullable();
+            $table->foreign('framework_id')->references('id')->on('frameworks');
 
-			// Post type
-			$table->integer('type_id')->unsigned();
-			$table->foreign('type_id')->references('id')->on('types');
+            // Post mode
+            $table->integer('mode_id')->unsigned();
+            $table->foreign('mode_id')->references('id')->on('modes');
 
-			// Post framework
-			$table->integer('framework_id')->unsigned()->nullable();
-			$table->foreign('framework_id')->references('id')->on('frameworks');
+            // File Symlink enabled
+            $table->boolean('symlink')->default(false);
 
-			// Post mode
-			$table->integer('mode_id')->unsigned();
-			$table->foreign('mode_id')->references('id')->on('modes');
+            // Shared (enabled public uuid url)
+            $table->boolean('shared')->default(false);
 
-			// File Symlink enabled
-			$table->boolean('symlink')->default(false);
+            // Post hidden
+            $table->boolean('hidden')->default(false)->index();
 
-			// Shared (enabled public uuid url)
-			$table->boolean('shared')->default(false);
+            // Post deleted
+            $table->boolean('deleted')->default(false)->index();
 
-			// Post hidden
-			$table->boolean('hidden')->default(false)->index();
+            // Password is 60 because Hash::make('yourpass') is a 60 char hash
+            $table->string('password', 60)->nullable();
 
-			// Post deleted
-			$table->boolean('deleted')->default(false)->index();
+            // Click count
+            $table->integer('clicks')->default(0);
 
-			// Password is 60 because Hash::make('yourpass') is a 60 char hash
-			$table->string('password', 60)->nullable();
+            // Last indexed date
+            $table->dateTime('indexed_at');
 
-			// Click count
-			$table->integer('clicks')->default(0);
+            // Created By (user_id)
+            $table->integer('created_by')->unsigned();
+            $table->foreign('created_by')->references('id')->on('users');
 
-			// Last indexed date
-			$table->dateTime('indexed_at');
+            // Updated By (user_id)
+            $table->integer('updated_by')->unsigned();
+            $table->foreign('updated_by')->references('id')->on('users');
 
-			// Created By (user_id)
-			$table->integer('created_by')->unsigned();
-			$table->foreign('created_by')->references('id')->on('users');
+            // Automatic created_at and updated_at columns
+            $table->timestamps();
+        });
 
-			// Updated By (user_id)
-			$table->integer('updated_by')->unsigned();
-			$table->foreign('updated_by')->references('id')->on('users');
 
-			// Automatic created_at and updated_at columns
-			$table->timestamps();
-		});
+        // Create posts locks table
+        Schema::create('post_locks', function ($table) {
+            // MySQL InnoDB Engine
+            $table->engine = 'InnoDB';
 
+            $table->integer('post_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->primary(array('post_id', 'user_id'));
 
-		// Create posts locks table
-		Schema::create('post_locks', function ($table)
-		{
-			// MySQL InnoDB Engine
-			$table->engine = 'InnoDB';
+            $table->foreign('post_id')->references('id')->on('posts');
+            $table->foreign('user_id')->references('id')->on('users');
 
-			$table->integer('post_id')->unsigned();
-			$table->integer('user_id')->unsigned();
-			$table->primary(array('post_id', 'user_id'));
+            $table->dateTime('locked_at');
+        });
 
-			$table->foreign('post_id')->references('id')->on('posts');
-			$table->foreign('user_id')->references('id')->on('users');
 
-			$table->dateTime('locked_at');
-		});
+        // Create read status table
+        Schema::create('post_reads', function ($table) {
+            // MySQL InnoDB Engine
+            $table->engine = 'InnoDB';
 
+            $table->integer('post_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->primary(array('post_id', 'user_id'));
 
-		// Create read status table
-		Schema::create('post_reads', function ($table)
-		{
-			// MySQL InnoDB Engine
-			$table->engine = 'InnoDB';
+            $table->foreign('post_id')->references('id')->on('posts');
+            $table->foreign('user_id')->references('id')->on('users');
+        });
 
-			$table->integer('post_id')->unsigned();
-			$table->integer('user_id')->unsigned();
-			$table->primary(array('post_id', 'user_id'));
 
-			$table->foreign('post_id')->references('id')->on('posts');
-			$table->foreign('user_id')->references('id')->on('users');
+        // Create indexes table
+        Schema::create('post_indexes', function ($table) {
+            // MySQL InnoDB Engine
+            $table->engine = 'InnoDB';
 
-		});
+            $table->integer('post_id')->unsigned();
+            $table->string('word', 32);
+            $table->primary(array('post_id', 'word'));
 
+            $table->foreign('post_id')->references('id')->on('posts');
 
-		// Create indexes table
-		Schema::create('post_indexes', function ($table)
-		{
-			// MySQL InnoDB Engine
-			$table->engine = 'InnoDB';
+            $table->integer('weight');
+        });
 
-			$table->integer('post_id')->unsigned();
-			$table->string('word', 32);
-			$table->primary(array('post_id', 'word'));
+        // Create post role permissions table
+        // Links posts to permission items
+        Schema::create('post_permissions', function ($table) {
+            // MySQL InnoDB Engine
+            $table->engine = 'InnoDB';
 
-			$table->foreign('post_id')->references('id')->on('posts');
+            $table->integer('post_id')->unsigned();
+            $table->integer('permission_id')->unsigned();
+            $table->integer('role_id')->unsigned();
 
-			$table->integer('weight');
-		});
+            $table->primary(array('post_id', 'permission_id', 'role_id'));
 
-		// Create post role permissions table
-		// Links posts to permission items
-		Schema::create('post_permissions', function ($table)
-		{
-			// MySQL InnoDB Engine
-			$table->engine = 'InnoDB';
+            $table->foreign('post_id')->references('id')->on('posts');
+            $table->foreign('permission_id')->references('id')->on('permissions');
+            $table->foreign('role_id')->references('id')->on('roles');
+        });
+    }
 
-			$table->integer('post_id')->unsigned();
-			$table->integer('permission_id')->unsigned();
-			$table->integer('role_id')->unsigned();
-
-			$table->primary(array('post_id', 'permission_id', 'role_id'));
-
-			$table->foreign('post_id')->references('id')->on('posts');
-			$table->foreign('permission_id')->references('id')->on('permissions');
-			$table->foreign('role_id')->references('id')->on('roles');
-
-		});
-	}
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::drop('post_permissions');
-		Schema::drop('post_indexes');
-		Schema::drop('post_reads');
-		Schema::drop('post_locks');
-		Schema::drop('posts');
-		Schema::drop('modes');
-		Schema::drop('frameworks');
-		Schema::drop('types');
-		Schema::drop('formats');
-	}
-
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('post_permissions');
+        Schema::drop('post_indexes');
+        Schema::drop('post_reads');
+        Schema::drop('post_locks');
+        Schema::drop('posts');
+        Schema::drop('modes');
+        Schema::drop('frameworks');
+        Schema::drop('types');
+        Schema::drop('formats');
+    }
 }

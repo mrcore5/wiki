@@ -7,25 +7,26 @@ use Layout;
 use Response;
 use Mrcore\Wiki\Models\Router;
 
-class RouterController extends Controller {
+class RouterController extends Controller
+{
 
-	/**
-	 * Display a single post, defaults to home page if no $id
-	 *
-	 * @return Response
-	 */
-	public function showRouter()
-	{
-		if (!Auth::admin()) return Response::denied();
+    /**
+     * Display a single post, defaults to home page if no $id
+     *
+     * @return Response
+     */
+    public function showRouter()
+    {
+        if (!Auth::admin()) {
+            return Response::denied();
+        }
 
-		$router = Router::getRoutes();
+        $router = Router::getRoutes();
 
-		Layout::container(false);
+        Layout::container(false);
 
-		return View::make('router.show', array(
-			'router' => $router,
-		));
-
-	}
-
+        return View::make('router.show', array(
+            'router' => $router,
+        ));
+    }
 }

@@ -19,16 +19,16 @@
         <!-- fix later, this should be a view composer or something -->
         <!-- this is just to show the site/user globals -->
         <!--<form method="post">
-        { $postContent }
+        <div><div><div><div><div><div>{ $postContent }</div></div></div></div></div></div>
         </form>-->
 
         <div class="search-filter col-sm-3">
             <div class="search-filter-section">
-                <h4 class="theme-border-color-3">Badges</h4>
+                <h4>Badges</h4>
                 @foreach ($badges as $badge)
                     <div class="checkbox">
                         <label>
-                            <input name="badge" type="checkbox" value="{{ $badge->name }}" id="chk-badge-{{ strtolower($badge->name) }}">
+                            <input name="badge{{ $badge->id }}" type="checkbox" value="1" {{ Input::has('badge'.$badge->id) ? 'checked="checked"' : '' }}>
                             <span class="lbl">
                                 <img src="{{ asset('uploads/'.$badge->image) }}" style="width: 16px">
                                 {{ $badge->name }}
@@ -50,11 +50,11 @@
             -->
 
             <div class="search-filter-section">
-                <h4 class="theme-border-color-3">Types</h4>
+                <h4>Types</h4>
                 @foreach ($types as $type)
                     <div class="checkbox">
                         <label>
-                            <input name="type" type="checkbox" value="{{ $type->name }}" id="chk-type-{{ strtolower($type->name) }}">
+                            <input name="type{{ $type->id }}" type="checkbox" value="1" {{ Input::has('type'.$type->id) ? 'checked="checked"' : '' }}>
                             <span class="lbl">
                                 {{ $type->name }}
                             </span>
@@ -64,11 +64,11 @@
             </div>
 
             <div class="search-filter-section">
-                <h4 class="theme-border-color-3">Formats</h4>
+                <h4>Formats</h4>
                 @foreach ($formats as $format)
                     <div class="checkbox">
                         <label>
-                            <input name="format" type="checkbox" value="{{ $format->name }}" id="chk-format-{{ strtolower($format->name) }}">
+                            <input name="format{{ $format->id }}" type="checkbox" value="1" {{ Input::has('format'.$format->id) ? 'checked="checked"' : '' }}>
                             <span class="lbl">
                                 {{ $format->name }}
                             </span>
@@ -78,7 +78,7 @@
             </div>
 
             <div class="search-filter-section">
-                <h4 class="theme-border-color-3">Show Only</h4>
+                <h4>Show Only</h4>
                 <!--<div class="checkbox">
                     <label>
                         <input name="unread" type="checkbox" value="1" {{ Input::has('unread') ? 'checked="checked"' : '' }}>
@@ -89,7 +89,7 @@
                 </div>-->
                 <div class="checkbox">
                     <label>
-                        <input name="hidden" type="checkbox" value="1" id="chk-hidden-true">
+                        <input name="hidden" type="checkbox" value="1" {{ Input::has('hidden') ? 'checked="checked"' : '' }}>
                         <span class="lbl">
                             Hidden
                         </span>
@@ -97,7 +97,7 @@
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input name="deleted" type="checkbox" value="1" id="chk-deleted-true">
+                        <input name="deleted" type="checkbox" value="1" {{ Input::has('deleted') ? 'checked="deleted"' : '' }}>
                         <span class="lbl">
                             Deleted
                         </span>
@@ -124,7 +124,7 @@
 
         <div class="col-sm-9">
 
-            <div class="controls theme-border-color-3">
+            <div class="controls">
                 <div class="row">
                     <div style="float:right;padding-bottom:5px;">
                         <div style="display:table-cell;padding-right:10px;">
@@ -138,20 +138,12 @@
                             'class' => 'form-control',
                         )) !!}
                         </div>
+                        <!--
                         <div style="display:table-cell;">
-                        @if (Session::has('search.view'))
-                            @if (Session::get('search.view') == 'list')
-                                <button class="btn btn-primary btn-sm" id="list"><i class="fa fa-bars"></i> List</button>
-                            @else
-                                <button class="btn btn-default btn-sm" id="list"><i class="fa fa-bars"></i> List</button>
-                            @endif
-                            @if (Session::get('search.view') == 'detail')
-                                <button class="btn btn-primary btn-sm" id="detail"><i class="fa fa-th-large"></i> Detail</button>
-                            @else
-                                <button class="btn btn-default btn-sm" id="detail"><i class="fa fa-th-large"></i> Detail</button>
-                            @endif
-                        @endif
-                        </div>
+                            <button class="btn btn-primary btn-sm"><i class="fa fa-list"></i> List</button>
+                            <button class="btn btn-default btn-sm"><i class="fa fa-th-list"></i> Detail</button>
+                        </div>                    
+                        -->
                     </div>
                     <!--<div class="sort form-horizontal">
                         <div class="form-group">
@@ -189,7 +181,7 @@
                                 ) !!}
 
                                 {!! Html::decode(
-                                    Form::button(
+                                    Form::button( 
                                         '<i class="fa fa-sitemap"></i> SiteMap',
                                         array(
                                             'name' => 'sitemap', 'id' => 'sitemap',
@@ -236,41 +228,34 @@
 
                     </div>
                 </div>
-            </div>
-            <div style="padding-top:10px">
-                @yield('results')
-            </div>
-        </div>
-    </div>
-    <div class="results-pagination" align="center">
-        @if (!is_array($posts))
-            <?php
-            $get = Input::get();    unset($get['page']);
-            $currentPage = $posts->currentPage();
-            $perPage = $posts->perPage();
-            $starting = 1 + ($perPage * ($currentPage - 1));
-            $ending = ($perPage * $currentPage);
-            $count = $posts->count();
-            $total = $posts->total();
 
-            if ($ending > $total) {
-                $ending = $total;
-            }
-            ?>
-            {!! $posts->appends($get)->render() !!}
-        @else
-            <?php
-            $currentPage = 1;
-            $perPage = 10;
-            $count = count($posts);
-            $total = $count;
-            $starting = 1 + ($perPage * ($currentPage - 1));
-            $ending = ($perPage * $currentPage);
-            ?>
-        @endif
-        <div class="results-pagination-info">
-            Showing {{ $starting }} to {{ $ending }} of {{ $total }} results
+            </div>
+
+            @yield('results')
+
+            <div class="results-pagination">
+                @if (!is_array($posts))
+                    <?php
+                    $get = Input::get();    unset($get['page']);
+                    $currentPage = $posts->currentPage();
+                    $count = $posts->count();
+                    $total = $posts->total();
+                    ?>
+                    {!! $posts->appends($get)->render() !!}
+                @else
+                    <?php
+                    $currentPage = 1;
+                    $count = count($posts);
+                    $total = $count;
+                    ?>
+                @endif    
+                <div class="results-pagination-info">
+                    Showing {{ $currentPage }} to {{ $count }} of {{ $total }} results
+                </div>
+            </div>
+            
         </div>
+
     </div>
 
     {!! Form::close() !!}
@@ -278,113 +263,45 @@
 @stop
 
 @section('script')
+<!--<script src="{{ asset('js/jquery.chosen.min.js') }}"></script>-->
 <script>
 var onSearch = true;
 $(function() {
+    // Start chosen (before validator)
+    //$(".chosen-select").chosen({ width: '100%' });
+
     $('#sort').change(function() {
-        buildSearchQuery();
+        submitForm();
     });
-
-    $('#list').click(function(e) {
-        e.preventDefault();
+    
+    $('#list').click(function() {
         $('#view').val("list");
-        buildSearchQuery();
+        submitForm();
     });
-
-    $('#detail').click(function(e) {
-        e.preventDefault();
+    $('#detail').click(function() {
         $('#view').val("detail");
-        buildSearchQuery();
+        submitForm();
     });
-
     $('#sitemap').click(function() {
         $('#view').val("sitemap");
-        buildSearchQuery();
+        submitForm();
     });
 
     $(':checkbox').click(function() {
-        var checked = $(this).prop('checked');
-        if ($(this).attr('name') == 'badge') {
-            $("input[name='badge']").prop('checked', false);
-            if (checked) {
-                $(this).prop('checked', true);
-            }
-        }
-
-        if ($(this).attr('name') == 'hidden') {
-            $("input[name='deleted']").prop('checked', false);
-        } else if ($(this).attr('name') == 'deleted') {
-            $("input[name='hidden']").prop('checked', false);
-        }
-
-        buildSearchQuery();
+        console.log('fire');
+        submitForm();
     });
 
-    function buildSearchQuery() {
-        var params = [];
-        var badges = buildQueryItems('badge');
-        if (badges.length > 0) {
-            params.push(buildQueryItems('badge'));
-        }
-        var types = buildQueryItems('type');
-        if (types.length > 0) {
-            params.push(buildQueryItems('type'));
-        }
-        var formats = buildQueryItems('format');
-        if (formats.length > 0) {
-            params.push(buildQueryItems('format'));
-        }
-        if ($("input[name='hidden']").is(':checked')) {
-            params.push('hidden=true');
-        }
-        if ($("input[name='deleted']").is(':checked')) {
-            params.push('deleted=true');
-        }
-        if ('{{ Input::get('key') }}' != '') {
-            params.push('key={{ Input::get('key')}}');
-        }
-        if ('{{ Input::get('tag') }}' != '') {
-            params.push('tag={{ Input::get('tag')}}');
-        }
-        if ($('#sort option:selected').val() != 'relevance') {
-            params.push('sort=' + $('#sort option:selected').val());
-        }
-        if ($('#view').val() != '') {
-            params.push('view=' + $('#view').val());
-        }
+    function submitForm() {
+        // Don't send view= if view is blank, mucks up url
+        if (!$('#view').val()) $('#view').removeAttr('name');
 
-        var query = params.join('&');
-        window.location = "{{ URL::to('/search')}}" + "?" + query;
+        // Dont send sort=relevance, assume default
+        if ($('#sort option:selected').val() == 'relevance') $('#sort').removeAttr('name');
+        
+        // Submit Form
+        this.form.submit();
     }
-
-    function buildQueryItems(key) {
-        var items = [];
-        var query = '';
-        $("input[name='" + key + "']:checked").each(function() {
-            items.push($(this).val());
-        });
-        if (items.length > 0) {
-            query = key +'='+items.join(',');
-        }
-        return query;
-    }
-
-    function setCheckboxes() {
-        selectCheckboxes('{{ Input::get("badge") }}', 'badge');
-        selectCheckboxes('{{ Input::get("type") }}', 'type');
-        selectCheckboxes('{{ Input::get("format") }}', 'format');
-        selectCheckboxes('{{ Input::get("hidden") }}', 'hidden');
-        selectCheckboxes('{{ Input::get("deleted") }}', 'deleted');
-    }
-
-    function selectCheckboxes(collection, key) {
-        var items = collection.split(',');
-        for(i = 0; i < items.length; i++) {
-            $('#chk-'+key+'-'+items[i].toLowerCase()).attr('checked', 'checked');
-        }
-    }
-
-    setCheckboxes();
 });
 
 $(document).bind('keyup', '/', function() {

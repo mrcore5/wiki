@@ -16,13 +16,13 @@ elixir(function(mix) {
     //mix.less('simplex.less');
     //mix.less('slate.less');
 
-	mix.styles([
-		"wiki.css",
-		"markdown.css"
-	], 'Assets/css/wiki-bundle.css', 'Assets/css');
+    mix.styles([
+        "wiki.css",
+        "markdown.css"
+    ], 'Assets/css/wiki-bundle.css', 'Assets/css');
 
-	mix.scripts([
-		"wiki.js"
-	], 'Assets/js/wiki-bundle.js', 'Assets/js');
+    mix.scripts([
+        "wiki.js"
+    ], 'Assets/js/wiki-bundle.js', 'Assets/js');
 
 });

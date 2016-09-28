@@ -3,7 +3,7 @@
 @include('layout.menu.user')
 
 @section('header-right')
-	@yield('search-menu')
-	@yield('main-menu')
-	@yield('user-menu')
+    @yield('search-menu')
+    @yield('main-menu')
+    @yield('user-menu')
 @stop

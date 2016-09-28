@@ -15,167 +15,172 @@ use Mrcore\Wiki\Models\Badge;
 use Mrcore\Wiki\Models\Format;
 use Mrcore\Wiki\Models\Hashtag;
 
-class SearchController extends Controller {
+class SearchController extends Controller
+{
 
-	/**
-	 * Displays the search page
-	 *
-	 * @return Response
-	 */
-	public function search()
-	{
+    /**
+     * Displays the search page
+     *
+     * @return Response
+     */
+    public function search()
+    {
 
-		// Remove mobile viewport
-		Layout::viewport('');
+        // Remove mobile viewport
+        Layout::viewport('');
 
-		// Get query
-
-
-		# Dont use Request::segments here becuase it lumps multiple blank // into one
-		#$query = Request::segments();
-		#array_shift($query); #don't use
-		#$query = implode("/", $query);
-		# I want to keep the / because I use them in queries
-		#$query = substr(Request::path(), 7); #removes to leading search/
-		$query = Input::get('key');
-
-		// Custom queries
-		if (is_numeric($query)) {
-			// Query is an integer, redirect to that post id
-			return Redirect::route('permalink', array($query));
-
-		} elseif (starts_with($query, "/")) {
-			// Query begins with /, so redirect to that given url
-			return Redirect::route('url', $query);
-
-		} elseif (starts_with($query, "hashtag:")) {
-			// Query is hashtag lookup
-			$query = substr($query, 8);
-			$hashtag = Hashtag::find($query);
-			if (isset($hashtag)) {
-				$route = Router::findDefault($hashtag->route_id);
-				if (isset($route)) {
-					return Redirect::route('permalink', array($route->post_id));
-				}
-			}
-			return Response::notFound();
-		}
-
-		// Get all types
-		$types = Type::all();
-
-		// Get all formats
-		$formats = Format::all();
-
-		// Get all badges
-		$badges = Badge::all();
-
-		// Get all tags
-		$tags = Tag::all();
-
-		// Sort options
-		$sortOptions = array(
-			'relevance' => 'Relevance',
-			'updatednew' => 'Updated Date Newest',
-			'updatedold' => 'Updated Date Oldest',
-			'creatednew' => 'Created Date Newest',
-			'createdold' => 'Created Date Oldest',
-			'titleaz' => 'Title A-Z',
-			'titleza' => 'Title Z-A',
-			'mostviews' => 'Most Views',
-		);
-
-		// Manage view with a session
-		$validViews = array('list', 'detail', 'sitemap');
-		$defaultView = 'detail';
-		if (Input::has('view')) {
-			$view = Input::get('view');
-			Session::put('search.view', $view);
-		} elseif (Session::has('search.view')) {
-			$view = Session::get('search.view');
-		} else {
-			$view = $defaultView;
-			Session::put('search.view', $view);
-		}
-		$view = strtolower($view);
-		if (!in_array($view, $validViews)) $view = $defaultView;
-
-		$selectedTags = array();
-		foreach (Input::get() as $param) {
-			if (preg_match('/tag(.*)/i', $param, $matches)) $selectedTags[] = $matches[1];
-		}
-
-		$posts = Post::getSearchPostsNew(Input::get());
+        // Get query
 
 
-		// Get Site and User Globals
-		// // FIX ME these show up as mreschke then site global, should be reversed
-		// need to make more permanent solution, this sucks
-		// need to be on all pages like admin, router, search, login...fix it good
-		#$post = Post::find(\Config::get('mrcore.wiki.global'));
-		#Mrcore::post()->setModel($post);
-		#$post->prepare();
-		#$postContent = $post->content;
+        # Dont use Request::segments here becuase it lumps multiple blank // into one
+        #$query = Request::segments();
+        #array_shift($query); #don't use
+        #$query = implode("/", $query);
+        # I want to keep the / because I use them in queries
+        #$query = substr(Request::path(), 7); #removes to leading search/
+        $query = Input::get('key');
 
-		$searchQuery = '';
-		foreach (Input::all() as $key => $value) {
-			if ($key == 'key') {
-				$searchQuery .= $value.' ';
-			} else if($key == 'badge' || $key == 'format' || $key == 'type' || $key == 'tag') {
-				$searchQuery .= $key.':'.$value.' ';
-			}
-		}
+        // Custom queries
+        if (is_numeric($query)) {
+            // Query is an integer, redirect to that post id
+            return Redirect::route('permalink', array($query));
+        } elseif (starts_with($query, "/")) {
+            // Query begins with /, so redirect to that given url
+            return Redirect::route('url', $query);
+        } elseif (starts_with($query, "hashtag:")) {
+            // Query is hashtag lookup
+            $query = substr($query, 8);
+            $hashtag = Hashtag::find($query);
+            if (isset($hashtag)) {
+                $route = Router::findDefault($hashtag->route_id);
+                if (isset($route)) {
+                    return Redirect::route('permalink', array($route->post_id));
+                }
+            }
+            return Response::notFound();
+        }
 
-		return View::make("search.$view", array(
-			'posts' => $posts,
-			'searchQuery' => trim(urldecode($searchQuery)),
-			'badges' => $badges,
-			'tags' => $tags,
-			'selectedTags' => $selectedTags,
-			'types' => $types,
-			'formats' => $formats,
-			'sortOptions' => $sortOptions
-		));
-	}
+        // Get all types
+        $types = Type::all();
+
+        // Get all formats
+        $formats = Format::all();
+
+        // Get all badges
+        $badges = Badge::all();
+
+        // Get all tags
+        $tags = Tag::all();
+
+        // Sort options
+        $sortOptions = array(
+            'relevance' => 'Relevance',
+            'updatednew' => 'Updated Date Newest',
+            'updatedold' => 'Updated Date Oldest',
+            'creatednew' => 'Created Date Newest',
+            'createdold' => 'Created Date Oldest',
+            'titleaz' => 'Title A-Z',
+            'titleza' => 'Title Z-A',
+            'mostviews' => 'Most Views',
+        );
+
+        // Manage view with a session
+        $validViews = array('list', 'detail', 'sitemap');
+        $defaultView = 'detail';
+        if (Input::has('view')) {
+            $view = Input::get('view');
+            Session::put('search.view', $view);
+        } elseif (Session::has('search.view')) {
+            $view = Session::get('search.view');
+        } else {
+            $view = $defaultView;
+            Session::put('search.view', $view);
+        }
+        $view = strtolower($view);
+        if (!in_array($view, $validViews)) {
+            $view = $defaultView;
+        }
+
+        $selectedTags = array();
+        foreach (Input::get() as $param) {
+            if (preg_match('/tag(.*)/i', $param, $matches)) {
+                $selectedTags[] = $matches[1];
+            }
+        }
+
+        $posts = Post::getSearchPostsNew(Input::get());
 
 
-	/**
-	 * Get the search dropdown menu
-	 * Handles via ajax only
-	 */
-	public function searchMenu()
-	{
-		// Ajax only controller
-		if (!Request::ajax()) return Response::notFound();
+        // Get Site and User Globals
+        // // FIX ME these show up as mreschke then site global, should be reversed
+        // need to make more permanent solution, this sucks
+        // need to be on all pages like admin, router, search, login...fix it good
+        #$post = Post::find(\Config::get('mrcore.wiki.global'));
+        #Mrcore::post()->setModel($post);
+        #$post->prepare();
+        #$postContent = $post->content;
 
-		$post = Post::find(Config::get('mrcore.wiki.searchmenu'));
-		if (!isset($post)) return Response::notFound();
+        $searchQuery = '';
+        foreach (Input::all() as $key => $value) {
+            if ($key == 'key') {
+                $searchQuery .= $value.' ';
+            } elseif ($key == 'badge' || $key == 'format' || $key == 'type' || $key == 'tag') {
+                $searchQuery .= $key.':'.$value.' ';
+            }
+        }
 
-		// Parse Post Now!
-		$post->parse();
+        return View::make("search.$view", array(
+            'posts' => $posts,
+            'searchQuery' => trim(urldecode($searchQuery)),
+            'badges' => $badges,
+            'tags' => $tags,
+            'selectedTags' => $selectedTags,
+            'types' => $types,
+            'formats' => $formats,
+            'sortOptions' => $sortOptions
+        ));
+    }
 
-		$postContent = $post->content;
-		return View::make("search.layout-searchbox", compact('postContent'));
-	}
 
-	/**
-	 * Gets search results via ajax
-	 * @return json
-	 */
-	public function ajaxSearch()
-	{
-		$posts = Post::getSearchPostsNew(Input::get(), true);
-		$ajaxPosts = new \stdClass();
-		foreach ($posts as $post) {
-			$ajaxPost = new \stdClass();
-			$ajaxPost->id = $post->id;
-			$ajaxPost->url = Post::route($post->id);
-			$ajaxPost->title = $post->title;
-			$ajaxPosts->data[] = $ajaxPost;
-		}
+    /**
+     * Get the search dropdown menu
+     * Handles via ajax only
+     */
+    public function searchMenu()
+    {
+        // Ajax only controller
+        if (!Request::ajax()) {
+            return Response::notFound();
+        }
 
-		return Response::json($ajaxPosts);
-	}
+        $post = Post::find(Config::get('mrcore.wiki.searchmenu'));
+        if (!isset($post)) {
+            return Response::notFound();
+        }
 
+        // Parse Post Now!
+        $post->parse();
+
+        $postContent = $post->content;
+        return View::make("search.layout-searchbox", compact('postContent'));
+    }
+
+    /**
+     * Gets search results via ajax
+     * @return json
+     */
+    public function ajaxSearch()
+    {
+        $posts = Post::getSearchPostsNew(Input::get(), true);
+        $ajaxPosts = new \stdClass();
+        foreach ($posts as $post) {
+            $ajaxPost = new \stdClass();
+            $ajaxPost->id = $post->id;
+            $ajaxPost->url = Post::route($post->id);
+            $ajaxPost->title = $post->title;
+            $ajaxPosts->data[] = $ajaxPost;
+        }
+
+        return Response::json($ajaxPosts);
+    }
 }
-

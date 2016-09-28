@@ -1,15 +1,15 @@
 @extends('post.show')
 
 @section('css')
-	@parent
+    @parent
 @stop
 
 
 @section('content')
-	@parent
+    @parent
 @stop
 
 
 @section('script')
-	@parent
+    @parent
 @stop

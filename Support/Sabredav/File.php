@@ -2,11 +2,12 @@
 
 use Sabre\DAV;
 
-class File extends DAV\FS\Node implements DAV\IFile {
-
+class File extends DAV\FS\Node implements DAV\IFile
+{
     public $path;
 
-    function __construct($path) {
+    public function __construct($path)
+    {
         $this->path = $path;
     }
 
@@ -16,10 +17,9 @@ class File extends DAV\FS\Node implements DAV\IFile {
      * @param resource $data
      * @return void
      */
-    public function put($data) {
-
-        file_put_contents($this->path,$data);
-
+    public function put($data)
+    {
+        file_put_contents($this->path, $data);
     }
 
     /**
@@ -27,8 +27,9 @@ class File extends DAV\FS\Node implements DAV\IFile {
      *
      * @return string
      */
-    public function get() {
-        return fopen($this->path,'r');
+    public function get()
+    {
+        return fopen($this->path, 'r');
         $value = Request::header('Content-Type');
     }
 
@@ -37,10 +38,9 @@ class File extends DAV\FS\Node implements DAV\IFile {
      *
      * @return void
      */
-    public function delete() {
-
+    public function delete()
+    {
         unlink($this->path);
-
     }
 
     /**
@@ -48,11 +48,11 @@ class File extends DAV\FS\Node implements DAV\IFile {
      *
      * @return int
      */
-    public function getSize() {
+    public function getSize()
+    {
         #echo $this->path;
         #exit();
         return filesize($this->path);
-
     }
 
     /**
@@ -65,10 +65,9 @@ class File extends DAV\FS\Node implements DAV\IFile {
      *
      * @return mixed
      */
-    public function getETag() {
-
+    public function getETag()
+    {
         return null;
-
     }
 
     /**
@@ -78,7 +77,8 @@ class File extends DAV\FS\Node implements DAV\IFile {
      *
      * @return mixed
      */
-    public function getContentType() {
+    public function getContentType()
+    {
         return null;
     }
 
@@ -104,6 +104,4 @@ class File extends DAV\FS\Node implements DAV\IFile {
         $images = ['jpg', 'jpeg', 'gif', 'png'];
         return in_array($ext, $images);
     }
-
 }
-
