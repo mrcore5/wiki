@@ -165,6 +165,7 @@ class EditController extends Controller {
 			// Update post
 			$post->content = Crypt::encrypt(Input::get('content'));
 			$post->teaser = Crypt::encrypt($post->createTeaser(Input::get('content')));
+            $post->updated_by = Auth::user()->id;
 			$post->save();
 
 			// Clear this posts cache
