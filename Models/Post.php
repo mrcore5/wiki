@@ -595,6 +595,14 @@ class Post extends Model
      */
     public static function getSearchPostsNew($params, $titleOnly = false)
     {
+        // Laravel 5.3 defaults to strict mode = true which adds in
+        // PDO set ONLY_FULL_GROUP_BY which breaks a query below with this error
+        // SQLSTATE[42000]: Syntax error or access violation: 1055 'mrcore5.posts.id' isn't in GROUP BY (SQL: select posts.*, sum(weight) as weight from `post_indexes` inner join `posts` on `post_indexes`.`post_id` = `posts`.`id` where `deleted` = 0 and `hidden` = 0 group by `post_indexes`.`post_id` having count(*) >= 0 order by `weight` desc limit 50 offset 0)
+        // I don't want to set strict=false for the entire application
+        // so copy the config and change the flag just for this function.
+        Config::set('database.connections.mysql_relaxed', Config::get('database.connections.mysql'));
+        Config::set('database.connections.mysql_relaxed.strict', false);
+
         // Parse parameters
         $badges = array();
         $tags = array();
@@ -641,10 +649,10 @@ class Post extends Model
 
         // Search for search work in post indexes table
         if ($keyword != '') {
-            $posts = DB::table('post_indexes')
+            $posts = DB::connection('mysql_relaxed')->table('post_indexes')
                 ->join('posts', 'post_indexes.post_id', '=', 'posts.id');
         } else {
-            $posts = DB::table('posts');
+            $posts = DB::connection('mysql_relaxed')->table('posts');
         }
 
         // Filter posts by read permissions (or user is creator)
