@@ -595,6 +595,10 @@ class Post extends Model
      */
     public static function getSearchPostsNew($params, $titleOnly = false)
     {
+        // Copy mysql configuration to a temporary connection so we can change strict mode flag
+        Config::set('database.connections.mysql_tmp', Config::get('database.connections.mysql'));
+        Config::set('database.connections.mysql_tmp.strict', false);
+
         // Parse parameters
         $badges = array();
         $tags = array();
@@ -641,10 +645,10 @@ class Post extends Model
 
         // Search for search work in post indexes table
         if ($keyword != '') {
-            $posts = DB::table('post_indexes')
+            $posts = DB::connection('mysql_tmp')->table('post_indexes')
                 ->join('posts', 'post_indexes.post_id', '=', 'posts.id');
         } else {
-            $posts = DB::table('posts');
+            $posts = DB::connection('mysql_tmp')->table('posts');
         }
 
         // Filter posts by read permissions (or user is creator)
