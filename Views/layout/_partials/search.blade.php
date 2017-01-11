@@ -14,7 +14,7 @@
 
 @section('subheader-content')
     <div id="search-container">
-        <input type="text" name="search" id="search" class="form-control" style="width:500px;" value="{{ $searchQuery or '' }}" />
+        <input type="text" name="search" id="search" placeholder="Search Query..." class="form-control" style="width:500px;" value="{{ $searchQuery or '' }}" />
         <button id="search-go-btn" class="btn btn-success btn-sm" style="margin-left:15px;margin-bottom:8px;">Go <i class="fa fa-arrow-right"></i></button>
         <div id="search-results-box" style="display:none;">
         </div>
