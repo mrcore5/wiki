@@ -191,7 +191,8 @@ class FileController extends Controller
             Mrcore::post()->setModel($post);
             $content = $post->parse(file_get_contents($abs), 'wiki');
             return View::make('file.wiki', [
-                'content' => $content
+                'content' => $content,
+                'post' => $post,
             ]);
         } elseif (($extension == 'md' && !isset($getText)) && !isset($getDownload) || isset($getMarkdown)) {
             // Parse markdown file content and display in simple mode!
@@ -199,8 +200,9 @@ class FileController extends Controller
             $post = Post::find($url->getPostID());
             Mrcore::post()->setModel($post);
             $content = $post->parse(file_get_contents($abs), 'markdown');
-            return View::make('file.markdown', [
-                'content' => $content
+            return View::make('file.wiki', [
+                'content' => $content,
+                'post' => $post,
             ]);
         }
 
