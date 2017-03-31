@@ -8,7 +8,7 @@
     .body {
         margin: 0px;
     }
-    .no-container .body {
+    .container-fluid .body {
         padding: 5px 0px 0px 0px;
     }
     .alert-box {
