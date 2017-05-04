@@ -90,10 +90,10 @@ class File extends DAV\FS\Node implements DAV\IFile
     public function getExtension()
     {
         $pathinfo = pathinfo($this->path);
-        return strtolower($pathinfo['extension']);
+        return isset($pathinfo['extension']) ? strtolower($pathinfo['extension']) : '';
     }
 
-    
+
     /**
      * Check if this file is an image
      * @return boolean

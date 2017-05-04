@@ -241,7 +241,8 @@ priv
 }
 
 /* Table */
-.wiki .table {
+.wiki .simpletable {
+    /* This makes all wiki tables even <simpletable> audo size, not 100% width */
 	width: auto !important;
 }
 .wiki .dataTables_wrapper .wiki .table {
@@ -260,8 +261,36 @@ priv
 
 
 /* Files */
+.fm-table {
+    width: 100% !important;
+}
+
 .fm-table td {
 	white-space: nowrap;
+}
+
+.fm-menubar-item {
+    display: inline-block;
+}
+
+.fm-upload-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.fm-upload-btn input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    background: red;
+    cursor: inherit;
+    display: block;
 }
 
 
