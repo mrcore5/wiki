@@ -110,7 +110,7 @@ class Url
         }
     }
 
-    
+
     /**
      * Get just the path of the URL.
      * Example: 'myfolder', 'myfolder/file.txt', 'myfolder/anotherfolder'
@@ -416,7 +416,7 @@ class Url
     {
         if ($this->exists() && !$this->isDir()) {
             $pathinfo = pathinfo($this->getAbs());
-            return $pathinfo['extension'];
+            return isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
         }
     }
 

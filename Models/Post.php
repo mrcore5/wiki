@@ -591,7 +591,7 @@ class Post extends Model
      * New version of getSearchPosts
      * @param  array $params
      * @param  boolean $titleOnly (optional)
-     * @return
+     * @return \Illuminate\Support\Collection
      */
     public static function getSearchPostsNew($params, $titleOnly = false)
     {

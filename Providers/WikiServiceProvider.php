@@ -356,7 +356,7 @@ class WikiServiceProvider extends ServiceProvider
             return;
         }
 
-        // Register additional css assets with mrcore Layout
+        // Register additional css and js assets with mrcore Layout
         Layout::css('css/wiki-bundle.css');
     }
 

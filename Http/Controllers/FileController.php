@@ -1,6 +1,7 @@
 <?php namespace Mrcore\Wiki\Http\Controllers;
 
 use View;
+use File;
 use Input;
 use Route;
 use Mrcore;
@@ -45,6 +46,52 @@ class FileController extends Controller
         exit();*/
 
         if ($url->isMethod('GET') || $url->isMethod('POST')) {
+
+            // Upload file
+            if (Input::hasFile('upload')) {
+                if ($url->isWritable()) {
+                    $request = app(\Illuminate\Http\Request::class);
+                    $tempFile = $request->upload->path();
+                    $filename = $request->upload->getClientOriginalName();
+
+                    // Save file
+                    config('filesystem.default', 'local');
+                    config('filesystem.disks.local.root', storage_path('app'));
+                    $request->upload->storeAs('local', $filename);
+
+                    if (file_exists(storage_path("app/local/$filename"))) {
+                        // Move file to proper location
+                        rename(storage_path("app/local/$filename"), $url->getAbs().'/'.$filename);
+
+                        // JSON return required for $.ajax success to fire
+                        return Response::json(['message' => 'success']);
+                    } else {
+                        return Response::make(null, 404);
+                    }
+                } else {
+                    return Response::make(null, 401);
+                }
+            }
+
+            // Delete file
+            if (Input::has('delete')) {
+                if ($url->isWritable()) {
+                    $filename = Input::get('delete');
+                    $file = $url->getAbs().'/'.$filename;
+                    if (is_dir($file)) {
+                        File::deleteDirectory($file);
+                    } else {
+                        unlink($file);
+                    }
+
+                    // JSON return required for $.ajax success to fire
+                    return Response::json(['message' => 'success']);
+
+                } else {
+                    return Response::make(null, 401);
+                }
+            }
+
             // GET file or directory (webdav file only or http dir/file both)
             if ($url->getProtocol() == 'webdav') {
                 return self::showSabredav($url);
@@ -177,7 +224,7 @@ class FileController extends Controller
 
         # Find any $_GET input variables
         $getWiki = Input::get('wiki');
-        $getText = Input::get('text');
+        $getText = Input::get('text') ?: Input::get('raw');;
         $getMarkdown = Input::get('md');
         $getDownload = Input::get('download');
 
@@ -191,7 +238,8 @@ class FileController extends Controller
             Mrcore::post()->setModel($post);
             $content = $post->parse(file_get_contents($abs), 'wiki');
             return View::make('file.wiki', [
-                'content' => $content
+                'content' => $content,
+                'post' => $post,
             ]);
         } elseif (($extension == 'md' && !isset($getText)) && !isset($getDownload) || isset($getMarkdown)) {
             // Parse markdown file content and display in simple mode!
@@ -199,8 +247,9 @@ class FileController extends Controller
             $post = Post::find($url->getPostID());
             Mrcore::post()->setModel($post);
             $content = $post->parse(file_get_contents($abs), 'markdown');
-            return View::make('file.markdown', [
-                'content' => $content
+            return View::make('file.wiki', [
+                'content' => $content,
+                'post' => $post,
             ]);
         }
 
@@ -309,9 +358,16 @@ class FileController extends Controller
                 $view = 'detail';
             }
 
+            // Force embed options
+            // For now, I don't want to ever show menu or nav...for embed
+            if ($params['embed']) {
+                $params['nomenu'] = true;
+                $params['nonav'] = true;
+            }
+
             # Temp Testing until I finish code
-            #$view = 'detail';
-            $params['nomenu'] = true;
+            $view = 'detail';
+            #$params['nomenu'] = true;
             $params['nonav'] = true;
 
             return View::make('file.'.$view, array(
@@ -325,7 +381,8 @@ class FileController extends Controller
         } else {
             return View::make('file.show', array(
                 'url' => $url,
-                'dir' => $dir
+                'dir' => $dir,
+                'params' => $params
             ));
         }
     }
