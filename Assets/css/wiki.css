@@ -241,8 +241,8 @@ priv
 }
 
 /* Table */
-.wiki .simpletable {
-    /* This makes all wiki tables even <simpletable> audo size, not 100% width */
+.wiki .table {
+    /* All tables including filemanager cannot be 100%, they have to be sized to their data or they flow past the TOC */
 	width: auto !important;
 }
 .wiki .dataTables_wrapper .wiki .table {
@@ -261,10 +261,6 @@ priv
 
 
 /* Files */
-.fm-table {
-    width: 100% !important;
-}
-
 .fm-table td {
 	white-space: nowrap;
 }
