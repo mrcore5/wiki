@@ -131,7 +131,7 @@
                 url: '{{ '/file/'.$url->getPath() }}',
                 data: new FormData($("#upload-form")[0]),
                 dataType: 'json',
-                async: false,
+                async: true, // Must be true or modal will not pop and browser will freeze until done
                 cache: false,
                 type: 'POST',
                 processData: false,
@@ -163,7 +163,7 @@
                     url: '{{ '/file/'.$url->getPath() }}',
                     data: { delete: filename },
                     dataType: 'json',
-                    async: false,
+                    async: true, // Must be true or modal will not pop and browser will freeze until done
                     type: 'POST',
                     success: function(response) {
                         $('#status').html(filename + ' deleted!');
