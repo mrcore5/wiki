@@ -427,11 +427,6 @@ class EditController extends Controller
 
         $ret = "preferences saved";
         if (Auth::admin()) {
-            // Post must be type=app and framework=workbench
-            if ($post->type->constant != 'app' || $post->framework->constant != 'workbench') {
-                return "ERROR: post must be type=app and framework=workbench";
-            }
-
             $defaultSlug = trim(Input::get('default-slug'));
             $defaultSlug = preg_replace("'//'", "/", $defaultSlug);
             if ($defaultSlug == '/') {
@@ -454,6 +449,12 @@ class EditController extends Controller
                 if (substr_count($workbench, '/') != 1) {
                     return "ERROR: workbench must be vendor/package format";
                 }
+
+                // Post must be type=app and framework=workbench
+                if ($post->type->constant != 'app' || $post->framework->constant != 'workbench') {
+                    return "ERROR: post must be type=app and framework=workbench";
+                }
+
             }
 
             if (substr($defaultSlug, 0, 1) == '/') {
