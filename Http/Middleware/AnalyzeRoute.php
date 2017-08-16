@@ -85,18 +85,40 @@ class AnalyzeRoute
                     if ($path) {
                         // Define app (as module array)
                         $routePrefix = $route->currentRoute()->slug == 'home' ? '' : $route->currentRoute()->slug;
-                        $app = [
-                            'type' => 'app',
-                            'namespace' => "$namespace",
-                            'controller_namespace' => "$namespace\Http\Controllers",
-                            'provider' => "$namespace\Providers\\".studly_case($package)."ServiceProvider",
-                            'path' => $path,
-                            'routes' => "Http/routes.php",
-                            'route_prefix' => $routePrefix,
-                            'views' => "Views",
-                            'view_prefix' => $package,
-                            'assets' => "Assets",
-                        ];
+
+                        // Detect new /src/ style or old root style appstub
+                        if (file_exists("$path/routes")) {
+
+                            // New style /src/ app
+                            $app = [
+                                'type' => 'app',
+                                'namespace' => "$namespace",
+                                'controller_namespace' => "$namespace\Http\Controllers",
+                                'provider' => "$namespace\Providers\\".studly_case($package)."ServiceProvider",
+                                'path' => $path,
+                                'routes' => "routes/web.php",
+                                'route_prefix' => $routePrefix,
+                                'views' => "resources/views",
+                                'view_prefix' => $package,
+                                'assets' => "resources/assets",
+                            ];
+
+                        } else {
+
+                            // Old style root app
+                            $app = [
+                                'type' => 'app',
+                                'namespace' => "$namespace",
+                                'controller_namespace' => "$namespace\Http\Controllers",
+                                'provider' => "$namespace\Providers\\".studly_case($package)."ServiceProvider",
+                                'path' => $path,
+                                'routes' => "Http/routes.php",
+                                'route_prefix' => $routePrefix,
+                                'views' => "Views",
+                                'view_prefix' => $package,
+                                'assets' => "Assets",
+                            ];
+                        }
 
                         // Dynamically add and register this module!
                         Module::addModule('%app%', $app);
