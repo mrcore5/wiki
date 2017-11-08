@@ -231,7 +231,20 @@ class Url
                         if (is_dir($abs) && is_link($abs)) {
                             $symlink = readlink($abs);
                             if (preg_match("'index/(\d+)'", $symlink, $matches)) {
+                                // Symlinked to /index/5
                                 $this->postID = $matches[1];
+                                break;
+                            } elseif (preg_match("'\./(\d+)'", $symlink, $matches)) {
+                                // Symlinked to ./5
+                                $this->postID = $matches[1];
+                                break;
+                            } elseif (preg_match("'(\d+)/'", $symlink, $matches)) {
+                                // Symlinked to 5/
+                                $this->postID = $matches[1];
+                                break;
+                            } elseif (is_numeric($symlink)) {
+                                // Symlinked to just 5
+                                $this->postID = $symlink;
                                 break;
                             }
                         } else {
@@ -346,8 +359,16 @@ class Url
                     return true;
                 }
             } else {
-                // No post id means virtual folder, always allow read
-                return true;
+                // No post ID, could be virtual folder (not sumlink) or some symlink
+                // If symlink, DENY as I could not find the actual postID from getPostID()
+                $abs = $this->getAbsBase(). '/' . $this->path;
+                if (is_link($abs)) {
+                    // This is a symlink, DENY access
+                    return false;
+                } else {
+                    // Not a symlink, must be a virtual folder
+                    return true;
+                }
             }
         } else {
             return false;
