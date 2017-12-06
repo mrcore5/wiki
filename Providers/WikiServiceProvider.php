@@ -287,7 +287,13 @@ class WikiServiceProvider extends ServiceProvider
         $kernel->pushMiddleware(\Mrcore\Wiki\Http\Middleware\AnalyzeRoute::class);
 
         // Register route based middleware
-        $router->middleware('auth.admin', \Mrcore\Wiki\Http\Middleware\AuthenticateAdmin::class);
+        // FIXME Laravel version 5.3 vs 5.5 hack, remove when 5.3 is deprecated at dynatron
+        $version = app()->version();
+        if (substr($version, 0, 3) == '5.3') {
+            $router->middleware('auth.admin', \Mrcore\Wiki\Http\Middleware\AuthenticateAdmin::class);
+        } else {
+            $router->aliasMiddleware('auth.admin', \Mrcore\Wiki\Http\Middleware\AuthenticateAdmin::class);
+        }
 
         // Authenticate mrcore applications and modules
         // Enable if you are testing laravel 5.3 new auth stuff
