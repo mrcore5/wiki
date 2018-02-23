@@ -97,9 +97,6 @@ class WikiServiceProvider extends ServiceProvider
         // Register facades
         $facade = AliasLoader::getInstance();
         $facade->alias('Mrcore', \Mrcore\Wiki\Facades\Mrcore::class);
-        $facade->alias('Form', \Collective\Html\FormFacade::class);
-        $facade->alias('Html', \Collective\Html\HtmlFacade::class);
-        $facade->alias('Input', \Illuminate\Support\Facades\Input::class);
         #class_alias('Some\Long\Class', 'Short');
     }
 
@@ -134,9 +131,6 @@ class WikiServiceProvider extends ServiceProvider
         $this->app->alias(\Mrcore\Wiki\Api\Post::class, \Mrcore\Wiki\Api\PostInterface::class);
         $this->app->alias(\Mrcore\Wiki\Api\Router::class, \Mrcore\Wiki\Api\RouterInterface::class);
         $this->app->alias(\Mrcore\Wiki\Api\User::class, \Mrcore\Wiki\Api\UserInterface::class);
-
-        // Register other service providers
-        $this->app->register(\Collective\Html\HtmlServiceProvider::class);
     }
 
     /**
@@ -293,7 +287,13 @@ class WikiServiceProvider extends ServiceProvider
         $kernel->pushMiddleware(\Mrcore\Wiki\Http\Middleware\AnalyzeRoute::class);
 
         // Register route based middleware
-        $router->middleware('auth.admin', \Mrcore\Wiki\Http\Middleware\AuthenticateAdmin::class);
+        // FIXME Laravel version 5.3 vs 5.5 hack, remove when 5.3 is deprecated at dynatron
+        $version = app()->version();
+        if (substr($version, 0, 3) == '5.3') {
+            $router->middleware('auth.admin', \Mrcore\Wiki\Http\Middleware\AuthenticateAdmin::class);
+        } else {
+            $router->aliasMiddleware('auth.admin', \Mrcore\Wiki\Http\Middleware\AuthenticateAdmin::class);
+        }
 
         // Authenticate mrcore applications and modules
         // Enable if you are testing laravel 5.3 new auth stuff
