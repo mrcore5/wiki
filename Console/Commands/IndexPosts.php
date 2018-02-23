@@ -12,20 +12,14 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class IndexPosts extends Command
 {
-
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'mrcore:wiki:index';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    protected $name = 'Wiki Indexer';
+    protected $package = 'Mrcore/Wiki';
+    protected $version = '1.0.0';
     protected $description = 'Index all un-indexed mrcore wiki posts.';
+    protected $signature = 'mrcore:wiki:index
+        {id? : A}
+
+    ';
 
     /**
      * Create a new command instance.
@@ -42,10 +36,9 @@ class IndexPosts extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         $this->comment("Indexing all un-indexed posts");
-
         $id = $this->argument('id');
         if ($id > 0) {
             // Get one post
