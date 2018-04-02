@@ -175,6 +175,7 @@ class EditController extends Controller
         } else {
             // Update post
             $post->content = Crypt::encrypt(Input::get('content'));
+            if (!$post->content) $post->content = ''; // Or eloquent think "" = null and errors on "content column cannot be null"
             $post->teaser = Crypt::encrypt($post->createTeaser(Input::get('content')));
             $post->updated_by = Auth::user()->id;
             $post->save();
@@ -191,6 +192,7 @@ class EditController extends Controller
             $revision->revision = $lastRevisionNum + 1;
         }
         $revision->content = Crypt::encrypt(Input::get('content'));
+        if (!$revision->content) $revision->content = ''; // Or eloquent think "" = null and errors on "content column cannot be null"
         $revision->created_at = Carbon::now();
         $revision->save();
 
