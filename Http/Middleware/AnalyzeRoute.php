@@ -69,97 +69,20 @@ class AnalyzeRoute
             if ($post->workbench) {
                 $segments = explode("/", $post->workbench);
                 if (count($segments) == 2) {
-                    $namespace = '';
-                    $vendor = '';
-                    $package = '';
                     $vendor = $segments[0];
                     $package = $segments[1];
                     $namespace = studly_case($vendor) ."\\". studly_case($package);
-                    $namespacePath = str_replace("\\", "/", $namespace);
 
-                    // Check for app in ../Apps first for dev override, then vendor
-                    if (!$path = realpath(base_path("../Apps/$namespacePath"))) {
-                        // App not in vendor, check ../App
-                        $path = realpath(base_path("vendor/$vendor/$package"));
-                    }
-                    if ($path) {
-                        // Define app (as module array)
+                    if (file_exists(base_path("vendor/$vendor/$package"))) {
+
+                        // Get current URL for dynamic route prefix
                         $routePrefix = $route->currentRoute()->slug == 'home' ? '' : $route->currentRoute()->slug;
 
-                        // Attempt to get the packages config/package.php config file to determine paths from that file
-                        $packageConfig = null;
-                        if (file_exists("$path/config/$package.php")) {
-                            $packageConfig = include("$path/config/$package.php");
-                        } elseif (file_exists("$path/Config/$package.php")) {
-                            $packageConfig = include("$path/Config/$package.php");
-                        }
-                        if (isset($packageConfig)) {
-                            if (isset($packageConfig['paths'])) {
-                                // Config found with proper 'paths' array
-                                $packageConfig = $packageConfig['paths'];
-                            } else {
-                                // We have a config, but it does not have proper 'paths' array
-                                $packageConfig = null;
-                            }
-                        }
-
-                        if ($packageConfig) {
-                            // Define module from $package/config/$package.php config file
-                            $app = [
-                                'type' => 'app',
-                                'namespace' => "$namespace",
-                                'controller_namespace' => "$namespace\Http\Controllers",
-                                'provider' => "$namespace\Providers\\".studly_case($package)."ServiceProvider",
-                                'path' => $path,
-                                'routes' => $packageConfig['routes'],
-                                'route_prefix' => $routePrefix, // Config does have a route_prefix, but we use the one from the actual wiki app
-                                'views' => $packageConfig['views'],
-                                'view_prefix' => $packageConfig['view_prefix'],
-                                'assets' => $packageConfig['assets'],
-                            ];
-
-                        } else {
-                            // Define module automatically (without config file)
-                            // Detect new /src/ style or old root style appstub
-                            if (file_exists("$path/routes")) {
-                                // New style /src/ app
-                                $app = [
-                                    'type' => 'app',
-                                    'namespace' => "$namespace",
-                                    'controller_namespace' => "$namespace\Http\Controllers",
-                                    'provider' => "$namespace\Providers\\".studly_case($package)."ServiceProvider",
-                                    'path' => $path,
-                                    'routes' => "routes/web.php",
-                                    'route_prefix' => $routePrefix,
-                                    'views' => "resources/views",
-                                    'view_prefix' => $package,
-                                    'assets' => "resources/assets",
-                                ];
-
-                            } else {
-                                // Old style root app
-                                $app = [
-                                    'type' => 'app',
-                                    'namespace' => "$namespace",
-                                    'controller_namespace' => "$namespace\Http\Controllers",
-                                    'provider' => "$namespace\Providers\\".studly_case($package)."ServiceProvider",
-                                    'path' => $path,
-                                    'routes' => "Http/routes.php",
-                                    'route_prefix' => $routePrefix,
-                                    'views' => "Views",
-                                    'view_prefix' => $package,
-                                    'assets' => "Assets",
-                                ];
-                            }
-                        }
-
-
-
-
-
-
                         // Dynamically add and register this module!
-                        Module::addModule('%app%', $app);
+                        Module::addModule($namespace, [
+                            'type' => 'app',
+                            'route_prefix' => $routePrefix,
+                        ]);
 
                         // Apps default to no body container
                         Layout::container(false);

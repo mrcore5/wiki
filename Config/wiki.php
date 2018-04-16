@@ -237,4 +237,31 @@ return [
 
     'default_mode' => env('MRCORE_WIKI_DEFAULT_MODE', 1),
 
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Module Paths
+    |--------------------------------------------------------------------------
+    |
+    | Paths for mrcore modules
+    |
+    */
+
+    // These app paths for module and console command usage
+    'paths' => [
+        'psr4' => '',
+        'assets' => 'Assets',
+        'public' => 'Assets',
+        'config' => 'Config',
+        'database' => 'Database',
+        'migrations' => 'Database/Migrations',
+        'factories' => 'Database/Factories',
+        'seeds' => 'Database/Seeds',
+        'tests' => 'Tests',
+        'routes' => 'Http/routes.php',
+        'route_prefix' => null,
+        'views' => 'Views',
+        'view_prefix' => null,
+    ],
 ];
