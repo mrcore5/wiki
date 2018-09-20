@@ -200,7 +200,6 @@ class WikiServiceProvider extends ServiceProvider
         // Only applies if running in console
         if (!$this->app->runningInConsole()) return;
 
-        /*
         // App base path
         $path = realpath(__DIR__.'/../../');
 
@@ -210,6 +209,7 @@ class WikiServiceProvider extends ServiceProvider
             "$path/config" => base_path('/config/mrcore'),
         ], 'mrcore.wiki.configs');
 
+        /*
         // Migration publishing rules
         // ./artisan vendor:publish --tag="mrcore.wiki.migrations"
         $this->publishes([
