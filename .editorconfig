@@ -1,7 +1,7 @@
 # EditorConfig is awesome: http://EditorConfig.org
 
 # Top-most EditorConfig file
-root = false
+root = true
 
 # Global settings
 [*]
@@ -11,3 +11,18 @@ end_of_line = lf
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
+
+# Ensure 2 space indent
+[*.{rb,ru,yaml,yml}]
+indent_size = 2
+indent_style = space
+
+# Ensure 4 spaces
+[*.{py,php,html,htm,css,scss,sass,js,json,markdown,md]
+indent_size = 4
+indent_style = space
+
+# Ensure 4 tabs
+[*.{conf,cfg,ini}]
+indent_size = 4
+indent_style = tab

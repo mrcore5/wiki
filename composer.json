@@ -1,9 +1,9 @@
 {
     "name": "mrcore/wiki",
-    "type": "library",
     "description": "Mrcore Wiki Module",
     "keywords": ["mrcore", "framework", "wiki", "laravel"],
     "homepage": "http://github.com/mreschke/mrcore-modules-wiki",
+    "type": "library",
     "license": "MIT",
     "support": {
         "issues": "https://github.com/mreschke/mrcore-modules-wiki/issues"
@@ -22,10 +22,10 @@
     },
     "autoload": {
         "classmap": [
-            "Database"
+            "database"
         ],
         "psr-4": {
-            "Mrcore\\Wiki\\": ""
+            "Mrcore\\Wiki\\": "src/"
         }
     }
 }
