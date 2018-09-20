@@ -15,7 +15,7 @@
             </li>
             <li class="divider"></li>
             @endif
-        
+
             <li>
                 <a href="{{ URL::route('file').'/'.$post->id }}" target="_blank">
                     <i class="fa fa-folder-o"></i>
