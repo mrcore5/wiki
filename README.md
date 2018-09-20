@@ -1,8 +1,31 @@
-## Mrcore Wiki Module v2.0
+## mRcore Wiki Module v5.7
 
 `mrcore/wiki` is a module for the [mRcore Framework](https://github.com/mrcore5/framework)
 
 This module provides wiki and CMS dynamic app loading functionality.
+
+
+## Installation
+
+```
+composer require mrcore/
+
+left off here...get text-wiki and parser into 5.7, and maybe put back as wiki dependency? so I can just
+composer require mrcore/wiki ???
+Add docs here how to adjust config/auth.php etc...
+
+also go back to auth docs, tell how to install...
+
+
+HERE
+HERE
+HERE
+HERE
+HERE
+
+
+
+```
 
 
 ## What Is mRcore
