@@ -7,25 +7,77 @@ This module provides wiki and CMS dynamic app loading functionality.
 
 ## Installation
 
+Assuming you already have Laravel and [mRcore Framework](https://github.com/mrcore5/framework) installed along with [mRcore Auth Module](https://github.com/mrcore5/auth)
+```bash
+composer require mrcore/wiki:5.7.*
 ```
-composer require mrcore/
 
-left off here...get text-wiki and parser into 5.7, and maybe put back as wiki dependency? so I can just
-composer require mrcore/wiki ???
-Add docs here how to adjust config/auth.php etc...
-
-also go back to auth docs, tell how to install...
-
-
-HERE
-HERE
-HERE
-HERE
-HERE
-
-
-
+Edit your `config/modules.php` file and ensure `'Mrcore\Wiki' => [],` is set in your `modules` array
+```php
+'modules' => [
+    #...
+    'Mrcore\Wiki' => []
+    #...
+]
 ```
+
+And ensure `Mrcore\Wiki` is set in all 3 `assets, views and routes` arrays under the "Loading Order / Override Management" section.
+Notice `Mrcore\Wiki` is defined first in the `routes` array.  Follow the order of each array listed
+```php
+#...
+'assets' => [
+    '%app%',
+    'Mrcore\BootswatchTheme',
+    'Mrcore\Auth',
+    'Mrcore\Wiki',
+],
+
+'views' => [
+    '%app%',
+    'Mrcore\Auth',
+    'Mrcore\Wiki',
+    'Mrcore\BootswatchTheme',
+],
+
+'routes' => [
+    'Mrcore\Wiki',
+    '%app%',
+    'Mrcore\Auth',
+    'Mrcore\Foundation',
+],
+#...
+```
+
+Edit your `config/auth.php` file and set `guards web driver to mrcore`
+```php
+    'guards' => [
+        'web' => [
+            'driver' => 'mrcore',
+            'provider' => 'users',
+        ],
+
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+        ],
+    ],
+```
+
+And set `profiders users model to Mrcore\Auth\Models\User::class`
+```php
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => Mrcore\Auth\Models\User::class,
+        ],
+    ],
+```
+
+Visit your laravel install (if php artisal server at http://localhost:8000) to see the new wiki
+
+Default user/pass is `admin / password`
+
+
 
 
 ## What Is mRcore
