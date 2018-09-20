@@ -21,7 +21,33 @@ class WikiServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = true;
+    protected $defer = false;
+
+    /**
+     * Register the application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        // Mrcore module tracking
+        Module::trace(get_class(), __function__);
+
+        // Register facades and class aliases
+        $this->registerFacades();
+
+        // Register configs
+        $this->registerConfigs();
+
+        // Register services
+        $this->registerServices();
+
+        // Register testing environment
+        #$this->registerTestingEnvironment();
+
+        // Register mrcore modules
+        #$this->registerModules();
+    }
 
     /**
      * Bootstrap the application services.
@@ -56,35 +82,9 @@ class WikiServiceProvider extends ServiceProvider
 
         // Register mrcore layout overrides
         $this->registerLayout();
-    }
-
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        // Mrcore module tracking
-        Module::trace(get_class(), __function__);
-
-        // Register facades and class aliases
-        $this->registerFacades();
-
-        // Register configs
-        $this->registerConfigs();
-
-        // Register services
-        $this->registerServices();
 
         // Register artisan commands
         $this->registerCommands();
-
-        // Register testing environment
-        #$this->registerTestingEnvironment();
-
-        // Register mrcore modules
-        #$this->registerModules();
     }
 
     /**
@@ -114,7 +114,7 @@ class WikiServiceProvider extends ServiceProvider
         config(['mrcore.wiki.magic_folders_exceptions' => ['.sys/public', 'app/public']]);
 
         // Merge configs
-        $this->mergeConfigFrom(__DIR__.'/../Config/wiki.php', 'mrcore.wiki');
+        $this->mergeConfigFrom(__DIR__.'/../../config/wiki.php', 'mrcore.wiki');
     }
 
     /**
@@ -134,31 +134,14 @@ class WikiServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register artisan commands.
-     * @return void
-     */
-    protected function registerCommands()
-    {
-        if (!$this->app->runningInConsole()) {
-            return;
-        }
-        $this->commands([
-            \Mrcore\Wiki\Console\Commands\AppCommand::class,
-            \Mrcore\Wiki\Console\Commands\IndexPosts::class,
-        ]);
-    }
-
-    /**
      * Register test environment overrides
      *
      * @return void
      */
     public function registerTestingEnvironment()
     {
-        // Register testing environment overrides
-        if ($this->app->environment('testing')) {
-            //
-        }
+        // Does not apply if NOT running in 'testing' mode
+        if (!$this->app->environment('testing')) return;
     }
 
     /**
@@ -174,36 +157,71 @@ class WikiServiceProvider extends ServiceProvider
     }
 
     /**
+     * Extend both auth guard and UserProvider
+     *
+     * @return void
+     */
+    private function extendAuth()
+    {
+        // Extend both Guard and EloquentUserProvider
+        // This makes my own 'mrcore' web guard in config/auth.php which
+        // enabled custom Auth::funtions() and caching on the user provider!
+
+        // Custom guard, which also uses a custom provider
+        Auth::extend('mrcore', function ($app, $name, array $config) {
+
+            // Create custom wiki auth provider
+            $hash = $app->make('hash');
+            $model = config('auth.providers.users.model');
+            $provider = new WikiUserProvider($hash, $model);
+
+            // Or if you don't want to create a custom user provider you can
+            // get the default one defined in your config like so:
+            #$provider = Auth::createUserProvider($config['provider']);
+
+            // Return our new auth guard and auth provider
+            // I copied this from Illuminate\Auth\AuthManager.php createSessionDriver
+            $guard = new WikiSessionGuard($name, $provider, $app['session.store']);
+            $guard->setCookieJar($app['cookie']);
+            $guard->setDispatcher($app['events']);
+            $guard->setRequest($app->refresh('request', $guard, 'setRequest'));
+
+            return $guard;
+        });
+    }
+
+    /**
      * Define the published resources and configs.
      *
      * @return void
      */
     protected function registerPublishers()
     {
-        if (!$this->app->runningInConsole()) {
-            return;
-        }
+        // Only applies if running in console
+        if (!$this->app->runningInConsole()) return;
 
+        /*
         // App base path
-        $path = realpath(__DIR__.'/../');
+        $path = realpath(__DIR__.'/../../');
 
         // Config publishing rules
         // ./artisan vendor:publish --tag="mrcore.wiki.configs"
         $this->publishes([
-            "$path/Config" => base_path('/config/mrcore'),
+            "$path/config" => base_path('/config/mrcore'),
         ], 'mrcore.wiki.configs');
 
         // Migration publishing rules
         // ./artisan vendor:publish --tag="mrcore.wiki.migrations"
         $this->publishes([
-            "$path/Database/Migrations" => base_path('/database/migrations'),
+            "$path/database/migrations" => base_path('/database/migrations'),
         ], 'mrcore.wiki.migrations');
 
         // Seed publishing rules
         // ./artisan vendor:publish --tag="mrcore.wiki.seeds"
         $this->publishes([
-            "$path/Database/Seeds" => base_path('/database/seeds'),
+            "$path/database/seeds" => base_path('/database/seeds'),
         ], 'mrcore.wiki.seeds');
+        */
     }
 
     /**
@@ -213,10 +231,11 @@ class WikiServiceProvider extends ServiceProvider
      */
     protected function registerMigrations()
     {
-        if (!$this->app->runningInConsole()) {
-            return;
-        }
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        // Only applies if running in console
+        if (!$this->app->runningInConsole()) return;
+
+        // Register Migrations
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
     }
 
     /**
@@ -327,6 +346,9 @@ class WikiServiceProvider extends ServiceProvider
      */
     protected function registerSchedules()
     {
+        // Only applies if running in console
+        if (!$this->app->runningInConsole()) return;
+
         // Register all task schedules for this hostname ONLY if running from the schedule:run command
         /*if (app()->runningInConsole() && isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == 'schedule:run') {
 
@@ -352,45 +374,41 @@ class WikiServiceProvider extends ServiceProvider
      */
     protected function registerLayout()
     {
-        if ($this->app->runningInConsole()) {
-            return;
-        }
+        // Does not apply if running in console
+        if ($this->app->runningInConsole()) return;
 
-        // Register additional css and js assets with mrcore Layout
+        // Register additional css assets with mrcore Layout
         Layout::css('css/wiki-bundle.css');
+
+        // Share data wiht all views
+        #View::share('key', 'value');
     }
 
     /**
-     * Extend both auth guard and UserProvider
-     *
+     * Register artisan commands.
      * @return void
      */
-    private function extendAuth()
+    protected function registerCommands()
     {
-        // Extend both Guard and EloquentUserProvider
-        // This makes my own 'mrcore' web guard in config/auth.php which
-        // enabled custom Auth::funtions() and caching on the user provider!
+        // Only applies if running in console
+        if (!$this->app->runningInConsole()) return;
 
-        // Custom guard, which also uses a custom provider
-        Auth::extend('mrcore', function ($app, $name, array $config) {
+        // Register Commands
+        $this->commands([
+            \Mrcore\Wiki\Console\Commands\AppCommand::class,
+            \Mrcore\Wiki\Console\Commands\IndexPosts::class,
+        ]);
+    }
 
-            // Create custom wiki auth provider
-            $hash = $app->make('hash');
-            $model = config('auth.providers.users.model');
-            $provider = new WikiUserProvider($hash, $model);
-
-            // Or if you don't want to create a custom user provider you can
-            // get the default one defined in your config like so:
-            #$provider = Auth::createUserProvider($config['provider']);
-
-            // Return our new auth guard and auth provider
-            // I copied this from Illuminate\Auth\AuthManager.php createSessionDriver
-            $guard = new WikiSessionGuard($name, $provider, $app['session.store']);
-            $guard->setCookieJar($app['cookie']);
-            $guard->setDispatcher($app['events']);
-            $guard->setRequest($app->refresh('request', $guard, 'setRequest'));
-
-            return $guard;
-        });
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        // Only required if $defer = true and you add bindings in register()
+        // Only use if the provier is super simple and basically only has a simle binding
+        //return ['Mrcore\Appstub\Stuff', 'other bindings...'];
     }
 }

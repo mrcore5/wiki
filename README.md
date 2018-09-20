@@ -1,22 +1,42 @@
 ## Mrcore Wiki Module v2.0
 
-This is an mRcore module that provides wiki functionality.
+`mrcore/wiki` is a module for the [mRcore Framework](https://github.com/mrcore5/framework)
 
-## What Is Mrcore
+This module provides wiki and CMS dynamic app loading functionality.
 
-Mrcore is a set of Laravel components used to build various systems.
-It is a framework, a development platform and a CMS.  It is a modularized version of Laravel
-providing better package development support.  Think of Laravel 4.x workbenches on steroids.
+
+## What Is mRcore
+
+mRcore is a module/package system for Laravel allowing you to build all your applications as reusable modules.
+Modules resemble the Laravel folder structure and can be plugged into a single Laravel instance.
+mRcore solves module loading dependency order and in-place live asset handling.  Modules can be
+full web UIs, REST APIs and/or full Console command line apps.  A well built module is not only your
+UI and API, but a shared PHP library, a native API or repository which can be reused as dependencies in other modules.
+
+We firmly believe that all code should be built as modules and not in Laravel's directory structure itself.
+Laravel simply becomes the "package server".  A single Laravel instance can host any number of modules.
 
 See https://github.com/mrcore5/framework for details and installation instructions.
 
-## Official Documentation
 
-For this wiki module, well, there isn't any...yet.
+## Versions
 
-Wiki specific documentaion will be here in the future.
+* 1.0 is for Laravel 5.1 and below
+* 2.0 is for Laravel 5.3, 5.4, 5.5
+* 5.6 is for Laravel 5.6
+* 5.7 is for Laravel 5.7
+* ... Following Laravel versions from here on
 
-For now, see https://github.com/mrcore5/framework
+## Contributing
+
+Thank you for considering contributing to the mRcore framework!  Fork and pull!
+
+### License
+
+mRcore is open source software licensed under the [MIT license](http://mreschke.com/license/mit)
+
+
+
 
 
 
@@ -25,10 +45,10 @@ For now, see https://github.com/mrcore5/framework
 
 ## Enhancement Ideas
 
-* Foundation installer should prompt and notify about to delete laravel models, migrations...
+* NO-Foundation installer should prompt and notify about to delete laravel models, migrations...
 * Build `mrcore5-installer` symfony console command to install fresh laravel + foundation.  Options for --wiki install or --blog or whatever.
 * Perfect entities with `mreschke/repository` for auth, foundation and wiki.  Split tables between them
-* Change namespace of bootswatch theme, maybe just Mrcore/BootswatchTheme ?
+* DONE-Change namespace of bootswatch theme, maybe just Mrcore/BootswatchTheme ?
 
 
 ### Wiki Tables
@@ -70,15 +90,3 @@ For now, see https://github.com/mrcore5/framework
     $user->permissions;
 
 
-## Versions
-
-* 1.0 is for Laravel 5.1 and below
-* 2.0 is for Laravel 5.3 and above
-
-## Contributing
-
-Thank you for considering contributing to the mRcore framework!  Fork and pull!
-
-### License
-
-Mrcore is open-sourced software licensed under the [MIT license](http://mreschke.com/license/mit)
