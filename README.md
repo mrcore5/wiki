@@ -73,6 +73,14 @@ And set `profiders users model to Mrcore\Auth\Models\User::class`
     ],
 ```
 
+Run auth and wiki migrations and seeders
+```bash
+./artisan mrcore:auth:app db:migrate
+./artisan mrcore:wiki:app db:migrate
+./artisan mrcore:auth:app db:seed
+./artisan mrcore:wiki:app db:seed
+```
+
 Visit your laravel install (if php artisal server at http://localhost:8000) to see the new wiki
 
 Default user/pass is `admin / password`
