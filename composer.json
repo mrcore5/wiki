@@ -2,11 +2,11 @@
     "name": "mrcore/wiki",
     "description": "Mrcore Wiki Module",
     "keywords": ["mrcore", "framework", "wiki", "laravel"],
-    "homepage": "http://github.com/mreschke/mrcore-modules-wiki",
+    "homepage": "http://github.com/mrcore5/wiki",
     "type": "library",
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/mreschke/mrcore-modules-wiki/issues"
+        "issues": "https://github.com/mrcore5/wiki/issues"
     },
     "authors": [
         {

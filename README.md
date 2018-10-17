@@ -10,6 +10,7 @@ This module provides wiki and CMS dynamic app loading functionality.
 Assuming you already have Laravel and [mRcore Framework](https://github.com/mrcore5/framework) installed along with [mRcore Auth Module](https://github.com/mrcore5/auth)
 ```bash
 composer require mrcore/wiki:5.7.*
+composer require mrcore/bootswatch-theme:5.7.*
 ```
 
 Edit your `config/modules.php` file and ensure `'Mrcore\Wiki' => [],` is set in your `modules` array
@@ -81,7 +82,7 @@ Run auth and wiki migrations and seeders
 ./artisan mrcore:wiki:app db:seed
 ```
 
-Visit your laravel install (if php artisal server at http://localhost:8000) to see the new wiki
+Visit your laravel install (if php artisan server at http://localhost:8000) to see the new wiki
 
 Default user/pass is `admin / password`
 
