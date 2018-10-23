@@ -21,7 +21,7 @@
 
                 @else
 
-                    <div class="panel">
+                    <div class="panel panel-default">
                         <div class="panel-body">
 
                             @if ($post->type->constant == 'doc')
