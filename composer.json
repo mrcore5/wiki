@@ -20,10 +20,10 @@
         "camspiers/porter-stemmer": "1.0.0",
         "cogpowered/finediff": "~0.0",
 
-        "mrcore/foundation": "5.7.*",
-        "mrcore/auth": "5.7.*",
-        "mrcore/parser": "5.7.*",
-        "mrcore/text-wiki": "5.7.*",
+        "mrcore/foundation": "5.8.*",
+        "mrcore/auth": "5.8.*",
+        "mrcore/parser": "5.8.*",
+        "mrcore/text-wiki": "5.8.*",
         "mreschke/helpers": "~2.0"
     },
     "autoload": {
