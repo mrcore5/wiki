@@ -1,4 +1,4 @@
-## mRcore Wiki Module v5.7
+## mRcore Wiki Module v5.8
 
 `mrcore/wiki` is a module for the [mRcore Framework](https://github.com/mrcore5/framework)
 
@@ -9,8 +9,8 @@ This module provides wiki and CMS dynamic app loading functionality.
 
 Assuming you already have Laravel and [mRcore Framework](https://github.com/mrcore5/framework) installed along with [mRcore Auth Module](https://github.com/mrcore5/auth)
 ```bash
-composer require mrcore/wiki:5.7.*
-composer require mrcore/bootswatch-theme:5.7.*
+composer require mrcore/wiki:5.8.*
+composer require mrcore/bootswatch-theme:5.8.*
 ```
 
 Edit your `config/modules.php` file and ensure `'Mrcore\Wiki' => [],` is set in your `modules` array
