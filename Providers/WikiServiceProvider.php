@@ -291,8 +291,10 @@ class WikiServiceProvider extends ServiceProvider
         $version = app()->version();
         if (substr($version, 0, 3) == '5.3') {
             $router->middleware('auth.admin', \Mrcore\Wiki\Http\Middleware\AuthenticateAdmin::class);
+            $router->middleware('auth', \Mrcore\Wiki\Http\Middleware\Authenticate::class);
         } else {
             $router->aliasMiddleware('auth.admin', \Mrcore\Wiki\Http\Middleware\AuthenticateAdmin::class);
+            $router->aliasMiddleware('auth', \Mrcore\Wiki\Http\Middleware\Authenticate::class);
         }
 
         // Authenticate mrcore applications and modules
